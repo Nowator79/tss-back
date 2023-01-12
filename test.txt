@@ -44,3 +44,4 @@ to read about a specific subcommand or concept.
 test git
 test git
 test git
+test local git
