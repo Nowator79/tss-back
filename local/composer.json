@@ -1,0 +1,27 @@
+{
+    "name": "godra/api",
+    "autoload": {
+        "psr-4": {
+            "Godra\\Api\\": "classes/"
+        },
+        "files": [
+            "config/constants.php"
+        ]
+    },
+    "description": "api for b2b",
+    "authors": [
+        {
+            "name": "chelpuck0",
+            "email": "chelpuck0@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "6.5.5",
+        "firebase/php-jwt": "^6.3"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4.29"
+        }
+    }
+}

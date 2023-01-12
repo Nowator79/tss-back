@@ -1,0 +1,38 @@
+Options -Indexes
+ErrorDocument 404 /404.php
+
+<IfModule mod_php5.c>
+	php_flag allow_call_time_pass_reference 1
+	php_flag session.use_trans_sid off
+
+	#php_value display_errors 1
+
+	#php_value mbstring.internal_encoding UTF-8
+</IfModule>
+
+<IfModule mod_rewrite.c>
+	Options +FollowSymLinks
+	RewriteEngine On
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-l
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !/bitrix/urlrewrite.php$
+	RewriteRule ^(.*)$ /bitrix/urlrewrite.php [L]
+	RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization}]
+</IfModule>
+
+# всё что ниже, нужно для работы cors, на бою удалить
+#Header add Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Methods "*"
+Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type, authorization"
+Header add Access-Control-Allow-Credentials "true"
+
+#<IfModule mod_headers.c>
+#    SetEnvIf Origin "^http(s)?://(.+\.)?(localhost|sibir\.fishlab\.su|agrokomplexb2bapi2\.fvds\.ru)$" origin_is=$0
+#    Header always set Access-Control-Allow-Origin %{origin_is}e env=origin_is
+#</IfModule>
+#Header add Access-Control-Allow-Origin "http://localhost:8020"
+
+#Header edit Set-Cookie ^(.*)$ $1;SameSite=None;Secure
+
+Header edit Set-Cookie ^(.*)HttpOnly$ $1SameSite=None;Secure
