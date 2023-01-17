@@ -129,44 +129,7 @@ class Element extends Base
         $headers = apache_request_headers();
 		
         $availableProductsXmlId = self::getAvailableProductsId($headers);
-//
-//        // определить id пользователя по токену
-//        $decoded = Authorisation::getUserId($headers);
-//
-//        if (!isset($decoded['error'])) {
-//            $tokenUserId = $decoded;
-//        }
-//
-//        // определение id типа цена
-//        $priceType = $tokenUserId ? self::getPriceType($tokenUserId) : false;
 
-		/*
-        // определить id пользователя по токену
-        $decoded = Authorisation::getUserId($headers);
-
-        if (!isset($decoded['error'])) {
-            $tokenUserId = $decoded;
-        }
-
-        // является ли суперпользователем
-        if (Authorisation::isSuperUser($headers)) {
-            $superUserId = $tokenUserId;
-        } else {
-            // искать суперпользователя для текущего пользователя
-            $superUserXmlId = Get::getParentUserXmlId($tokenUserId);
-            $superUserId = Get::getUserIdByXmlId($superUserXmlId);
-        }
-
-        // Идентификатор текущего договора
-        $dealId = UserTable::getList([
-            'filter' => [ 'ID' => $superUserId, 'ACTIVE' => 'Y' ],
-            'select' => [ 'ID', 'UF_ID_DOGOVOR' ]
-        ])->Fetch()['UF_ID_DOGOVOR'];
-
-        $deal = self::getDeal($dealId);
-        $priceTypeXmlId = $deal['UF_IDTIPACEN'];
-		*/
-		
 		//
 		$priceTypeXmlId = (new \Godra\Api\Helpers\Contract)->getPriceTypeByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId());
 		//
@@ -198,7 +161,7 @@ class Element extends Base
         $props = [];
         $propsObj = \Bitrix\Iblock\PropertyTable::getList([
             'filter' => [
-                'IBLOCK_ID' => 5,
+                'IBLOCK_ID' => IBLOCK_CATALOG,
                 'ACTIVE' => 'Y',
             ],
             'select' => ['ID', 'NAME', 'CODE']
@@ -218,44 +181,6 @@ class Element extends Base
      */
     public static function getDefaultProductProps() {
         return [
-            // бренд +
-            'BREND',
-            // производитель
-            'CML2_MANUFACTURER', // 'PROPERTY_PROIZVODITEL'
-            // страна
-            'STRANA',
-            // Углеводы +
-            'UGLEVODY',
-            // Жиры +
-            'ZHIRY',
-            // Белки +
-            'BELKI',
-            // Упаковка +
-            'PACKING',
-            // Срок годности +
-            'EXPERATION_DATE',
-            // Вес/объём штуки +
-            'WEIGHT',
-            // Температурный режим +
-            'TEMPERATURNYYREZHIM',
-            // Состав +
-            'SOSTAV',
-            // Кол-во в коробке +
-            'FASOVKA_2',
-
-            // артикул
-            'CML2_ARTICLE',
-
-            // базовая единица
-            'CML2_BASE_UNIT',
-
-            // количество в паллете
-            'QUANTITY_PER_PALLET',
-
-            // сертификаты - множественное свойство
-            //'СERTIFICATES',
-            // картинки - множественное свойство
-            //'MORE_PHOTO'
         ];
     }
 
@@ -268,7 +193,7 @@ class Element extends Base
      */
     public function getPropertyFiles($relatedCatalogEntity, $propertyCode) {
         $filesObj = \CIBlockElement::GetProperty(
-            5,
+            IBLOCK_CATALOG,
             $relatedCatalogEntity,
             ['ACTIVE' => 'Y'],
             ['CODE' => $propertyCode]
@@ -349,7 +274,7 @@ class Element extends Base
         $tabs['stocks'] = self::getProductStocks($product['ID']);
 
         // множественное свойство - похожие товары
-        $similarProducts = self::getSimilarProducts($product['ID']);
+        //$similarProducts = self::getSimilarProducts($product['ID']);
 
         // множественное свойство - сертификаты
         $certificates = self::getPropertyFiles($product['ID'], 'CERTIFICATES');
@@ -360,7 +285,7 @@ class Element extends Base
         // разделы
         $rsSection = \Bitrix\Iblock\SectionTable::getList([
             'filter' => [
-                'IBLOCK_ID' => 5,
+                'IBLOCK_ID' => IBLOCK_CATALOG,
                 'DEPTH_LEVEL' => 1
             ],
             'select' =>  ['ID','CODE','NAME'],
@@ -373,7 +298,7 @@ class Element extends Base
 
         // получение корневого раздела
         $scRes = \CIBlockSection::GetNavChain(
-            5,
+            IBLOCK_CATALOG,
             $product['IBLOCK_SECTION_ID'],
             ['ID', 'DEPTH_LEVEL']
         );
@@ -388,7 +313,7 @@ class Element extends Base
 
         $rsSection = \Bitrix\Iblock\SectionTable::getList(array(
             'filter' => array(
-                'IBLOCK_ID' => 5,
+                'IBLOCK_ID' => IBLOCK_CATALOG,
                 'ID' => $ROOT_SECTION_ID,
                 'DEPTH_LEVEL' => 1,
             ),
@@ -426,12 +351,6 @@ class Element extends Base
             $inBasket=1;
             $qa=$arItems['QUANTITY'];
         }
-
-//        foreach ($price as $key => $item2) {
-//            if (empty($item2['value'])) {
-//                unset($price[$key]);
-//            }
-//        }
 
         if ($priceType) {
             return [
@@ -473,7 +392,7 @@ class Element extends Base
         $similarProductsIds = [];
 
         $similarProductsObj = \CIBlockElement::GetProperty(
-            5,
+            IBLOCK_CATALOG,
             $productId,
             ['ACTIVE' => 'Y'],
             ['CODE' => 'SIMILAR_PRODUCTS']
@@ -522,7 +441,7 @@ class Element extends Base
 
         $props = \Bitrix\Iblock\PropertyTable::getList([
             'filter' => [
-                'IBLOCK_ID' => 5,
+                'IBLOCK_ID' => IBLOCK_CATALOG,
                 'ACTIVE' => 'Y'
             ],
             'select' => ['*']
@@ -592,7 +511,7 @@ class Element extends Base
 
         while ($row = $sectionsObj->Fetch()) {
             $scRes = \CIBlockSection::GetNavChain(
-                5,
+                IBLOCK_CATALOG,
                 $row['IBLOCK_SECTION_ID'],
                 ['ID', 'DEPTH_LEVEL', 'NAME']
             );
@@ -631,13 +550,13 @@ class Element extends Base
                     'ID' => $availableProductsSections
                 ],
                 [
-                    'IBLOCK_ID' => 5,
+                    'IBLOCK_ID' => IBLOCK_CATALOG,
                     'DEPTH_LEVEL' => 1,
                     'ACTIVE' => 'Y'
                 ]
             ] :
             [
-                'IBLOCK_ID' => 5,
+                'IBLOCK_ID' => IBLOCK_CATALOG,
                 'DEPTH_LEVEL' => 1,
                 'ACTIVE' => 'Y'
             ];
@@ -711,7 +630,7 @@ class Element extends Base
             $popularElementsObj = \CIBlockElement::GetList(
                 [],
                 [
-                    'IBLOCK_ID' => 5,
+                    'IBLOCK_ID' => IBLOCK_CATALOG,
                     'ACTIVE' => 'Y',
                     $filter
                 ],
@@ -730,7 +649,7 @@ class Element extends Base
 
         while ($row = $popularElementsObj->Fetch()) {
             $scRes = \CIBlockSection::GetNavChain(
-                5,
+                IBLOCK_CATALOG,
                 $row['IBLOCK_SECTION_ID'],
                 ['ID', 'DEPTH_LEVEL']
             );
@@ -748,7 +667,7 @@ class Element extends Base
                 $section = \Bitrix\Iblock\SectionTable::getList([
                     'select' => ['*'],
                     'filter' => [
-                        'IBLOCK_ID' => 5,
+                        'IBLOCK_ID' => IBLOCK_CATALOG,
                         'ACTIVE' => 'Y',
                         'ID' => $ROOT_SECTION_ID
                     ]
@@ -1977,7 +1896,7 @@ class Element extends Base
      */
     public static function getDefaultFilter() {
         return [
-            'IBLOCK_ID' => 5,
+            'IBLOCK_ID' => IBLOCK_CATALOG,
             'ACTIVE' => 'Y'
         ];
     }
