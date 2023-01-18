@@ -148,7 +148,7 @@ class Builder
             self::$select_rows,
             $filter,
             false,
-            false
+            true
         );
 
         return $arOptions;
