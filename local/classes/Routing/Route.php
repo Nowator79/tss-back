@@ -181,6 +181,13 @@ class Route
             '/api/users/get' => [Api\User\Get::class, 'GetUsers'],
         #----------------  Пользователи END ----------------------#
 
+        #---------------- Конфигурвтор ---------------------------#
+            # Получиь основной товар
+            '/api/builder/get' => [Api\SetsBuilder\Builder::class, 'getMainProduct'],
+            # Получить товары входящие в слот
+            '/api/builder/getOptions' => [Api\SetsBuilder\Builder::class, 'getOptions'],
+        #---------------- Конфигруатор END -----------------------#
+
 
         // получить дешборды
         '/api/dashboards/get' => [Api\Iblock\Dashboard::class, 'getList'],
