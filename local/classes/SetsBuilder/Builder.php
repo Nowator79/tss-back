@@ -61,16 +61,36 @@ class Builder
             $arFilter,
             false,
             false,
-            ['*']
+            [
+                'ID',
+                'IBLOCK_ID'
+            ]
         );
 
         while ($ar_res = $db_res->GetNextElement()) {
             $ar_fields = $ar_res->GetFields();
-            $ar_props = $ar_res->GetProperties(array(), array('ACTIVE' => 'Y', 'EMPTY' => 'N'));
+            $ar_props = $ar_res->GetProperties([], ['ACTIVE' => 'Y', 'EMPTY' => 'N']);
             $arOptions[$ar_props['VID_OPTSII']['VALUE']][] = $ar_fields['ID'];
         }
 
         return $arOptions;
+    }
+
+    public static function getPrices($productId)
+    {
+        $db_res = \CPrice::GetList(
+            [],
+            [
+                "PRODUCT_ID" => (int)$productId,
+                "CATALOG_GROUP_ID" => PRICE_TYPE_IDS
+            ]
+        );
+        while ($ar_res = $db_res->Fetch())
+        {
+            $price[]=$ar_res["PRICE"];
+        }
+
+        return $price;
     }
 
     /**
@@ -102,6 +122,16 @@ class Builder
             $ar_fields = $ar_res->GetFields();
             $ar_props = $ar_res->GetProperties(array(), array('ACTIVE' => 'Y', 'EMPTY' => 'N'));
 
+            if(!empty($ar_fields['PREVIEW_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['PREVIEW_PICTURE'])->Fetch()['SRC'];
+            if(!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['DETAIL_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];
+
+            if(isset($ar_props['MORE_PHOTO'])) {
+                foreach ($ar_props['MORE_PHOTO']['VALUE'] as $photo) {
+                    $arPhoto[] = \CFile::GetByID($photo)->Fetch()['SRC'];
+                }
+                $ar_props['MORE_PHOTO'] = $arPhoto;
+            }
+
             if ($withOptions) {
                 if (isset($ar_props['DOP_KOMPLEKTATSIYA']['VALUE'])) {
                     $ar_fields['OPTIONS_LIST'] = self::makeOptionsArray($ar_props['DOP_KOMPLEKTATSIYA']['VALUE']);
@@ -115,18 +145,7 @@ class Builder
             $ar_fields['TABS']['stocks'] = Element::getProductStocks($ar_fields['ID']);
 
             // Цены
-            $db_res = \CPrice::GetList(
-                [],
-                [
-                    "PRODUCT_ID" => (int) $ar_fields['ID'],
-                    "CATALOG_GROUP_ID" => PRICE_TYPE_IDS
-                ]
-            );
-
-            while ($ar_res = $db_res->Fetch())
-            {
-                $ar_fields['PRICES'][]=$ar_res["PRICE"];
-            }
+            $ar_fields['PRICES'] = self::getPrices($ar_fields['ID']);
 
             $arProducts[] = $ar_fields;
         }
@@ -180,7 +199,7 @@ class Builder
         $arOptions = self::getElement(
             self::$select_rows,
             $filter,
-            false
+            true
         );
 
         return $arOptions;
