@@ -70,7 +70,6 @@ class Builder
     public static function getElement(
         $select = false,
         $filter = false,
-        $priceType = false,
         $withOptions = true
     )
     {
@@ -130,10 +129,6 @@ class Builder
             return ['error' => 'Пустой поле code'];
         }
 
-        // @TODO определить дефолтный тип цен
-        $priceTypeXmlId = (new \Godra\Api\Helpers\Contract)->getPriceTypeByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId()) ?? '3f0fb9d3-7b9f-11e4-aa20-e0db5502c576';
-        //
-
         $filter = [
             'IBLOCK_ID' => IBLOCK_CATALOG,
             'ACTIVE' => 'Y',
@@ -143,8 +138,7 @@ class Builder
 
         $product = self::getElement(
             self::$select_rows,
-            $filter,
-            $priceTypeXmlId,
+            $filter
         );
 
         return $product;
@@ -164,8 +158,7 @@ class Builder
         $arOptions = self::getElement(
             self::$select_rows,
             $filter,
-            false,
-            true
+            false
         );
 
         return $arOptions;
