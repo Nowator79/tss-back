@@ -9,6 +9,7 @@ class Builder
 {
     protected static $select_rows = [
         'ID',
+        'IBLOCK_ID',
         'NAME',
         'CODE',
         'XML_ID',
@@ -55,6 +56,7 @@ class Builder
             $ar_props = $ar_res->GetProperties(array(), array('ACTIVE' => 'Y', 'EMPTY' => 'N'));
             $arOptions[$ar_props['VID_OPTSII']['VALUE']][] = $ar_fields['ID'];
         }
+
         return $arOptions;
     }
 
@@ -76,15 +78,15 @@ class Builder
         $arProducts = [];
         \CModule::IncludeModule("iblock");
 
-        $db_res = \CIBlockElement::GetList(
-            false,
+        $dbProduct = \CIBlockElement::GetList(
+            ['NAME'=>'ASC'],
             $filter,
             false,
             false,
             $select ?? ['*']
         );
 
-        while ($ar_res = $db_res->GetNextElement()) {
+        while ($ar_res = $dbProduct->GetNextElement()) {
             $ar_fields = $ar_res->GetFields();
             $ar_props = $ar_res->GetProperties(array(), array('ACTIVE' => 'Y', 'EMPTY' => 'N'));
 
@@ -99,10 +101,20 @@ class Builder
             $ar_fields['TABS']['props'] = $ar_props;
             $ar_fields['TABS']['delivery'] = 'Доставка осуществляется курьером или возможен самовывоз';
             $ar_fields['TABS']['stocks'] = Element::getProductStocks($ar_fields['ID']);
-            $certificates = Element::getPropertyFiles($ar_fields['ID'], 'CERTIFICATES');
 
             // Цены
-            $ar_fields['PRICES'] = \CCatalogProduct::GetOptimalPrice($ar_fields['ID'], 1, $USER->GetUserGroupArray(), 'N');
+            $db_res = \CPrice::GetList(
+                array(),
+                array(
+                    "PRODUCT_ID" => (int) $ar_fields['ID'],
+                    "CATALOG_GROUP_ID" => PRICE_TYPE_IDS
+                )
+            );
+
+            while ($ar_res = $db_res->Fetch())
+            {
+                $ar_fields['PRICES'][]=$ar_res["PRICE"];
+            }
 
             $arProducts[] = $ar_fields;
         }
@@ -122,7 +134,12 @@ class Builder
         $priceTypeXmlId = (new \Godra\Api\Helpers\Contract)->getPriceTypeByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId()) ?? '3f0fb9d3-7b9f-11e4-aa20-e0db5502c576';
         //
 
-        $filter = ['CODE' => $params['code']];
+        $filter = [
+            'IBLOCK_ID' => IBLOCK_CATALOG,
+            'ACTIVE' => 'Y',
+            'INCLUDE_SUBSECTIONS' => 'Y',
+            'CODE' => $params['code']
+        ];
 
         $product = self::getElement(
             self::$select_rows,
