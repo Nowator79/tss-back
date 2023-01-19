@@ -76,21 +76,24 @@ class Builder
         return $arOptions;
     }
 
+    /**
+     * метод для получения цен товара
+     *
+     * @param $productId
+     * @return array
+     */
     public static function getPrices($productId)
     {
-        $db_res = \CPrice::GetList(
-            [],
-            [
-                "PRODUCT_ID" => (int)$productId,
+        $allProductPrices = \Bitrix\Catalog\PriceTable::getList([
+            "select" => ["CATALOG_GROUP_ID", "PRICE", "CURRENCY"],
+            "filter" => [
+                "=PRODUCT_ID" => $productId,
                 "CATALOG_GROUP_ID" => PRICE_TYPE_IDS
-            ]
-        );
-        while ($ar_res = $db_res->Fetch())
-        {
-            $price[]=$ar_res["PRICE"];
-        }
+            ],
+            "order" => ["CATALOG_GROUP_ID" => "ASC"]
+        ])->fetchAll();
 
-        return $price;
+        return $allProductPrices;
     }
 
     /**
@@ -111,7 +114,7 @@ class Builder
         \CModule::IncludeModule("iblock");
 
         $dbProduct = \CIBlockElement::GetList(
-            ['NAME'=>'ASC'],
+            ['NAME' => 'ASC'],
             $filter,
             false,
             false,
@@ -122,10 +125,10 @@ class Builder
             $ar_fields = $ar_res->GetFields();
             $ar_props = $ar_res->GetProperties(array(), array('ACTIVE' => 'Y', 'EMPTY' => 'N'));
 
-            if(!empty($ar_fields['PREVIEW_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['PREVIEW_PICTURE'])->Fetch()['SRC'];
-            if(!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['DETAIL_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];
+            if (!empty($ar_fields['PREVIEW_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['PREVIEW_PICTURE'])->Fetch()['SRC'];
+            if (!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['DETAIL_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];
 
-            if(isset($ar_props['MORE_PHOTO'])) {
+            if (isset($ar_props['MORE_PHOTO'])) {
                 foreach ($ar_props['MORE_PHOTO']['VALUE'] as $photo) {
                     $arPhoto[] = \CFile::GetByID($photo)->Fetch()['SRC'];
                 }
@@ -193,8 +196,7 @@ class Builder
             return ['error' => 'Пустое поле ids'];
         }
 
-        $arOptions = [];
-        $filter = ['ID' => $params['ids']] ;
+        $filter = ['ID' => $params['ids']];
 
         $arOptions = self::getElement(
             self::$select_rows,
@@ -217,4 +219,3 @@ class Builder
         return $arMainProduct;
     }
 }
-?>
