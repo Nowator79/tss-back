@@ -28,7 +28,7 @@ class Builder
      * @param $arArticles
      * @return array
      */
-    public static function GetByArticle($arArticles)
+    public static function GetByArticle($arArticles) : array
     {
         global $DB;
         $sql = "SELECT IBLOCK_ELEMENT_ID FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." and VALUE IN(" . $arArticles . ")";
@@ -46,7 +46,7 @@ class Builder
      * @param $optionsString
      * @return array
      */
-    public static function makeOptionsArray($optionsString)
+    public static function makeOptionsArray($optionsString) : array
     {
         $arArticles = explode(';', $optionsString);
         $arOptionsIds = self::GetByArticle(implode(',', $arArticles));
@@ -82,7 +82,7 @@ class Builder
      * @param $productId
      * @return array
      */
-    public static function getPrices($productId)
+    public static function getPrices($productId) : array
     {
         $allProductPrices = \Bitrix\Catalog\PriceTable::getList([
             "select" => ["CATALOG_GROUP_ID", "PRICE", "CURRENCY"],
@@ -107,7 +107,7 @@ class Builder
         $select = false,
         $filter = false,
         $withOptions = true
-    )
+    ) : array
     {
         global $USER;
         $arProducts = [];
@@ -123,7 +123,7 @@ class Builder
 
         while ($ar_res = $dbProduct->GetNextElement()) {
             $ar_fields = $ar_res->GetFields();
-            $ar_props = $ar_res->GetProperties(array(), array('ACTIVE' => 'Y', 'EMPTY' => 'N'));
+            $ar_props = $ar_res->GetProperties([],['ACTIVE' => 'Y', 'EMPTY' => 'N']);
 
             if (!empty($ar_fields['PREVIEW_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['PREVIEW_PICTURE'])->Fetch()['SRC'];
             if (!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['DETAIL_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];
