@@ -31,7 +31,7 @@ class Builder
     public static function GetByArticle($arArticles)
     {
         global $DB;
-        $sql = "SELECT IBLOCK_ELEMENT_ID FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = 1097 and VALUE IN(" . $arArticles . ")";
+        $sql = "SELECT IBLOCK_ELEMENT_ID FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." and VALUE IN(" . $arArticles . ")";
         $dbRes = $DB->Query($sql);
         while ($res = $dbRes->Fetch()) {
             $results[] = $res["IBLOCK_ELEMENT_ID"];
