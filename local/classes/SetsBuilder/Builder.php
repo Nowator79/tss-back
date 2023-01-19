@@ -21,6 +21,13 @@ class Builder
         'DETAIL_PICTURE',
         'DETAIL_PAGE_URL'
     ];
+
+    /**
+     * метод для получения товаров по артиклу
+     *
+     * @param $arArticles
+     * @return array
+     */
     public static function GetByArticle($arArticles)
     {
         global $DB;
@@ -33,6 +40,12 @@ class Builder
         return $results;
     }
 
+    /**
+     * метод для получения товаров входящих в опцию
+     *
+     * @param $optionsString
+     * @return array
+     */
     public static function makeOptionsArray($optionsString)
     {
         $arArticles = explode(';', $optionsString);
@@ -103,11 +116,11 @@ class Builder
 
             // Цены
             $db_res = \CPrice::GetList(
-                array(),
-                array(
+                [],
+                [
                     "PRODUCT_ID" => (int) $ar_fields['ID'],
                     "CATALOG_GROUP_ID" => PRICE_TYPE_IDS
-                )
+                ]
             );
 
             while ($ar_res = $db_res->Fetch())
@@ -121,6 +134,11 @@ class Builder
         return $arProducts;
     }
 
+    /**
+     * метод GET API
+     *
+     * @return array|string[]|null
+     */
     public static function getProduct()
     {
         $params = Misc::getPostDataFromJson();
@@ -144,6 +162,10 @@ class Builder
         return $product;
     }
 
+    /**
+     * метод получения опций
+     * @return array|string[]
+     */
     public static function getOptions(): array
     {
         $params = Misc::getPostDataFromJson();
@@ -164,6 +186,11 @@ class Builder
         return $arOptions;
     }
 
+    /**
+     * метод получения основного товара
+     *
+     * @return array|string[]
+     */
     public static function getMainProduct(): array
     {
         $arMainProduct = self::getProduct() ?? [];
