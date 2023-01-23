@@ -84,7 +84,10 @@ class Filter extends Base
         foreach (array_keys($mas_prop) as $value){
             $arSelect[] = 'PROPERTY_'.$value;
         }
-        $arFilter = Array("IBLOCK_ID"=>$IBLOCK_ID, "SECTION_ID"=>$SECTION_ID, "ACTIVE"=>"Y");
+        $arFilter = Array("IBLOCK_ID"=>$IBLOCK_ID, "ACTIVE"=>"Y");
+        if($params['section_code']){
+            $arFilter["SECTION_ID"]= $SECTION_ID;
+        }
 
         $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), $arSelect);
         while($ob = $res->Fetch()){

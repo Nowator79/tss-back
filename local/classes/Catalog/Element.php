@@ -112,7 +112,7 @@ class Element extends Base
 	{
         $params = Misc::getPostDataFromJson();
 
-        if (empty($params['code']) || !isset($params['code'])) 
+        if (empty($params['code']) || !isset($params['code']))
 		{
             return ['error' => 'Пустой поле code'];
         }
@@ -947,6 +947,7 @@ class Element extends Base
 
         $params = Misc::getPostDataFromJson();
 
+
         if (!$params['section_code']) {
             return ['error' => 'Не указан section_code раздела'];
         }
@@ -1315,8 +1316,23 @@ class Element extends Base
 		{
 			$arFilter = ['INCLUDE_SUBSECTIONS' => 'Y'];
 		}
-		
-		//print_r($arFilter);exit;
+
+
+
+
+        foreach ($params['filter'] as $key => $value){
+            if($key=='PRICE'){
+                $arFilter['>=CATALOG_PRICE_'.$priceType] = $value['VALUE_MIN'];
+                $arFilter['<=CATALOG_PRICE_'.$priceType] = $value['VALUE_MAX'];
+            }else{
+                if(array_key_exists('VALUE_MIN', $value)){
+                    $arFilter['>=PROPERTY_'.$key] = $value['VALUE_MIN'];
+                    $arFilter['<=PROPERTY_'.$key] = $value['VALUE_MAX'];
+                }else{
+                    $arFilter['>=PROPERTY_'.$key] = $value;
+                }
+            }
+        }
 
         // получение всех элементов раздела
         $sectionElements = self::getElements(
@@ -1330,7 +1346,7 @@ class Element extends Base
             $priceTypeXmlId ?? false,
 			'catalog'
         );
-		
+        //return '<pre>'.Print_r($sectionElements).'</pre>';
 		$result['priceRange'] = self::$priceRange;
 		
 		//print_r($sectionElements);exit;
@@ -1697,7 +1713,7 @@ class Element extends Base
 				
 				if ($productsIdList)
 				{
-					$priceRange = (new \Godra\Api\Helpers\Catalog)->getPriceRangeByProductsId($productsIdList, $bitrixUserApi->getUserId());
+					/*$priceRange = (new \Godra\Api\Helpers\Catalog)->getPriceRangeByProductsId($productsIdList, $bitrixUserApi->getUserId());*/
 				}
 			}
 			
