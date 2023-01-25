@@ -1,7 +1,7 @@
 <?
 namespace Godra\Api\Basket;
 
-class Order extends Base
+class Order_old extends Base
 {
     /**
      * Отдаётся при /api/map
