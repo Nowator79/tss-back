@@ -1,25 +1,14 @@
-<?
-namespace Godra\Api\Basket;
+<?php
+
+namespace Godra\Api\Test;
 
 use Godra\Api\Helpers\Utility\Misc;
-use Bitrix\Sale,
+use Bitrix\Sale\Order,
+    Bitrix\Sale,
     Bitrix\Currency;
 use Bitrix\Main\Context;
 
-/**
- *  метод для создания заказа
- *  {
-    "FIO": "Иванов Иван Иванович",
-    "PHONE": "+799953333111",
-    "EMAIL": "ya1331@ya.ru",
-    "USER_DESCRIPTION":"Это комментарий",
-    "DELIVERY_ID": "4",
-    "PAYMENT_ID": "2",
-    "DELIVERY_ADRESS":"Сан-Франциско ул. Слава Коммунизму 1",
-    "STATUS":"draft"
-    }
- */
-class Order
+class Base
 {
     protected static $orderFields = [
         'FIO',
@@ -28,7 +17,7 @@ class Order
         'DELIVERY_ADRESS'
     ];
 
-    public static function add()
+    public static function Test()
     {
         $params = Misc::getPostDataFromJson();
         \Bitrix\Main\Loader::includeModule("sale");
@@ -38,7 +27,7 @@ class Order
 
         $siteId = Context::getCurrent()->getSite();
         $currencyCode = Currency\CurrencyManager::getBaseCurrency();
-        $order = \Bitrix\Sale\Order::create($siteId, $USER->isAuthorized() ? $useId : 1);
+        $order = Order::create($siteId, $USER->isAuthorized() ? $useId : 1);
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
 
         if (count($basket->getQuantityList())) {
