@@ -53,7 +53,76 @@ class Filter extends Base
             'limit'  => 1
         ])->fetch()['ID'];
     }
+    public function getFilterProperty()
+    {
+        $params = Misc::getPostDataFromJson();
 
+        $IBLOCK_ID = 5;
+        $SECTION_ID = $this->SECTION_ID;
+        $mas_prop = [];
+        $mas_type_prop = ['N'=>'DIAPASON','S'=>'BUTTON','L'=>'LIST'];
+
+        if($params['section_code']){
+            $res = \CIBlockSection::GetList(array(), array('IBLOCK_ID' => $IBLOCK_ID, 'CODE' => $params['section_code']));
+            if($section = $res->Fetch())$SECTION_ID=$section["ID"];
+        }
+
+        foreach (\CIBlockSectionPropertyLink::GetArray($IBLOCK_ID, $SECTION_ID) as $PID => $arLink) {
+            if ($arLink["SMART_FILTER"] !== "Y") {
+                continue;
+            }
+            $rsProperty = \CIBlockProperty::GetByID($PID);
+            $arProperty = $rsProperty->Fetch();
+            if ($arProperty) {
+                $mas_prop[$arProperty['CODE']]['NAME'] = $arProperty['NAME'];
+                $mas_prop[$arProperty['CODE']]['CODE'] = $arProperty['CODE'];
+                $mas_prop[$arProperty['CODE']]['PROPERTY_TYPE'] = $mas_type_prop[$arProperty['PROPERTY_TYPE']];
+            }
+        }
+
+        $arSelect = Array("ID");
+        foreach (array_keys($mas_prop) as $value){
+            $arSelect[] = 'PROPERTY_'.$value;
+        }
+        $arFilter = Array("IBLOCK_ID"=>$IBLOCK_ID, "ACTIVE"=>"Y");
+        if($params['section_code']){
+            $arFilter["SECTION_ID"]= $SECTION_ID;
+        }
+
+        $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), $arSelect);
+        while($ob = $res->Fetch()){
+            foreach ($ob as $key => $value){
+                $test_mas = $ob;
+                $key =  mb_substr($key,9,-6);
+                if($value&& in_array($key, array_keys($mas_prop))){
+                        if($mas_prop[$key]['PROPERTY_TYPE']=='DIAPASON'){
+                            if(!$mas_prop[$key]['VALUE_MIN']||$value<$mas_prop[$key]['VALUE_MIN'])$mas_prop[$key]['VALUE_MIN'] = $value;
+                            if(!$mas_prop[$key]['VALUE_MIN']||$value>$mas_prop[$key]['VALUE_MAX'])$mas_prop[$key]['VALUE_MAX'] = $value;
+                        }else{
+                            if(!in_array($value, $mas_prop[$key]['VALUE'])) {
+                                $mas_prop[$key]['VALUE'][] = $value;
+                            }
+                        }
+                }
+            }
+        }
+
+        foreach ($mas_prop as $key => $value){
+            if(!$value['VALUE']&&!$value['VALUE_MIN']){
+                unset($mas_prop[$key]);
+            }else{
+
+                if($value['VALUE']){
+                    sort($value['VALUE']);
+                    $mas_prop[$key]['VALUE']= $value['VALUE'];
+                }
+            }
+
+        }
+
+        //return '<pre>'.Print_r($mas_prop).'</pre>';
+        return $mas_prop;
+    }
     protected function getAllProps($prop_ids, $elem_ids)
     {
         $res = \Godra\Api\Iblock\IblockElementPropertyTable::getList([
