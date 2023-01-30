@@ -86,6 +86,9 @@ class Route
         // получить Акции
         '/api/stock/get' => [Api\Iblock\Stock::class, 'getList'],
 
+        // получить пункты самовывоза
+        '/api/store/get' => [Api\Page\Stors::class, 'getStors'],
+
         # дополнительные методы
         // получить детальную страницу акции
         '/api/stock/getByCode' => [Api\Iblock\Stock::class, 'getByCode'],
