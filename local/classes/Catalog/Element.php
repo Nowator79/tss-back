@@ -112,20 +112,23 @@ class Element extends Base
 	{
         $params = Misc::getPostDataFromJson();
 
+        $params['code'] ='kozhukh_dlya_generatora_mk_1_1_so_sborkoy_bez_ustanovochnogo_komplekta_dgu';
+
         if (empty($params['code']) || !isset($params['code']))
 		{
             return ['error' => 'Пустой поле code'];
         }
 
-        $productProps = self::getDefaultProductProps();
-
+        $productProps = self::getAllElementProps();
+//
         $propCodes = [];
 
         foreach ($productProps as $key =>$prop) 
 		{
-            $propCodes[] = 'PROPERTY_' . $prop;
+            $propCodes[] = 'PROPERTY_' . $prop['CODE'];
         }
 
+        $propCodes = 'PROPERTY_*';
         $headers = apache_request_headers();
 		
         $availableProductsXmlId = self::getAvailableProductsId($headers);
@@ -224,16 +227,24 @@ class Element extends Base
         $filter = false,
         $priceType = false
     ) {
-        $product = \CIBlockElement::GetList(
-            false,
-            array_merge(self::getDefaultFilter(), $filter),
-            false,
-            false,
-            $select ? array_merge(['*'], $select) : ['*']
-        )->Fetch();
+//        $product = \CIBlockElement::GetList(
+//            false,
+//            array_merge(self::getDefaultFilter(), $filter),
+//            false,
+//            false,
+//            $select ? array_merge(['*'], $select) : ['*']
+//        )->Fetch();
+//
+//        if (!$product['ID']) {
+//            return;
+//        }
 
-        if (!$product['ID']) {
-            return;
+        $res = \CIBlockElement::GetList(Array(), array_merge(self::getDefaultFilter(), $filter), false, Array(), Array('*'));
+        while($ob = $res->GetNextElement()){
+            $product = $ob->GetFields();
+
+            $arProps = $ob->GetProperties();
+
         }
 
         // множественное свойство "Картинки галереи"
@@ -248,23 +259,18 @@ class Element extends Base
         // таб - описание
         $tabs['description'] = !empty($product['PREVIEW_TEXT']) ? $product['PREVIEW_TEXT'] : '';
         // таб - характеристики
-        $allProps = self::getAllElementProps();
-        $props = self::getDefaultProductProps();
-
-        foreach ($props as $k => $prop) {
-            if ($prop !== 'CML2_ARTICLE'
-                && $product['PROPERTY_' . $prop . '_VALUE'] !== null
-                && $product['PROPERTY_' . $prop . '_VALUE'] !== 'null'
-                && $product['PROPERTY_' . $prop . '_VALUE'] !== '') {
-
-                foreach ($allProps as $k2 => $prop2) {
-                    if ($prop2['CODE'] == $prop) {
-                        $tabs['props'][] = [
-                            'name' => $prop2['NAME'],
-                            'value' => $product['PROPERTY_' . $prop . '_VALUE']
-                        ];
-                    }
-                }
+//        $allProps = self::getAllElementProps();
+//        $props = self::getDefaultProductProps();
+//        return '<pre>'.Print_r($arProps).'</pre>';
+        foreach ($arProps as $k => $prop) {
+            if ($prop['CODE'] !== 'CML2_ARTICLE'
+                && $prop['VALUE'] !== null
+                && $prop['VALUE'] !== 'null'
+                && $prop['VALUE'] !== '') {
+                 $tabs['props'][] = [
+                            'name' => $prop['NAME'],
+                            'value' => $prop['VALUE']
+                 ];
             }
         }
         // таб - доставка
@@ -352,7 +358,7 @@ class Element extends Base
             $qa=$arItems['QUANTITY'];
         }
 
-        if ($priceType) {
+
             return [
                 'id' => (int)  $product['ID'],
                 'article'=>$product['PROPERTY_CML2_ARTICLE_VALUE'],
@@ -379,7 +385,7 @@ class Element extends Base
                 ],
                 'viewed_products' => $viewedProducts ?? []
             ];
-        }
+
     }
 
     /**
@@ -1265,7 +1271,7 @@ class Element extends Base
             $priceTypeXmlId ?? false,
 			'catalog'
         );
-        //return '<pre>'.Print_r($sectionElements).'</pre>';
+
 		$result['priceRange'] = self::$priceRange;
 		
 		//print_r($sectionElements);exit;
