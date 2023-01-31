@@ -148,7 +148,7 @@ class Route
             '/api/basket/update' => [Api\Basket\Update::class, 'update'],
             
             // удалить все товары из корзины
-            '/api/basket/DeleteAll' => [Api\Basket\Helper::class, 'DeleteAll'],
+            '/api/basket/deleteAll' => [Api\Basket\Helper::class, 'deleteAll'],
 
 
             # Создать заказ
