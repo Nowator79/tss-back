@@ -138,10 +138,13 @@ class Route
         #----------------  Корзина START -------------------------#
             # добавить товар
             '/api/basket/add'    => [Api\Basket\AddProduct::class, 'byId'],
+            '/api/basket/add_new'    => [Api\Basket\AddProduct::class, 'add_new'],
             # удалить товар
             '/api/basket/delete' => [Api\Basket\DeleteProduct::class, 'byId'],
+            '/api/basket/delete_new' => [Api\Basket\DeleteProduct::class, 'delete_new'],
             # получить товары в корзине
             '/api/basket/get' => [Api\Basket\Helper::class, 'getBasketItems'],
+            '/api/basket/get_new' => [Api\Basket\Helper::class, 'getBasketItems_new'],
             # уменьшить кол-во товара
             '/api/basket/remove' => [Api\Basket\RemoveProduct::class, 'byId'],
             # получить кол-во товаров в корзине
@@ -151,7 +154,8 @@ class Route
             '/api/basket/update' => [Api\Basket\Update::class, 'update'],
             
             // удалить все товары из корзины
-            '/api/basket/clear' => [Api\Basket\Helper::class, 'clear'],
+            '/api/basket/deleteAll' => [Api\Basket\Helper::class, 'deleteAll'],
+
 
             # Создать заказ
             # надо допилить оплату и доставку
