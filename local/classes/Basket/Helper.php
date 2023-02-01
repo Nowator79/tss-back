@@ -51,7 +51,7 @@ class Helper extends Base
                         $arFields = $ob->GetFields();
                         $item_el['options'][] = $arFields['ID'];
 
-                        $db_res = CPrice::GetList(
+                        $db_res = \CPrice::GetList(
                             array(),
                             array(
                                 "PRODUCT_ID" =>  $arFields['ID'],
