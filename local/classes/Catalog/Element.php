@@ -862,7 +862,7 @@ class Element extends Base
 		// Dmitry
 		$priceTypeXmlId = (new \Godra\Api\Helpers\Contract)->getPriceTypeByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId());
 		
-		$priceType = 2; // базовый тип цен
+		$priceType = 510; // базовый тип цен
 		
 		if ($priceTypeXmlId)
 		{
@@ -929,47 +929,20 @@ class Element extends Base
         }
 
         switch ($params['sort_by']['code']) {
-            case 'popular':
-                $arOrder = [
-                    'PROPERTY_POPULAR_OFFER' => 'asc,nulls',
-                    'PROPERTY_POPULAR_OFFER_1C' => 'asc,nulls'
-                ];
-                break;
             case 'price':
-                if ($priceType) {
-                    switch ($params['sort_by']['direction']) {
-                        case 'asc':
-                            $arOrder = [
-                                'CATALOG_PRICE_' . $priceType => 'asc,nulls'
-                            ];
-                            break;
-                        case 'desc':
-                            $arOrder = [
-                                'CATALOG_PRICE_' . $priceType => 'desc,nulls'
-                            ];
-                            break;
-                    }
-                }
-                break;
-            case 'name':
-                switch ($params['sort_by']['direction']) {
-                    case 'asc':
-                        $arOrder[] = [
-                            'NAME' => 'ASC'
-                        ];
-                        break;
-                    case 'desc':
-                        $arOrder[] = [
-                            'NAME' => 'DESC'
-                        ];
-                        break;
-                }
-                break;
-            case 'new':
-                $arOrder[] = [
-                    'CREATED_DATE' => 'DESC'
-                ];
-                break;
+               switch ($params['sort_by']['direction']) {
+                   case 'asc':
+                       $arOrder = [
+                           'CATALOG_PRICE_' . $priceType => 'ASC'
+                       ];
+                   break;
+                   case 'desc':
+                       $arOrder = [
+                           'CATALOG_PRICE_' . $priceType => 'DESC'
+                       ];
+                   break;
+               }
+            break;
         }
 
         $arFilter = [];

@@ -58,7 +58,7 @@ class AddProduct extends Base
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
         foreach ($params as $key=>$item){
             $productId = intval($item['id']);
-            $quantity = intval($item['quintity']);
+            $quantity = intval($item['$quantity']);
             $properties = [];
             $option = [];
             $price = 0;
@@ -82,7 +82,18 @@ class AddProduct extends Base
                 'VALUE' => implode(";", $option),
                 'SORT' => 100
             );
-
+            $properties['COMMENT']= array(
+                'NAME' => 'COMMENT',
+                'CODE' => 'COMMENT',
+                'VALUE' => $item['comment'],
+                'SORT' => 100
+            );
+            $properties['PROPS']= array(
+                'NAME' => 'PROPS',
+                'CODE' => 'PROPS',
+                'VALUE' => json_encode($item['props']),
+                'SORT' => 100
+            );
             $xml_id = 'bx_'.rand(1000000000000,9999999999999);
 
             $item = $basket->createItem('catalog', $productId);
