@@ -58,7 +58,7 @@ class AddProduct extends Base
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
         foreach ($params as $key=>$item){
             $productId = intval($item['id']);
-            $quantity = intval($item['$quantity']);
+            $quantity = intval($item['quantity']);
             $properties = [];
             $option = [];
             $price = 0;
