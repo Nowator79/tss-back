@@ -28,10 +28,11 @@ class Helper extends Base
         {
             $item_el =  [
                 'id' => $item['PRODUCT_ID'],
-                'quintity' => $item['QUANTITY'],
+                'quantity' => $item['QUANTITY'],
                 'options' =>[],
                 'price' => $item['PRICE'],
                 'basket_id' => $item['ID'],
+
             ];
 
             $item_el['origin_price'] = 0;
@@ -64,6 +65,12 @@ class Helper extends Base
                         }
                     }
 
+                }
+                if($property['NAME']=='COMMENT') {
+                    $item_el['comment'] = $property['VALUE'];
+                }
+                if($property['NAME']=='PROPS') {
+                    $item_el['comment'] = json_decode($property['VALUE']);
                 }
             }
             $mas_item[] = $item_el;
