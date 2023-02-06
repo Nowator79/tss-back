@@ -63,6 +63,8 @@ class Route
         // поменять пароль |шаг 2| используя код из шага 1
         '/api/change_password' => [Auth\Restore::class, 'changePassword'],
 
+        // отправка на email
+        '/api/emailSend' => [Auth\Restore::class, 'emailSend'],
 
         # новое восстановление пароля #
         // первый шаг - отправка логина
