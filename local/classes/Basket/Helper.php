@@ -28,8 +28,7 @@ class Helper extends Base
         {
             $item_el =  [
                 'id' => $item['PRODUCT_ID'],
-                'quintity' => $item['QUANTITY'],
-                'options' =>[],
+                'quantity' => $item['QUANTITY'],
                 'price' => $item['PRICE'],
                 'basket_id' => $item['ID'],
             ];
@@ -42,7 +41,8 @@ class Helper extends Base
             ));
 
             while ($property = $basketPropRes->fetch()) {
-                if($property['NAME']=='OPTION'&&$property['VALUE']) {
+                if($property['NAME']=='OPTION'&&$property['VALUE']){
+                    $item_el['options']=[];
                     $arSelect = Array("ID", "NAME", "XML_ID");
                     $arFilter = Array("IBLOCK_ID"=>5, 'XML_ID'=>explode(';', $property['VALUE']), "ACTIVE"=>"Y");
                     $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), $arSelect);
@@ -64,6 +64,25 @@ class Helper extends Base
                         }
                     }
 
+                }
+                if($property['NAME']=='COMMENT') {
+                    $item_el['comment'] = $property['VALUE'];
+                }
+                if($property['NAME']=='PROPS') {
+                    $item_el['comment'] = json_decode($property['VALUE']);
+                }
+            }
+            if(!isset($item_el['options'])){
+                $db_res = \CPrice::GetList(
+                    array(),
+                    array(
+                        "PRODUCT_ID" =>  $item_el['id'],
+                        "CATALOG_GROUP_ID" => 496
+                    )
+                );
+                if ($ar_res = $db_res->Fetch())
+                {
+                    $item_el['origin_price']=$ar_res["PRICE"];
                 }
             }
             $mas_item[] = $item_el;

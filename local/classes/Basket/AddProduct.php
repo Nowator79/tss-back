@@ -58,28 +58,49 @@ class AddProduct extends Base
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
         foreach ($params as $key=>$item){
             $productId = intval($item['id']);
-            $quantity = intval($item['quintity']);
+            $quantity = intval($item['quantity']);
             $properties = [];
             $option = [];
             $price = 0;
 
             $arSelect = Array("ID", "NAME", "XML_ID");
-            $arFilter = Array("IBLOCK_ID"=>5, 'ID'=>$item['options'], "ACTIVE"=>"Y");
+            $arFilter = Array("IBLOCK_ID"=>5, "ACTIVE"=>"Y");
+            if($item['options']){
+                $arFilter['ID']=$item['options'];
+            }else{
+                $arFilter['ID']=$item['id'];
+            }
             $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), $arSelect);
             while($ob = $res->GetNextElement())
             {
                 $arFields = $ob->GetFields();
-                $option[] = $arFields['XML_ID'];
+
+                if($item['options'])$option[] = $arFields['XML_ID'];
                 $ar_res =\CPrice::GetBasePrice($arFields['ID']);
                 $price += $ar_res['PRICE'];
             }
 
             $params[$key]['price'] = $price;
 
+            if($item['options'])
             $properties['OPTION'] = array(
                 'NAME' => 'OPTION',
                 'CODE' => 'OPTION',
                 'VALUE' => implode(";", $option),
+                'SORT' => 100
+            );
+            if($item['comment'])
+            $properties['COMMENT']= array(
+                'NAME' => 'COMMENT',
+                'CODE' => 'COMMENT',
+                'VALUE' => $item['comment'],
+                'SORT' => 100
+            );
+            if($item['props'])
+            $properties['PROPS']= array(
+                'NAME' => 'PROPS',
+                'CODE' => 'PROPS',
+                'VALUE' => json_encode($item['props']),
                 'SORT' => 100
             );
 

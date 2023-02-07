@@ -112,7 +112,7 @@ class Element extends Base
 	{
         $params = Misc::getPostDataFromJson();
 
-        $params['code'] ='kozhukh_dlya_generatora_mk_1_1_so_sborkoy_bez_ustanovochnogo_komplekta_dgu';
+//        $params['code'] ='kozhukh_dlya_generatora_mk_1_1_so_sborkoy_bez_ustanovochnogo_komplekta_dgu';
 
         if (empty($params['code']) || !isset($params['code']))
 		{
@@ -262,6 +262,7 @@ class Element extends Base
 //        $allProps = self::getAllElementProps();
 //        $props = self::getDefaultProductProps();
 //        return '<pre>'.Print_r($arProps).'</pre>';
+        $product['PROPERTY_CML2_ARTICLE_VALUE'] = $arProps['CML2_ARTICLE']['VALUE'];
         foreach ($arProps as $k => $prop) {
             if ($prop['CODE'] !== 'CML2_ARTICLE'
                 && $prop['VALUE'] !== null
@@ -367,7 +368,7 @@ class Element extends Base
                 'code' => $product['CODE'],
                 'name' => $product['NAME'],
                 'artnumber' => $product['PROPERTY_CML2_ARTICLE_VALUE'] ?? '',
-                'description' => !empty($product['PREVIEW_TEXT']) ? $product['PREVIEW_TEXT'] : '',
+                'description' => !empty($product['~PREVIEW_TEXT']) ? $product['~PREVIEW_TEXT'] : '',
                 'pictures' => $pictures ?? [],
                 // для авторизованных пользователей
                 // цены
@@ -862,7 +863,7 @@ class Element extends Base
 		// Dmitry
 		$priceTypeXmlId = (new \Godra\Api\Helpers\Contract)->getPriceTypeByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId());
 		
-		$priceType = 2; // базовый тип цен
+		$priceType = 510; // базовый тип цен
 		
 		if ($priceTypeXmlId)
 		{
@@ -871,7 +872,7 @@ class Element extends Base
 		//
 
         $params = Misc::getPostDataFromJson();
-
+//        $params['section_code'] = 'dizelnye_elektrostantsii';
 
         if (!$params['section_code']) {
             return ['error' => 'Не указан section_code раздела'];
@@ -929,47 +930,20 @@ class Element extends Base
         }
 
         switch ($params['sort_by']['code']) {
-            case 'popular':
-                $arOrder = [
-                    'PROPERTY_POPULAR_OFFER' => 'asc,nulls',
-                    'PROPERTY_POPULAR_OFFER_1C' => 'asc,nulls'
-                ];
-                break;
             case 'price':
-                if ($priceType) {
-                    switch ($params['sort_by']['direction']) {
-                        case 'asc':
-                            $arOrder = [
-                                'CATALOG_PRICE_' . $priceType => 'asc,nulls'
-                            ];
-                            break;
-                        case 'desc':
-                            $arOrder = [
-                                'CATALOG_PRICE_' . $priceType => 'desc,nulls'
-                            ];
-                            break;
-                    }
-                }
-                break;
-            case 'name':
-                switch ($params['sort_by']['direction']) {
-                    case 'asc':
-                        $arOrder[] = [
-                            'NAME' => 'ASC'
-                        ];
-                        break;
-                    case 'desc':
-                        $arOrder[] = [
-                            'NAME' => 'DESC'
-                        ];
-                        break;
-                }
-                break;
-            case 'new':
-                $arOrder[] = [
-                    'CREATED_DATE' => 'DESC'
-                ];
-                break;
+               switch ($params['sort_by']['direction']) {
+                   case 'asc':
+                       $arOrder = [
+                           'CATALOG_PRICE_' . $priceType => 'ASC'
+                       ];
+                   break;
+                   case 'desc':
+                       $arOrder = [
+                           'CATALOG_PRICE_' . $priceType => 'DESC'
+                       ];
+                   break;
+               }
+            break;
         }
 
         $arFilter = [];
@@ -1273,8 +1247,16 @@ class Element extends Base
         );
 
 		$result['priceRange'] = self::$priceRange;
+
+		foreach($sectionElements as $key=>$value){
+		    if($value['article']==NULL){
+                $sectionElements[$key]['option_flag'] = false;
+            }else{
+                $sectionElements[$key]['option_flag'] = true;
+            }
+        }
 		
-		//print_r($sectionElements);exit;
+//		echo '<pre>'; print_r($sectionElements); echo '</pre>'; exit;
 
         // получение дочерних подразделов
         $subSections = self::getSubsections([
@@ -1566,6 +1548,8 @@ class Element extends Base
             # лейблы
             // акция
             'PROPERTY_STOCK',
+            // Артикул
+            'PROPERTY_CML2_ARTICLE',
             // хит
             'PROPERTY_HIT',
             // новинка

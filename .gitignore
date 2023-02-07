@@ -40,3 +40,8 @@ ehthumbs.db
 /local/tmp
 /local/log.txt
 /local/test.php
+/node_modules/
+/package-lock.json
+/bitrix/
+/.nuxt/
+/.env
