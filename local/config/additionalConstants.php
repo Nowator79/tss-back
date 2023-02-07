@@ -55,3 +55,9 @@ define('PROPERTY_CERTIFICATION_ID', 69);
 
 # Форма запроса стоимости товара
 define('REQUEST_PRICE_FORM_SID', 'REQUEST_PRICE_FORM');
+
+# ID типов цен
+define('PRICE_TYPE_IDS', [496,510]);
+
+# ID свойства ARTICLE для связи товара и опций
+define('ARTICLE_PROP_ID', 1097);
