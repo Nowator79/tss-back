@@ -2,7 +2,6 @@
 
 namespace Sprint\Migration;
 
-
 class Documents20230202162741 extends Version
 {
     protected $description = "";

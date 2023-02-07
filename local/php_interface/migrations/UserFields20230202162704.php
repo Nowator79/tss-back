@@ -2,7 +2,6 @@
 
 namespace Sprint\Migration;
 
-
 class UserFields20230202162704 extends Version
 {
     protected $description = "";
