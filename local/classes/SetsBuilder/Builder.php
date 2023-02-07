@@ -165,32 +165,27 @@ class Builder
     public static function getProduct()
     {
         $params = Misc::getPostDataFromJson();
+        $filter = [
+            'IBLOCK_ID' => IBLOCK_CATALOG,
+            'ACTIVE' => 'Y',
+            'INCLUDE_SUBSECTIONS' => 'Y',
+        ];
 
         if (isset($params['query'])) {
             array_push(self::$select_rows, 'PROPERTY_CML2_ARTICLE');
-            $filter = [
-                'IBLOCK_ID' => IBLOCK_CATALOG,
-                'ACTIVE' => 'Y',
-                'INCLUDE_SUBSECTIONS' => 'Y',
-                'LOGIC' => 'OR',
-                [
-                    ['NAME' => '%'.$params['query'].'%'],
-                    ['PROPERTY_CML2_ARTICLE_VALUE' => $params['query']]
-                ]
-            ];
+
+            if (is_numeric($params['query'])) {
+                $filter['PROPERTY_CML2_ARTICLE'] = $params['query'];
+            } else {
+                $filter['NAME'] = '%'.$params['query'].'%';
+            }
         } else {
             if (empty($params['code']) || !isset($params['code'])) {
                 return ['error' => 'Пустой поле code'];
             }
 
-            $filter = [
-                'IBLOCK_ID' => IBLOCK_CATALOG,
-                'ACTIVE' => 'Y',
-                'INCLUDE_SUBSECTIONS' => 'Y',
-                'CODE' => $params['code']
-            ];
+            $filter['CODE'] = $params['code'];
         }
-
 
         $product = self::getElement(
             self::$select_rows,
