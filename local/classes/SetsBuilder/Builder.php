@@ -171,6 +171,10 @@ class Builder
             'INCLUDE_SUBSECTIONS' => 'Y',
         ];
 
+        if (isset($params['options'])) {
+            $filter['ID'] = $params['options'];
+        }
+
         if (isset($params['query'])) {
             array_push(self::$select_rows, 'PROPERTY_CML2_ARTICLE');
 
@@ -187,12 +191,12 @@ class Builder
             $filter['CODE'] = $params['code'];
         }
 
-        $product = self::getElement(
+        $products = self::getElement(
             self::$select_rows,
             $filter
         );
 
-        return $product;
+        return $products;
     }
 
     /**
