@@ -2,6 +2,7 @@
 
 namespace Sprint\Migration;
 
+
 class SalesPlan20230202162826 extends Version
 {
     protected $description = "";

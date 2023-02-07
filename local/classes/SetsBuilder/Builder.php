@@ -31,6 +31,7 @@ class Builder
     public static function GetByArticle($arArticles) : array
     {
         global $DB;
+        $results = [];
         $sql = "SELECT IBLOCK_ELEMENT_ID FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." and VALUE IN(" . $arArticles . ")";
         $dbRes = $DB->Query($sql);
         while ($res = $dbRes->Fetch()) {
@@ -164,24 +165,38 @@ class Builder
     public static function getProduct()
     {
         $params = Misc::getPostDataFromJson();
-
-        if (empty($params['code']) || !isset($params['code'])) {
-            return ['error' => 'Пустой поле code'];
-        }
-
         $filter = [
             'IBLOCK_ID' => IBLOCK_CATALOG,
             'ACTIVE' => 'Y',
             'INCLUDE_SUBSECTIONS' => 'Y',
-            'CODE' => $params['code']
         ];
 
-        $product = self::getElement(
+        if (isset($params['options'])) {
+            $filter['ID'] = $params['options'];
+        }
+
+        if (isset($params['query'])) {
+            array_push(self::$select_rows, 'PROPERTY_CML2_ARTICLE');
+
+            if (is_numeric($params['query'])) {
+                $filter['PROPERTY_CML2_ARTICLE'] = $params['query'];
+            } else {
+                $filter['NAME'] = '%'.$params['query'].'%';
+            }
+        } else {
+            if (empty($params['code']) || !isset($params['code'])) {
+                return ['error' => 'Пустой поле code'];
+            }
+
+            $filter['CODE'] = $params['code'];
+        }
+
+        $products = self::getElement(
             self::$select_rows,
             $filter
         );
 
-        return $product;
+        return $products;
     }
 
     /**
