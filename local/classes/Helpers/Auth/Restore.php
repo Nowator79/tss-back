@@ -3,6 +3,7 @@ namespace Godra\Api\Helpers\Auth;
 
 use Bitrix\Main\Mail\Event;
 use Godra\Api\Helpers\Auth\Authorisation;
+use Godra\Api\Helpers\Utility\Misc;
 use \Godra\Api\Integration\SMSSeveren\Send;
 
 class Restore extends Base
@@ -41,7 +42,27 @@ class Restore extends Base
 
         return $sms;
     }
+    public function emailSend()
+    {
+        $params = Misc::getPostDataFromJson();
+        $siteId = Context::getCurrent()->getSite();
 
+        $arEventFields = [];
+        $arEventFields['SUBJECT']=$params['subject'];
+        $eventTempl = 'SEND_MES_LD';
+
+        if($params['subject']=='Личные данные'){
+            $arEventFields['NAME']=$params['name'];
+            $arEventFields['TEL']=$params['tel'];
+            $arEventFields['EMAIL']=$params['email'];
+            $arEventFields['PASS']=$params['pass'];
+        }else{
+            $arEventFields['MESSAGE']=$params['text'];
+            $eventTempl = 'SEND_MES_UD';
+        }
+
+        CEvent::Send($eventTempl, $siteId, $arEventFields);
+    }
     public function forEmailOrPhone()
     {
         $this->setConfirmCodeByLogin($this->data['login']);
