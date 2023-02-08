@@ -1,4 +1,5 @@
 <?
+
 namespace Godra\Api\Basket;
 
 use Godra\Api\Helpers\Utility\Misc;
@@ -9,15 +10,15 @@ use Bitrix\Main\Context;
 /**
  *  метод для создания заказа
  *  {
-    "FIO": "Иванов Иван Иванович",
-    "PHONE": "+799953333111",
-    "EMAIL": "ya1331@ya.ru",
-    "USER_DESCRIPTION":"Это комментарий",
-    "DELIVERY_ID": "4",
-    "PAYMENT_ID": "2",
-    "DELIVERY_ADRESS":"Сан-Франциско ул. Слава Коммунизму 1",
-    "STATUS":"draft"
-    }
+ * "FIO": "Иванов Иван Иванович",
+ * "PHONE": "+799953333111",
+ * "EMAIL": "ya1331@ya.ru",
+ * "USER_DESCRIPTION":"Это комментарий",
+ * "DELIVERY_ID": "4",
+ * "PAYMENT_ID": "2",
+ * "DELIVERY_ADRESS":"Сан-Франциско ул. Слава Коммунизму 1",
+ * "STATUS":"draft"
+ * }
  */
 class Order
 {
@@ -116,11 +117,11 @@ class Order
         $userId = ($USER->GetID() == 0) ? 1 : $USER->GetID();
 
 
-        if(!empty($params['PAGEN'])) {
+        if (!empty($params['PAGEN'])) {
             $PAGEN = $params['PAGEN'];
         }
 
-        if(!empty($params['orderPerPage'])) {
+        if (!empty($params['orderPerPage'])) {
             $ORDERS_PER_PAGE = $params['orderPerPage'];
         }
 
@@ -128,6 +129,11 @@ class Order
         if (!empty($params['status'])) {
             $filter['STATUS_ID'] = $params['status'];
         }
+
+        if (!empty($params['id'])) {
+            $filter['ID'] = $params['id'];
+        }
+
         $filter['USER_ID'] = $userId;
         if (!empty($params['date_begin']) && !empty($params['date_end'])) {
             $BITRIX_DATETIME_FORMAT = 'd.m.Y H:i:s';
@@ -221,8 +227,7 @@ class Order
             'select' => $select
         );
 
-        if ($sortBy == 'STATUS')
-        {
+        if ($sortBy == 'STATUS') {
             $getListParams['runtime'] = array(
                 new \Bitrix\Main\Entity\ReferenceField(
                     'STATUS',
@@ -236,39 +241,36 @@ class Order
                 )
             );
             $getListParams['order'] = array("STATUS.SORT" => 'ASC', 'ID' => $sortOrder);
-        }
-        else
-        {
+        } else {
             $getListParams['order'] = ['ID' => 'DESC'];
         }
 
-            $code = \Bitrix\Sale\TradingPlatform\Landing\Landing::getCodeBySiteId('s1');
-            $platformId = \Bitrix\Sale\TradingPlatform\Landing\Landing::getInstanceByCode($code)->getId();
-            if ((int)$platformId > 0)
-            {
-                $getListParams['runtime'][] = new Main\ORM\Fields\Relations\Reference(
-                    'TRADING_BINDING',
-                    '\Bitrix\Sale\TradingPlatform\OrderTable',
-                    array(
-                        '=this.ID' => 'ref.ORDER_ID',
-                        '=ref.TRADING_PLATFORM_ID' => new Main\DB\SqlExpression('?i', $platformId)
-                    ),
-                    array(
-                        "join_type" => 'inner'
-                    )
-                );
-                $getListParams['runtime'][] = new Main\ORM\Fields\Relations\Reference(
-                    'TRADING',
-                    '\Bitrix\Sale\TradingPlatformTable',
-                    array(
-                        '=this.TRADING_BINDING.TRADING_PLATFORM_ID' => 'ref.ID',
-                        '=ref.CLASS' => new Main\DB\SqlExpression('?', "\\".Sale\TradingPlatform\Landing\Landing::class)
-                    ),
-                    array(
-                        "join_type" => 'inner'
-                    )
-                );
-            }
+        $code = \Bitrix\Sale\TradingPlatform\Landing\Landing::getCodeBySiteId('s1');
+        $platformId = \Bitrix\Sale\TradingPlatform\Landing\Landing::getInstanceByCode($code)->getId();
+        if ((int)$platformId > 0) {
+            $getListParams['runtime'][] = new Main\ORM\Fields\Relations\Reference(
+                'TRADING_BINDING',
+                '\Bitrix\Sale\TradingPlatform\OrderTable',
+                array(
+                    '=this.ID' => 'ref.ORDER_ID',
+                    '=ref.TRADING_PLATFORM_ID' => new Main\DB\SqlExpression('?i', $platformId)
+                ),
+                array(
+                    "join_type" => 'inner'
+                )
+            );
+            $getListParams['runtime'][] = new Main\ORM\Fields\Relations\Reference(
+                'TRADING',
+                '\Bitrix\Sale\TradingPlatformTable',
+                array(
+                    '=this.TRADING_BINDING.TRADING_PLATFORM_ID' => 'ref.ID',
+                    '=ref.CLASS' => new Main\DB\SqlExpression('?', "\\" . Sale\TradingPlatform\Landing\Landing::class)
+                ),
+                array(
+                    "join_type" => 'inner'
+                )
+            );
+        }
 
 
         $usePageNavigation = true;
@@ -279,20 +281,16 @@ class Order
         $orderClassName = $registry->getOrderClassName();
 
         \CPageOption::SetOptionString("main", "nav_page_in_session", "N");
-        //$navyParams = \CDBResult::GetNavParams();
 
         $navyParams = [
-          'PAGEN' => $PAGEN,
-          'SIZEN' => 10,
-          'SHOW_ALL' => false
+            'PAGEN' => $PAGEN,
+            'SIZEN' => 10,
+            'SHOW_ALL' => false
         ];
 
-        if ($navyParams['SHOW_ALL'])
-        {
+        if ($navyParams['SHOW_ALL']) {
             $usePageNavigation = false;
-        }
-        else
-        {
+        } else {
             $navyParams['PAGEN'] = (int)$navyParams['PAGEN'];
             $navyParams['SIZEN'] = (int)$navyParams['SIZEN'];
 
@@ -300,15 +298,14 @@ class Order
 
 
             $getListParams['limit'] = $navyParams['SIZEN'];
-            $getListParams['offset'] = $navyParams['SIZEN']*($navyParams['PAGEN']-1);
+            $getListParams['offset'] = $navyParams['SIZEN'] * ($navyParams['PAGEN'] - 1);
 
             $countParams = [
-                "filter"=>$getListParams['filter'],
-                "select"=> [new \Bitrix\Main\ORM\Fields\ExpressionField('CNT', 'COUNT(1)')]
+                "filter" => $getListParams['filter'],
+                "select" => [new \Bitrix\Main\ORM\Fields\ExpressionField('CNT', 'COUNT(1)')]
             ];
 
-            if (!empty($getListParams['runtime']))
-            {
+            if (!empty($getListParams['runtime'])) {
                 $countParams["runtime"] = $getListParams['runtime'];
             }
 
@@ -319,19 +316,16 @@ class Order
             $totalCount = (int)$totalCount['CNT'];
             unset($countQuery);
 
-            if ($totalCount > 0)
-            {
+            if ($totalCount > 0) {
 
-                $totalPages = ceil($totalCount/$navyParams['SIZEN']);
+                $totalPages = ceil($totalCount / $navyParams['SIZEN']);
 
                 if ($navyParams['PAGEN'] > $totalPages)
                     $navyParams['PAGEN'] = $totalPages;
 
                 $getListParams['limit'] = $navyParams['SIZEN'];
-                $getListParams['offset'] = $navyParams['SIZEN']*($navyParams['PAGEN']-1);
-            }
-            else
-            {
+                $getListParams['offset'] = $navyParams['SIZEN'] * ($navyParams['PAGEN'] - 1);
+            } else {
                 $navyParams['PAGEN'] = 1;
                 $getListParams['limit'] = $navyParams['SIZEN'];
                 $getListParams['offset'] = 0;
@@ -340,8 +334,7 @@ class Order
 
         $dbQueryResult['ORDERS'] = new \CDBResult($orderClassName::getList($getListParams));
 
-        if ($usePageNavigation)
-        {
+        if ($usePageNavigation) {
             $dbQueryResult['ORDERS']->NavStart($getListParams['limit'], $navyParams['SHOW_ALL'], $navyParams['PAGEN']);
             $dbQueryResult['ORDERS']->NavRecordCount = $totalCount;
             $dbQueryResult['ORDERS']->NavPageCount = $totalPages;
@@ -350,27 +343,21 @@ class Order
             $dbResult['TOTAL_PAGES'] = $totalPages;
             $dbResult['TOTAL_COUNT'] = $totalCount;
             $dbResult['PAGEN'] = $navyParams['PAGEN'];
-        }
-        else
-        {
-            if ((int)($ORDERS_PER_PAGE))
-            {
+        } else {
+            if ((int)($ORDERS_PER_PAGE)) {
                 $dbQueryResult['ORDERS']->NavStart($ORDERS_PER_PAGE, false);
             }
         }
 
-        if (empty($dbQueryResult['ORDERS']))
-        {
+        if (empty($dbQueryResult['ORDERS'])) {
             return;
         }
 
-        while ($arOrder = $dbQueryResult['ORDERS']->GetNext())
-        {
+        while ($arOrder = $dbQueryResult['ORDERS']->GetNext()) {
             if (
                 is_array($arParams['RESTRICT_CHANGE_PAYSYSTEM'])
                 && in_array($arOrder['STATUS_ID'], $arParams['RESTRICT_CHANGE_PAYSYSTEM'])
-            )
-            {
+            ) {
                 $arOrder['LOCK_CHANGE_PAYSYSTEM'] = 'Y';
             }
 
@@ -386,8 +373,7 @@ class Order
             'order' => array('NAME' => 'asc')
         ));
 
-        while ($basket = $listBaskets->fetch())
-        {
+        while ($basket = $listBaskets->fetch()) {
             if (\CSaleBasketHelper::isSetItem($basket))
                 continue;
 
@@ -418,16 +404,14 @@ class Order
             'filter' => array('ORDER_ID' => $orderIdList)
         ));
 
-        while ($shipment = $listShipments->fetch())
-        {
+        while ($shipment = $listShipments->fetch()) {
             if ($shipment['SYSTEM'] == 'Y')
                 continue;
 
             $shipment['DELIVERY_NAME'] = htmlspecialcharsbx($shipment['DELIVERY_NAME']);
             $shipment["FORMATED_DELIVERY_PRICE"] = SaleFormatCurrency(floatval($shipment["PRICE_DELIVERY"]), $shipment["CURRENCY"]);
             $shipment["DELIVERY_STATUS_NAME"] = $deliveryStatuses[$shipment["STATUS_ID"]];
-            if ($shipment["DELIVERY_ID"] > 0 && mb_strlen($shipment["TRACKING_NUMBER"]))
-            {
+            if ($shipment["DELIVERY_ID"] > 0 && mb_strlen($shipment["TRACKING_NUMBER"])) {
                 $shipment["TRACKING_URL"] = $trackingManager->getTrackingUrl($shipment["DELIVERY_ID"], $shipment["TRACKING_NUMBER"]);
             }
             $listOrderShipment[$shipment['ORDER_ID']][] = $shipment;
@@ -443,15 +427,14 @@ class Order
         $paymentIdList = array();
         $paymentList = array();
 
-        while ($payment = $listPayments->fetch())
-        {
+        while ($payment = $listPayments->fetch()) {
             $paySystemFields = $dbResult['PAYSYS'][$payment['PAY_SYSTEM_ID']];
             $payment['PAY_SYSTEM_NAME'] = htmlspecialcharsbx($payment['PAY_SYSTEM_NAME']);
             $payment["FORMATED_SUM"] = SaleFormatCurrency($payment["SUM"], $payment["CURRENCY"]);
             $payment['IS_CASH'] = $paySystemFields['IS_CASH'];
             $payment['NEW_WINDOW'] = $paySystemFields['NEW_WINDOW'];
             $payment['ACTION_FILE'] = $paySystemFields['ACTION_FILE'];
-            $payment["PSA_ACTION_FILE"] =  htmlspecialcharsbx($arParams["PATH_TO_PAYMENT"]).'?ORDER_ID='.urlencode(urlencode($listOrders[$payment["ORDER_ID"]]['ACCOUNT_NUMBER'])).'&PAYMENT_ID='.$payment['ACCOUNT_NUMBER'];
+            $payment["PSA_ACTION_FILE"] = htmlspecialcharsbx($arParams["PATH_TO_PAYMENT"]) . '?ORDER_ID=' . urlencode(urlencode($listOrders[$payment["ORDER_ID"]]['ACCOUNT_NUMBER'])) . '&PAYMENT_ID=' . $payment['ACCOUNT_NUMBER'];
             $paymentList[$payment['ID']] = $payment;
             $paymentIdList[] = $payment['ID'];
         }
@@ -463,39 +446,30 @@ class Order
             )
         );
 
-        if (!empty($checkList))
-        {
-            foreach ($checkList as $check)
-            {
+        if (!empty($checkList)) {
+            foreach ($checkList as $check) {
                 $paymentList[$check['PAYMENT_ID']]['CHECK_DATA'][] = $check;
             }
         }
 
-        foreach ($paymentList as $payment)
-        {
+        foreach ($paymentList as $payment) {
             $listOrderPayment[$payment['ORDER_ID']][] = $payment;
         }
 
         $orderStatusClassName = $registry->getOrderStatusClassName();
         $allowStatusList = $orderStatusClassName::getAllowPayStatusList();
 
-        foreach ($orderIdList as $orderId)
-        {
-            if (!$listOrderShipment[$orderId])
-            {
+        foreach ($orderIdList as $orderId) {
+            if (!$listOrderShipment[$orderId]) {
                 $listOrderShipment[$orderId] = array();
             }
-            if (!$listOrderPayment[$orderId])
-            {
+            if (!$listOrderPayment[$orderId]) {
                 $listOrderPayment[$orderId] = array();
             }
 
-            if (in_array($listOrders[$orderId]['STATUS_ID'], $allowStatusList))
-            {
+            if (in_array($listOrders[$orderId]['STATUS_ID'], $allowStatusList)) {
                 $listOrders[$orderId]['IS_ALLOW_PAY'] = 'Y';
-            }
-            else
-            {
+            } else {
                 $listOrders[$orderId]['IS_ALLOW_PAY'] = 'N';
             }
 
@@ -506,7 +480,6 @@ class Order
                 "PAYMENT" => $listOrderPayment[$orderId],
             );
         }
-
 
 
         return $dbResult;
