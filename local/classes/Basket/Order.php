@@ -112,6 +112,9 @@ class Order
         \Bitrix\Main\Loader::includeModule("sale");
         $ORDERS_PER_PAGE = 10;
         $PAGEN = 1;
+        global $USER;
+        $userId = ($USER->GetID() == 0) ? 1 : $USER->GetID();
+
 
         if(!empty($params['PAGEN'])) {
             $PAGEN = $params['PAGEN'];
@@ -125,7 +128,7 @@ class Order
         if (!empty($params['status'])) {
             $filter['STATUS_ID'] = $params['status'];
         }
-
+        $filter['USER_ID'] = $userId;
         if (!empty($params['date_begin']) && !empty($params['date_end'])) {
             $BITRIX_DATETIME_FORMAT = 'd.m.Y H:i:s';
             $dateBegin = new \DateTime(sprintf($params['date_begin'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
