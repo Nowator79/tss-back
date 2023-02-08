@@ -169,7 +169,7 @@ class Route
 
             # получить список заказов
             # надо допилить получение состава заказов + допил оплаты и доставки
-            '/api/orders/get' => [Api\Orders\Get::class, 'get'],
+            '/api/orders/get' => [Api\Basket\Order::class, 'get'],
         #----------------  Каталог END ---------------------------#
 
 
