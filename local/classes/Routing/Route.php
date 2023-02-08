@@ -66,6 +66,9 @@ class Route
         // отправка на email
         '/api/emailSend' => [Auth\Restore::class, 'emailSend'],
 
+        // получение документов
+        '/api/getDoc' => [Auth\Restore::class, 'getDoc'],
+
         # новое восстановление пароля #
         // первый шаг - отправка логина
         '/api/recovery/sendLogin' => [Auth\Restore::class, 'sendLogin'],

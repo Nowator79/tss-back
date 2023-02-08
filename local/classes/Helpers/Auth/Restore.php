@@ -5,6 +5,9 @@ use Bitrix\Main\Mail\Event;
 use Godra\Api\Helpers\Auth\Authorisation;
 use Godra\Api\Helpers\Utility\Misc;
 use \Godra\Api\Integration\SMSSeveren\Send;
+use Bitrix\Main\Loader;
+use Bitrix\Highloadblock as HL;
+use Bitrix\Main\Entity;
 
 class Restore extends Base
 {
@@ -62,6 +65,38 @@ class Restore extends Base
         }
 
         CEvent::Send($eventTempl, $siteId, $arEventFields);
+    }
+    public function getDoc()
+    {
+        $params = Misc::getPostDataFromJson();
+        $mas_doc =[];
+
+        if($params['user_id']){
+            $user_id = $params['user_id'];
+        }else{
+            global $USER;
+            $user_id = $USER->GetID();
+        }
+
+        Loader::includeModule("highloadblock");
+
+        $hlbl = 60; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+
+        $rsData = $entity_data_class::getList(array(
+            "select" => array("*"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array("UF_USER"=>$user_id),  // Задаем параметры фильтра выборки
+        ));
+
+        while($arData = $rsData->Fetch()){
+            $arData['UF_FILE'] =  \CFile::GetPath($arData["UF_FILE"]);
+            $mas_doc[] = $arData;
+        }
+        return $arData;
     }
     public function forEmailOrPhone()
     {
