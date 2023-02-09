@@ -1,4 +1,5 @@
 <?
+
 namespace Godra\Api\Basket;
 
 use Godra\Api\Helpers\Utility\Misc;
@@ -14,7 +15,7 @@ class Helper extends Base
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
 
         $dbRes = \Bitrix\Sale\Basket::getList([
-            'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
+            'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'QUANTITY', 'XML_ID'],
             'filter' => [
                 '=FUSER_ID' => \Bitrix\Sale\Fuser::getId(),
                 '=ORDER_ID' => null,
@@ -24,9 +25,8 @@ class Helper extends Base
             ]
         ]);
 
-        while ($item = $dbRes->fetch())
-        {
-            $item_el =  [
+        while ($item = $dbRes->fetch()) {
+            $item_el = [
                 'id' => $item['PRODUCT_ID'],
                 'quantity' => $item['QUANTITY'],
                 'price' => $item['PRICE'],
@@ -41,48 +41,45 @@ class Helper extends Base
             ));
 
             while ($property = $basketPropRes->fetch()) {
-                if($property['NAME']=='OPTION'&&$property['VALUE']){
-                    $item_el['options']=[];
-                    $arSelect = Array("ID", "NAME", "XML_ID");
-                    $arFilter = Array("IBLOCK_ID"=>5, 'XML_ID'=>explode(';', $property['VALUE']), "ACTIVE"=>"Y");
-                    $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), $arSelect);
-                    while($ob = $res->GetNextElement())
-                    {
+                if ($property['NAME'] == 'OPTION' && $property['VALUE']) {
+                    $item_el['options'] = [];
+                    $arSelect = array("ID", "NAME", "XML_ID");
+                    $arFilter = array("IBLOCK_ID" => 5, 'XML_ID' => explode(';', $property['VALUE']), "ACTIVE" => "Y");
+                    $res = \CIBlockElement::GetList(array(), $arFilter, false, array(), $arSelect);
+                    while ($ob = $res->GetNextElement()) {
                         $arFields = $ob->GetFields();
                         $item_el['options'][] = $arFields['ID'];
 
                         $db_res = \CPrice::GetList(
                             array(),
                             array(
-                                "PRODUCT_ID" =>  $arFields['ID'],
+                                "PRODUCT_ID" => $arFields['ID'],
                                 "CATALOG_GROUP_ID" => 496
                             )
                         );
-                        if ($ar_res = $db_res->Fetch())
-                        {
-                            $item_el['origin_price']+=$ar_res["PRICE"];
+                        if ($ar_res = $db_res->Fetch()) {
+                            $item_el['origin_price'] += $ar_res["PRICE"];
                         }
                     }
 
                 }
-                if($property['NAME']=='COMMENT') {
+                if ($property['NAME'] == 'COMMENT') {
                     $item_el['comment'] = $property['VALUE'];
                 }
-                if($property['NAME']=='PROPS') {
+                if ($property['NAME'] == 'PROPS') {
                     $item_el['comment'] = json_decode($property['VALUE']);
                 }
             }
-            if(!isset($item_el['options'])){
+            if (!isset($item_el['options'])) {
                 $db_res = \CPrice::GetList(
                     array(),
                     array(
-                        "PRODUCT_ID" =>  $item_el['id'],
+                        "PRODUCT_ID" => $item_el['id'],
                         "CATALOG_GROUP_ID" => 496
                     )
                 );
-                if ($ar_res = $db_res->Fetch())
-                {
-                    $item_el['origin_price']=$ar_res["PRICE"];
+                if ($ar_res = $db_res->Fetch()) {
+                    $item_el['origin_price'] = $ar_res["PRICE"];
                 }
             }
             $mas_item[] = $item_el;
@@ -90,9 +87,72 @@ class Helper extends Base
 
         return $mas_item;
     }
+
     public function deleteAll()
     {
         \CSaleBasket::DeleteAll(\Bitrix\Sale\Fuser::getId());
     }
+
+    /**
+     * Получить коммерческое предложение из корзины
+     *
+     * @return string|void
+     */
+    public function getInvoice()
+    {
+        global $USER;
+        $useId = ($USER->GetID() == 0) ? 1 : $USER->GetID();
+        $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
+
+        if (count($basket->getQuantityList())) {
+            $fileExt = 'xls';
+            $fileName = "invoice_{$basket->getFUserId()}.{$fileExt}";
+            $tempDir = $_SESSION['REPORT_EXPORT_TEMP_DIR'] = \CTempFile::GetDirectoryName(1, array('invoice', uniqid('basket_invoice_')));
+            \CheckDirPath($tempDir);
+            $filePath = "{$tempDir}{$fileName}";
+
+            $fileType = 'application/vnd.ms-excel';
+            $fileHeader = '<?
+                    Header("Content-Type: application/force-download");
+                    Header("Content-Type: application/octet-stream");
+                    Header("Content-Type: application/download");
+                    Header("Content-Disposition: attachment;filename={$fileName}");
+                    Header("Content-Transfer-Encoding: binary");
+                    ?>
+                    <html>
+                    <head>
+                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                    </head>
+                    <body>
+
+                    <table border="1">
+                        <tr>
+                            <td>N</td>
+                            <td>Наименование товара</td>
+                            <td>Кол-во</td>
+                            <td>Ед.</td>
+                            <td>Цена руб.</td>
+                            <td>Сумма руб.</td>
+                        </tr>';
+            file_put_contents($filePath, $fileHeader, FILE_APPEND);
+
+            // рендерим таблицу
+            foreach ($basket as $item) {
+                $row = '<tr><td>' . $item->getProductId() . '</td>
+                                    <td>' . $item->getField("NAME") . '</td>
+                                    <td>' . $item->getQuantity() . '</td>
+                                    <td>шт</td>
+                                    <td>' . $item->getPrice() . '</td>
+                                    <td>' . $item->getFinalPrice() . '</td>
+                                </tr>';
+                file_put_contents($filePath, $row, FILE_APPEND);
+            }
+            //
+            file_put_contents($filePath, '</table></body></html>', FILE_APPEND);
+
+            return $filePath;
+        }
+    }
 }
+
 ?>

@@ -161,6 +161,8 @@ class Route
             // удалить все товары из корзины
             '/api/basket/deleteAll' => [Api\Basket\Helper::class, 'deleteAll'],
 
+            // сформировать КП pdf
+            '/api/basket/getInvoice' => [Api\Basket\Helper::class, 'getInvoice'],
 
             # Создать заказ
             # надо допилить оплату и доставку
