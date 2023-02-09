@@ -68,6 +68,8 @@ class Route
 
         // получение документов
         '/api/getDoc' => [Auth\Restore::class, 'getDoc'],
+        // получение bannera
+        '/api/getBanner' => [Auth\Restore::class, 'getBanner'],
 
         # новое восстановление пароля #
         // первый шаг - отправка логина

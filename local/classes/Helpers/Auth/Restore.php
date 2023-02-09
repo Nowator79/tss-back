@@ -66,6 +66,28 @@ class Restore extends Base
 
         CEvent::Send($eventTempl, $siteId, $arEventFields);
     }
+    public function getBanner()
+    {
+        $iblock_id = 1;
+        $mas_banner = [];
+        Loader::includeModule('iblock');
+        $arFilter = Array("IBLOCK_ID"=>$iblock_id, "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
+        $res = \CIBlockElement::GetList(Array("SORT"=>"ASC"), $arFilter, false, Array(), Array('*'));
+        while($ob = $res->GetNextElement()){
+            $fields = $ob->GetFields();
+            $props = $ob->GetProperties();
+            $mas_banner[] = [
+                'NAME'=>$fields['NAME'],
+                'TEXT'=>$fields['PREVIEW_TEXT'],
+                'BUTTON_LINK'=>$props['BUTTON_LINK']['VALUE'],
+                'BUTTON_CAPTION'=>$props['BUTTON_CAPTION']['VALUE'],
+                'HIDE_HEADER'=>$props['HIDE_HEADER']['VALUE'],
+                'COLOR_HEADER'=>$props['COLOR_HEADER']['VALUE'],
+                'PICTURE'=>\CFile::GetPath($props['all_width_picture']['VALUE']),
+            ];
+        }
+        return $mas_banner;
+    }
     public function getDoc()
     {
         $params = Misc::getPostDataFromJson();
