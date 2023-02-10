@@ -150,7 +150,8 @@ class Helper extends Base
             //
             file_put_contents($filePath, '</table></body></html>', FILE_APPEND);
 
-            return $filePath;
+            return str_replace(\Bitrix\Main\Application::getDocumentRoot(
+            ), '', $filePath);
         }
     }
 }
