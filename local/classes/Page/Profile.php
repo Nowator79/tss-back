@@ -1,6 +1,8 @@
 <?
 namespace Godra\Api\Page;
 
+use Godra\Api\Helpers\Utility\Misc;
+
 class Profile
 {
     /**
@@ -55,4 +57,34 @@ class Profile
         return $result;
     }
 
+    /**
+     * запросить изменение личных данных пользователя у менеджера
+     *
+     * @return void
+     */
+    public function changeUserData()
+    {
+        $params = Misc::getPostDataFromJson();
+
+        if(!empty($params)){
+            \Bitrix\Main\Mail\Event::send(array(
+                "EVENT_NAME" => "USER_DATA_CHANGE",
+                "LID" => \Bitrix\Main\Application::getInstance()->getContext()->getSite(),
+                "C_FIELDS" => $params
+            ));
+            return ['success' => 'Данные отправлены на проверку'];
+        } else {
+            return ['error' => 'Поля формы пустые'];
+        }
+    }
+
+    /**
+     * получить план продаж
+     *
+     * @return void
+     */
+    public function getSalesPlan()
+    {
+
+    }
 }
