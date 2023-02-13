@@ -196,6 +196,9 @@ class Route
             # запросить изменение личных данных пользователя у менеджера
             '/api/users/checkData' => [Api\Page\Profile::class, 'changeUserData'],
 
+            # получить план продаж
+            '/api/users/getSalesPlan' => [Api\Page\Profile::class, 'getSalesPlan'],
+
             # Редактировать пользователя
                 # Добавить проверку владения точкой
                 # Добавить проверку на суперпользователя

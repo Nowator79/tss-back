@@ -2,6 +2,7 @@
 namespace Godra\Api\Page;
 
 use Godra\Api\Helpers\Utility\Misc;
+use Godra\Api\User\Get;
 
 class Profile
 {
@@ -68,7 +69,7 @@ class Profile
 
         if(!empty($params)){
             \Bitrix\Main\Mail\Event::send(array(
-                "EVENT_NAME" => "USER_DATA_CHANGE",
+                "EVENT_NAME" => USER_DATA_CHANGE_EVENT,
                 "LID" => \Bitrix\Main\Application::getInstance()->getContext()->getSite(),
                 "C_FIELDS" => $params
             ));
@@ -84,6 +85,34 @@ class Profile
      * @return void
      */
     public function getSalesPlan()
+    {
+        \Bitrix\Main\Loader::includeModule("highloadblock");
+        $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById(HIGHLOAD_SALES_PLAN_ID)->fetch();
+        $entity = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+
+        global $USER;
+        $userId = ($USER->GetID() == 0) ? 1 : $USER->GetID();
+
+        $filter = [
+            'UF_USER_XML_ID' => Get::getParentUserXmlIdEx($userId)
+        ];
+
+        $rsData = $entity_data_class::getList(array(
+            "select" => ["*"],
+            "order" => ["ID" => "ASC"],
+            "filter" => $filter
+        ));
+
+
+//        while($arData = $rsData->Fetch()){
+//            var_dump($arData);
+//        }
+
+        return $rsData->FetchAll();
+    }
+
+    public function changeLogo()
     {
 
     }
