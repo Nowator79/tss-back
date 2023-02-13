@@ -86,6 +86,7 @@ class Profile
      */
     public function getSalesPlan()
     {
+        $params = Misc::getPostDataFromJson();
         \Bitrix\Main\Loader::includeModule("highloadblock");
         $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById(HIGHLOAD_SALES_PLAN_ID)->fetch();
         $entity = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlblock);
@@ -98,18 +99,28 @@ class Profile
             'UF_USER_XML_ID' => Get::getParentUserXmlIdEx($userId)
         ];
 
+        if (!empty($params['date_begin']) && !empty($params['date_end'])) {
+            $BITRIX_DATETIME_FORMAT = 'd.m.Y H:i:s';
+            $dateBegin = new \DateTime(sprintf($params['date_begin'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
+            $dateEnd = new \DateTime(sprintf($params['date_end'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
+            $dateBegin->modify('+1 day -1 second');
+            $filter['<=UF_DATE'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
+            $filter['>=UF_DATE'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
+        }
+
         $rsData = $entity_data_class::getList(array(
             "select" => ["*"],
             "order" => ["ID" => "ASC"],
             "filter" => $filter
         ));
 
+        $res = [];
+        while($arData = $rsData->Fetch()){
+            $arData['UF_DATE'] = $arData['UF_DATE']->toString();
+            $res[] = $arData;
+        }
 
-//        while($arData = $rsData->Fetch()){
-//            var_dump($arData);
-//        }
-
-        return $rsData->FetchAll();
+        return $res;
     }
 
     public function changeLogo()
