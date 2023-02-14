@@ -185,10 +185,16 @@ class Route
                 # Добавить проверку на суперпользователя
             '/api/users/update' => [Api\User\Update::class, 'updateUser'],
 
-            # Редактировать пользователя
+            # Удалить пользователя
                 # Добавить проверку владения точкой
                 # Добавить проверку на суперпользователя
             '/api/users/delete' => [Api\User\Delete::class, 'deleteUser'],
+
+            # запросить изменение личных данных пользователя у менеджера
+            '/api/users/checkData' => [Api\Page\Profile::class, 'changeUserData'],
+
+            # получить план продаж
+            '/api/users/getSalesPlan' => [Api\Page\Profile::class, 'getSalesPlan'],
 
             # Редактировать пользователя
                 # Добавить проверку владения точкой
