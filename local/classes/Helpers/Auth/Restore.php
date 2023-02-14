@@ -102,7 +102,7 @@ class Restore extends Base
 
         Loader::includeModule("highloadblock");
 
-        $hlbl = 60; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlbl = 14; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
