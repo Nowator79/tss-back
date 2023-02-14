@@ -39,6 +39,17 @@ class Helper extends Base
                     "BASKET_ID" => $item['ID'],
                 ),
             ));
+            $db_res = \CPrice::GetList(
+                array(),
+                array(
+                    "PRODUCT_ID" =>  $item['PRODUCT_ID'],
+                    "CATALOG_GROUP_ID" => 496
+                )
+            );
+            if ($ar_res = $db_res->Fetch())
+            {
+                $item_el['origin_price']+=$ar_res["PRICE"];
+            }
 
             while ($property = $basketPropRes->fetch()) {
                 if($property['NAME']=='OPTION'&&$property['VALUE']){

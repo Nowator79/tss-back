@@ -62,6 +62,7 @@ class AddProduct extends Base
             $properties = [];
             $option = [];
             $price = 0;
+            $price += \CPrice::GetBasePrice(intval($item['id']));
 
             $arSelect = Array("ID", "NAME", "XML_ID");
             $arFilter = Array("IBLOCK_ID"=>5, "ACTIVE"=>"Y");
