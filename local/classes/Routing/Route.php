@@ -81,9 +81,6 @@ class Route
         // третий шаг - отправка пароля
         '/api/recovery/sendPassword' => [Auth\Restore::class, 'sendPassword'],
 
-        # новое восстановление пароля #
-
-
         // получить контакты
         '/api/get_contacts' => [Api\Information\Contacts::class, 'getList'],
 
