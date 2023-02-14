@@ -196,6 +196,9 @@ class Route
             # получить план продаж
             '/api/users/getSalesPlan' => [Api\Page\Profile::class, 'getSalesPlan'],
 
+            # получить контрагентов
+            '/api/user/getContragents' => [Api\User\Get::class, 'getContragents'],
+
             # Редактировать пользователя
                 # Добавить проверку владения точкой
                 # Добавить проверку на суперпользователя

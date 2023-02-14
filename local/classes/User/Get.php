@@ -75,8 +75,19 @@ class Get extends Base
         if ($contragentID) {
             $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById(HIGHLOAD_KONTRAGENTS_ID)->fetch();
             $entityDataClass = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlblock)->getDataClass();
-        }
 
+            $filter = [
+                'UF_USER' => $contragentID
+            ];
+
+            $rsData = $entityDataClass::getList(array(
+                "select" => ["*"],
+                "order" => ["ID" => "ASC"],
+                "filter" => $filter
+            ));
+
+            return $rsData->FetchAll();
+        }
     }
 
 }
