@@ -378,6 +378,15 @@ class Order
                 continue;
 
             $listOrderBasket[$basket['ORDER_ID']][$basket['ID']] = $basket;
+            //
+            $dbProp = \CSaleBasket::GetPropsList(
+                ["ID" => "DESC"],
+                ["BASKET_ID" => $basket['ID']]
+            );
+
+           while($arProp = $dbProp -> GetNext())
+               $listOrderBasket[$basket['ORDER_ID']][$basket['ID']]["PROPS"][] = $arProp;
+            //
         }
 
         $trackingManager = \Bitrix\Sale\Delivery\Tracking\Manager::getInstance();
