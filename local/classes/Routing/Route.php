@@ -81,9 +81,6 @@ class Route
         // третий шаг - отправка пароля
         '/api/recovery/sendPassword' => [Auth\Restore::class, 'sendPassword'],
 
-        # новое восстановление пароля #
-
-
         // получить контакты
         '/api/get_contacts' => [Api\Information\Contacts::class, 'getList'],
 
@@ -198,6 +195,9 @@ class Route
 
             # получить план продаж
             '/api/users/getSalesPlan' => [Api\Page\Profile::class, 'getSalesPlan'],
+
+            # получить контрагентов
+            '/api/user/getContragents' => [Api\User\Get::class, 'getContragents'],
 
             # Редактировать пользователя
                 # Добавить проверку владения точкой

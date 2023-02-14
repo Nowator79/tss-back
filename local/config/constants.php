@@ -64,7 +64,7 @@ define('TYPES_FIELD_ID', 53);
 define('HIGHLOAD_BLOCK_NOTIFICATION_ID', 5);
 
 # Идентификатор highload-блока "Контрагенты"
-define('HIGHLOAD_KONTRAGENTS_ID', 4);
+define('HIGHLOAD_KONTRAGENTS_ID', 61);
 
 # Идентификатор highload-блока "Договора"
 define('HIGHLOAD_DOGOVORA_ID', 6);

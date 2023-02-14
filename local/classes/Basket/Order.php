@@ -7,19 +7,6 @@ use Bitrix\Sale,
     Bitrix\Currency;
 use Bitrix\Main\Context;
 
-/**
- *  метод для создания заказа
- *  {
- * "FIO": "Иванов Иван Иванович",
- * "PHONE": "+799953333111",
- * "EMAIL": "ya1331@ya.ru",
- * "USER_DESCRIPTION":"Это комментарий",
- * "DELIVERY_ID": "4",
- * "PAYMENT_ID": "2",
- * "DELIVERY_ADRESS":"Сан-Франциско ул. Слава Коммунизму 1",
- * "STATUS":"draft"
- * }
- */
 class Order
 {
     protected static $orderFields = [
@@ -29,6 +16,19 @@ class Order
         'DELIVERY_ADRESS'
     ];
 
+    /**
+     *  метод для создания заказа
+     *  {
+     * "FIO": "Иванов Иван Иванович",
+     * "PHONE": "+799953333111",
+     * "EMAIL": "ya1331@ya.ru",
+     * "USER_DESCRIPTION":"Это комментарий",
+     * "DELIVERY_ID": "4",
+     * "PAYMENT_ID": "2",
+     * "DELIVERY_ADRESS":"Сан-Франциско ул. Слава Коммунизму 1",
+     * "STATUS":"draft"
+     * }
+     */
     public static function add()
     {
         $params = Misc::getPostDataFromJson();
