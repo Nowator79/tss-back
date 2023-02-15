@@ -104,8 +104,8 @@ class Profile
             $dateBegin = new \DateTime(sprintf($params['date_begin'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
             $dateEnd = new \DateTime(sprintf($params['date_end'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
             $dateBegin->modify('+1 day -1 second');
-            $filter['<=UF_DATE'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
-            $filter['>=UF_DATE'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
+            $filter['<=UF_DATE'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
+            $filter['>=UF_DATE'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
         }
 
         $rsData = $entity_data_class::getList(array(
