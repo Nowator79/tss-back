@@ -48,7 +48,7 @@ class Restore extends Base
     public function emailSend()
     {
         $params = Misc::getPostDataFromJson();
-        $siteId = Context::getCurrent()->getSite();
+        $siteId = \Bitrix\Main\Context::getCurrent()->getSite();
 
         $arEventFields = [];
         $arEventFields['SUBJECT']=$params['subject'];
@@ -64,7 +64,7 @@ class Restore extends Base
             $eventTempl = 'SEND_MES_UD';
         }
 
-        CEvent::Send($eventTempl, $siteId, $arEventFields);
+        \CEvent::Send($eventTempl, $siteId, $arEventFields);
     }
     public function getBanner()
     {
@@ -116,6 +116,7 @@ class Restore extends Base
 
         while($arData = $rsData->Fetch()){
             $arData['UF_FILE'] =  \CFile::GetPath($arData["UF_FILE"]);
+            $arData['UF_DATE'] = $arData['UF_DATE']->toString();
             $mas_doc[] = $arData;
         }
         return $mas_doc;

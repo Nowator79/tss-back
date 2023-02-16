@@ -68,6 +68,9 @@ class AddProduct extends Base
             $arFilter = Array("IBLOCK_ID"=>5, "ACTIVE"=>"Y");
             if($item['options']){
                 $arFilter['ID']=$item['options'];
+
+
+
             }else{
                 $arFilter['ID']=$item['id'];
             }
