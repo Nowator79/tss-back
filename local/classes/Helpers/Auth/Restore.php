@@ -116,6 +116,7 @@ class Restore extends Base
 
         while($arData = $rsData->Fetch()){
             $arData['UF_FILE'] =  \CFile::GetPath($arData["UF_FILE"]);
+            $arData['UF_DATE'] = $arData['UF_DATE']->toString();
             $mas_doc[] = $arData;
         }
         return $mas_doc;
