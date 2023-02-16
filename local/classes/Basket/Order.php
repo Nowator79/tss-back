@@ -361,6 +361,9 @@ class Order
                 $arOrder['LOCK_CHANGE_PAYSYSTEM'] = 'Y';
             }
 
+            $arOrder['DATE_INSERT'] = $arOrder['DATE_INSERT']->toString();
+            $arOrder['DATE_UPDATE'] = $arOrder['DATE_UPDATE']->toString();
+
             $listOrders[$arOrder["ID"]] = $arOrder;
             $orderIdList[] = $arOrder["ID"];
         }
@@ -376,6 +379,8 @@ class Order
         while ($basket = $listBaskets->fetch()) {
             if (\CSaleBasketHelper::isSetItem($basket))
                 continue;
+            $basket['DATE_INSERT'] = $basket['DATE_INSERT']->toString();
+            $basket['DATE_UPDATE'] = $basket['DATE_UPDATE']->toString();
 
             $listOrderBasket[$basket['ORDER_ID']][$basket['ID']] = $basket;
             //
