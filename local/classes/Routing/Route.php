@@ -197,7 +197,7 @@ class Route
             '/api/users/getSalesPlan' => [Api\Page\Profile::class, 'getSalesPlan'],
 
             # получить контрагентов
-            '/api/user/getContragents' => [Api\User\Get::class, 'getContragents'],
+            '/api/user/getContragents' => [Api\Page\Profile::class, 'getContragents'],
 
             # Редактировать пользователя
                 # Добавить проверку владения точкой
