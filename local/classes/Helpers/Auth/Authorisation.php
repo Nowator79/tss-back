@@ -73,9 +73,11 @@ class Authorisation extends Base
                 'permission' => self::defineUserPermission($userId)
             ]);
 
+            $arUser = \CUser::GetByID($userId)->Fetch();
+            $arUser['PERSONAL_PHOTO'] = \CFile::GetPath($arUser['PERSONAL_PHOTO']);
             return [
                 'TOKEN' => $token,
-                'USER' => \CUser::GetByID($userId)->Fetch()
+                'USER' => $arUser
             ];
         } else {
             http_response_code(400);
