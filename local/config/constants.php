@@ -84,6 +84,9 @@ define('HIGHLOAD_ASSORTIMENT_CENTER_ID', 12);
 # Идентификатор highload-блока "План продаж"
 define('HIGHLOAD_SALES_PLAN_ID', 59);
 
+# Идентификатор highload-блока "Шифр товара"
+define('HIGHLOAD_PRODUCT_CODE_ID', 0);
+
 # Почтовое событие отправки данных пользователя на проверку
 
 define('USER_DATA_CHANGE_EVENT', 'USER_DATA_CHANGE');
