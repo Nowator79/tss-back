@@ -118,7 +118,7 @@ class Restore extends Base
             $arData['UF_FILE'] =  \CFile::GetPath($arData["UF_FILE"]);
             $mas_doc[] = $arData;
         }
-        return $arData;
+        return $mas_doc;
     }
     public function forEmailOrPhone()
     {
