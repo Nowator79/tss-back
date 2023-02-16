@@ -123,6 +123,42 @@ class Profile
         return $res;
     }
 
+    /**
+     * получить контрагентов
+     *
+     * @return string[]|void
+     */
+    public function getContragents()
+    {
+        $params = Misc::getPostDataFromJson();
+
+        if (empty($params['userId'])) {
+            return ['error' => 'Не передан ID пользователя!'];
+        }
+
+        $contragentID = \Bitrix\Main\UserTable::getList([
+            'filter' => [ 'ID' => $params['userId'], 'ACTIVE' => 'Y'],
+            'select' => [ 'ID', 'XML_ID' ]
+        ])->Fetch()['XML_ID'];
+
+        if ($contragentID) {
+            $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById(HIGHLOAD_KONTRAGENTS_ID)->fetch();
+            $entityDataClass = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlblock)->getDataClass();
+
+            $filter = [
+                'UF_USER' => $contragentID
+            ];
+
+            $rsData = $entityDataClass::getList(array(
+                "select" => ["*"],
+                "order" => ["ID" => "ASC"],
+                "filter" => $filter
+            ));
+
+            return $rsData->FetchAll();
+        }
+    }
+
     public function changeLogo()
     {
 
