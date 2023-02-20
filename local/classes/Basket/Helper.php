@@ -11,8 +11,6 @@ class Helper extends Base
     public function getBasketItems_new()
     {
         $mas_item = [];
-        $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
-
         $dbRes = \Bitrix\Sale\Basket::getList([
             'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
             'filter' => [
@@ -103,6 +101,35 @@ class Helper extends Base
     }
     public function deleteAll()
     {
+        $compl_section_id = 1060;
+        $mas_el_id = [];
+        $dbRes = \Bitrix\Sale\Basket::getList([
+            'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
+            'filter' => [
+                '=FUSER_ID' => \Bitrix\Sale\Fuser::getId(),
+                '=ORDER_ID' => null,
+                '=LID' => \Bitrix\Main\Context::getCurrent()->getSite(),
+                '=CAN_BUY' => 'Y',
+
+            ]
+        ]);
+        while ($item = $dbRes->fetch())
+        {
+            $mas_el_id[] = $item['PRODUCT_ID'];
+        }
+        if($mas_el_id){
+            $filter =[
+                'ID'=>$mas_el_id,
+                'IBLOCK_ID'=>5,
+                'SECTION_ID'=>$compl_section_id
+            ];
+            $res = \CIBlockElement::GetList(Array(),$filter, false, Array(), Array('*'));
+            while($ob = $res->GetNextElement()){
+                $arFields = $ob->GetFields();
+                \CIBlockElement::Delete($arFields['ID']);
+            }
+        }
+
         \CSaleBasket::DeleteAll(\Bitrix\Sale\Fuser::getId());
     }
 }
