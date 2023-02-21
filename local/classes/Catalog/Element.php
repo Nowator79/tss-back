@@ -873,6 +873,8 @@ class Element extends Base
 
         $params = Misc::getPostDataFromJson();
 //        $params['section_code'] = 'dizelnye_elektrostantsii';
+//        $params['sort_by']['code'] = 'price';
+//        $params['sort_by']['direction'] = 'asc';
 
         if (!$params['section_code']) {
             return ['error' => 'Не указан section_code раздела'];
@@ -917,21 +919,21 @@ class Element extends Base
 
         // сортировка
         // по умолчанию сортировка по популярности
-        if (empty($params['sort_by']) || !isset($params['sort_by'])) {
+        if (empty($params['sort']) || !isset($params['sort'])) {
             $params['sort_by'] = [
-                'code' => 'popular'
+                'code' => 'name'
             ];
 
             $result['sort_by'] = [
-                'code' => 'popular'
+                'code' => 'name'
             ];
         } else {
-            $result['sort_by'] = $params['sort_by'];
+            $result['sort_by'] = $params['sort'];
         }
 
-        switch ($params['sort_by']['code']) {
+        switch ($params['sort']['code']) {
             case 'price':
-               switch ($params['sort_by']['direction']) {
+               switch ($params['sort']['direction']) {
                    case 'asc':
                        $arOrder = [
                            'CATALOG_PRICE_' . $priceType => 'ASC'
@@ -944,6 +946,20 @@ class Element extends Base
                    break;
                }
             break;
+            case 'name':
+                switch ($params['sort']['direction']) {
+                    case 'asc':
+                        $arOrder = [
+                            'NAME' => 'ASC'
+                        ];
+                        break;
+                    case 'desc':
+                        $arOrder = [
+                            'NAME' => 'DESC'
+                        ];
+                        break;
+                }
+                break;
         }
 
         $arFilter = [];
