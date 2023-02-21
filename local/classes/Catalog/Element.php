@@ -112,7 +112,7 @@ class Element extends Base
 	{
         $params = Misc::getPostDataFromJson();
 
-        $params['code'] ='dizel_generator_kipor_kde_12_sta3_utsenka';
+//        $params['code'] ='dizel_generator_kipor_kde_12_sta3_utsenka';
 
         if (empty($params['code']) || !isset($params['code']))
 		{
