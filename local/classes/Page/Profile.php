@@ -161,6 +161,24 @@ class Profile
 
     public function changeLogo()
     {
+        $params = Misc::getPostDataFromJson();
 
+        if (empty($params['userId'])) {
+            \CModule::IncludeModule("main");
+            $oUser = new \CUser;
+
+            if (!empty($_FILES["logo"]['name'])) {
+                $fileId = \CFile::SaveFile($_FILES["logo"], 'avatar');
+                $arFile = \CFile::MakeFileArray($fileId);
+                $arFile['del'] = "Y";
+                $arFields['PERSONAL_PHOTO'] = $arFile;
+            }
+
+            $result = $oUser->Update($params['userId'], $arFields);
+
+            if ($result) {
+                return ['success' => 'Логоти загружен!'];
+            }
+        }
     }
 }

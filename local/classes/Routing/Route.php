@@ -199,6 +199,9 @@ class Route
             # получить контрагентов
             '/api/user/getContragents' => [Api\Page\Profile::class, 'getContragents'],
 
+            # загрузить логоти
+            '/api/user/changeLogo' => [Api\Page\Profile::class, 'changeLogo'],
+
             # Редактировать пользователя
                 # Добавить проверку владения точкой
                 # Добавить проверку на суперпользователя
