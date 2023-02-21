@@ -113,8 +113,12 @@ class Nomenclature
         //получаем  товара
         $product = self::getProductByCode($params['XML_ID']);
 
-        $gostName = self::getGostProductName($product);
-        $brandedName = self::getBrandedProductName($product);
+        if ($product[0]["TABS"]["props"]["VID_OPTSII"]["VALUE"] == "Базовый агрегат") {
+            $gostName = self::getGostProductName($product[0]);
+            $brandedName = self::getBrandedProductName($product[0]);
+        } else {
+            $gostName = $brandedName = $product[0]["NAME"];
+        }
 
         $arNames = [
             "GOST_NAME" => $gostName,
