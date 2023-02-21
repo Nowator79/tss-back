@@ -86,6 +86,9 @@ class Nomenclature
     public static function getBrandedProductName($product)
     {
         $name = '';
+
+
+
         return $name;
     }
 
