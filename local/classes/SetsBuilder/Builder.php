@@ -162,9 +162,12 @@ class Builder
      *
      * @return array|string[]|null
      */
-    public static function getProduct()
+    public static function getProduct($code)
     {
         $params = Misc::getPostDataFromJson();
+
+        if (!empty($code)) $params["code"] = $code;
+
         $filter = [
             'IBLOCK_ID' => IBLOCK_CATALOG,
             'ACTIVE' => 'Y',
