@@ -110,7 +110,7 @@ class Nomenclature
 
         if (empty($params['XML_ID'])) return ['error' => 'Не передан XML_ID'];
 
-        //получаем  товара
+        //получаем товар
         $product = self::getProductByCode($params['XML_ID']);
 
         if ($product[0]["TABS"]["props"]["VID_OPTSII"]["VALUE"] == "Базовый агрегат") {
