@@ -58,13 +58,6 @@ class Base
             ])->fetch()['ID'];
         }
 
-//        return [
-//            'php' => 'Base.php',
-//            'row_name' => $row_name,
-//            'type' => $type,
-//            'user_id' => $user_id
-//        ];
-
         if($row_name == 'PHONE_NUMBER')
             return UserPhoneAuthTable::getList([
                         'filter' => ['USER_ID' => $user_id]

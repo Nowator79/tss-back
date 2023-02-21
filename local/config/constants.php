@@ -64,7 +64,7 @@ define('TYPES_FIELD_ID', 53);
 define('HIGHLOAD_BLOCK_NOTIFICATION_ID', 5);
 
 # Идентификатор highload-блока "Контрагенты"
-define('HIGHLOAD_KONTRAGENTS_ID', 4);
+define('HIGHLOAD_KONTRAGENTS_ID', 60);
 
 # Идентификатор highload-блока "Договора"
 define('HIGHLOAD_DOGOVORA_ID', 6);
@@ -81,4 +81,9 @@ define('HIGHLOAD_DISTRIBUTION_CENTER_ID', 9);
 # Идентификатор highload-блока "Ассортименты"
 define('HIGHLOAD_ASSORTIMENT_CENTER_ID', 12);
 
+# Идентификатор highload-блока "План продаж"
+define('HIGHLOAD_SALES_PLAN_ID', 59);
 
+# Почтовое событие отправки данных пользователя на проверку
+
+define('USER_DATA_CHANGE_EVENT', 'USER_DATA_CHANGE');

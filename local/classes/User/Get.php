@@ -1,6 +1,8 @@
 <?
 namespace Godra\Api\User;
 
+use Godra\Api\Helpers\Utility\Misc;
+
 class Get extends Base
 {
     protected $select_rows = [
@@ -32,6 +34,19 @@ class Get extends Base
     }
 
     /**
+     * Метод для получения внешнего кода - поле XML_ID
+     *
+     * @param $userId
+     * @return mixed
+     */
+    public function getParentUserXmlIdEx($userId) {
+        return \Bitrix\Main\UserTable::getList([
+            'filter' => [ 'ID' => $userId, 'ACTIVE' => 'Y'],
+            'select' => [ 'ID', 'XML_ID' ]
+        ])->Fetch()['XML_ID'];
+    }
+
+    /**
      * Метод для получения внешнего кода
      *
      * @param $userId
@@ -43,5 +58,4 @@ class Get extends Base
             'select' => [ 'ID', 'XML_ID' ]
         ])->Fetch()['ID'];
     }
-
 }

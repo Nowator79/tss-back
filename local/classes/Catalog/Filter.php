@@ -62,8 +62,8 @@ class Filter extends Base
         $mas_prop = [];
         $mas_type_prop = ['N'=>'DIAPASON','S'=>'BUTTON','L'=>'LIST'];
 
-        if($params['section_code']){
-            $res = \CIBlockSection::GetList(array(), array('IBLOCK_ID' => $IBLOCK_ID, 'CODE' => $params['section_code']));
+        if($params['code']){
+            $res = \CIBlockSection::GetList(array(), array('IBLOCK_ID' => $IBLOCK_ID, 'CODE' => $params['code']));
             if($section = $res->Fetch())$SECTION_ID=$section["ID"];
         }
 
@@ -85,7 +85,7 @@ class Filter extends Base
             $arSelect[] = 'PROPERTY_'.$value;
         }
         $arFilter = Array("IBLOCK_ID"=>$IBLOCK_ID, "ACTIVE"=>"Y");
-        if($params['section_code']){
+        if($params['code']){
             $arFilter["SECTION_ID"]= $SECTION_ID;
         }
 

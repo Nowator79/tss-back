@@ -63,6 +63,13 @@ class Route
         // поменять пароль |шаг 2| используя код из шага 1
         '/api/change_password' => [Auth\Restore::class, 'changePassword'],
 
+        // отправка на email
+        '/api/emailSend' => [Auth\Restore::class, 'emailSend'],
+
+        // получение документов
+        '/api/getDoc' => [Auth\Restore::class, 'getDoc'],
+        // получение bannera
+        '/api/getBanner' => [Auth\Restore::class, 'getBanner'],
 
         # новое восстановление пароля #
         // первый шаг - отправка логина
@@ -73,9 +80,6 @@ class Route
 
         // третий шаг - отправка пароля
         '/api/recovery/sendPassword' => [Auth\Restore::class, 'sendPassword'],
-
-        # новое восстановление пароля #
-
 
         // получить контакты
         '/api/get_contacts' => [Api\Information\Contacts::class, 'getList'],
@@ -156,6 +160,8 @@ class Route
             // удалить все товары из корзины
             '/api/basket/deleteAll' => [Api\Basket\Helper::class, 'deleteAll'],
 
+            // сформировать КП pdf
+            '/api/basket/getInvoice' => [Api\Basket\Helper::class, 'getInvoice'],
 
             # Создать заказ
             # надо допилить оплату и доставку
@@ -164,7 +170,7 @@ class Route
 
             # получить список заказов
             # надо допилить получение состава заказов + допил оплаты и доставки
-            '/api/orders/get' => [Api\Orders\Get::class, 'get'],
+            '/api/orders/get' => [Api\Basket\Order::class, 'get'],
         #----------------  Каталог END ---------------------------#
 
 
@@ -179,10 +185,22 @@ class Route
                 # Добавить проверку на суперпользователя
             '/api/users/update' => [Api\User\Update::class, 'updateUser'],
 
-            # Редактировать пользователя
+            # Удалить пользователя
                 # Добавить проверку владения точкой
                 # Добавить проверку на суперпользователя
             '/api/users/delete' => [Api\User\Delete::class, 'deleteUser'],
+
+            # запросить изменение личных данных пользователя у менеджера
+            '/api/users/checkData' => [Api\Page\Profile::class, 'changeUserData'],
+
+            # получить план продаж
+            '/api/users/getSalesPlan' => [Api\Page\Profile::class, 'getSalesPlan'],
+
+            # получить контрагентов
+            '/api/user/getContragents' => [Api\Page\Profile::class, 'getContragents'],
+
+            # загрузить логоти
+            '/api/user/changeLogo' => [Api\Page\Profile::class, 'changeLogo'],
 
             # Редактировать пользователя
                 # Добавить проверку владения точкой

@@ -3,7 +3,11 @@ namespace Godra\Api\Helpers\Auth;
 
 use Bitrix\Main\Mail\Event;
 use Godra\Api\Helpers\Auth\Authorisation;
+use Godra\Api\Helpers\Utility\Misc;
 use \Godra\Api\Integration\SMSSeveren\Send;
+use Bitrix\Main\Loader;
+use Bitrix\Highloadblock as HL;
+use Bitrix\Main\Entity;
 
 class Restore extends Base
 {
@@ -41,7 +45,82 @@ class Restore extends Base
 
         return $sms;
     }
+    public function emailSend()
+    {
+        $params = Misc::getPostDataFromJson();
+        $siteId = \Bitrix\Main\Context::getCurrent()->getSite();
 
+        $arEventFields = [];
+        $arEventFields['SUBJECT']=$params['subject'];
+        $eventTempl = 'SEND_MES_LD';
+
+        if($params['subject']=='Личные данные'){
+            $arEventFields['NAME']=$params['name'];
+            $arEventFields['TEL']=$params['tel'];
+            $arEventFields['EMAIL']=$params['email'];
+            $arEventFields['PASS']=$params['pass'];
+        }else{
+            $arEventFields['MESSAGE']=$params['text'];
+            $eventTempl = 'SEND_MES_UD';
+        }
+
+        \CEvent::Send($eventTempl, $siteId, $arEventFields);
+    }
+    public function getBanner()
+    {
+        $iblock_id = 1;
+        $mas_banner = [];
+        Loader::includeModule('iblock');
+        $arFilter = Array("IBLOCK_ID"=>$iblock_id, "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
+        $res = \CIBlockElement::GetList(Array("SORT"=>"ASC"), $arFilter, false, Array(), Array('*'));
+        while($ob = $res->GetNextElement()){
+            $fields = $ob->GetFields();
+            $props = $ob->GetProperties();
+            $mas_banner[] = [
+                'NAME'=>$fields['NAME'],
+                'TEXT'=>$fields['PREVIEW_TEXT'],
+                'BUTTON_LINK'=>$props['BUTTON_LINK']['VALUE'],
+                'BUTTON_CAPTION'=>$props['BUTTON_CAPTION']['VALUE'],
+                'HIDE_HEADER'=>$props['HIDE_HEADER']['VALUE'],
+                'COLOR_HEADER'=>$props['COLOR_HEADER']['VALUE'],
+                'PICTURE'=>\CFile::GetPath($props['all_width_picture']['VALUE']),
+            ];
+        }
+        return $mas_banner;
+    }
+    public function getDoc()
+    {
+        $params = Misc::getPostDataFromJson();
+        $mas_doc =[];
+
+        if($params['user_id']){
+            $user_id = $params['user_id'];
+        }else{
+            global $USER;
+            $user_id = $USER->GetID();
+        }
+
+        Loader::includeModule("highloadblock");
+
+        $hlbl = 14; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+
+        $rsData = $entity_data_class::getList(array(
+            "select" => array("*"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array("UF_USER"=>$user_id),  // Задаем параметры фильтра выборки
+        ));
+
+        while($arData = $rsData->Fetch()){
+            $arData['UF_FILE'] =  \CFile::GetPath($arData["UF_FILE"]);
+            $arData['UF_DATE'] = $arData['UF_DATE']->toString();
+            $mas_doc[] = $arData;
+        }
+        return $mas_doc;
+    }
     public function forEmailOrPhone()
     {
         $this->setConfirmCodeByLogin($this->data['login']);
