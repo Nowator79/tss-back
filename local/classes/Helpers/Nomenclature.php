@@ -51,22 +51,23 @@ class Nomenclature
             "CODE11" => "7",
             "CODE12" => "",
             "NOCODE" => "Нет",
-            "NAME_V" => "TWc 50TS",
-            "NAME_W" => "",
-            "NAME_X" => "",
-            "NAME_Y" => "TWc 50TS"
+            "NAME_V" => "TWc 50TS", //Наименование фирменное часть1
+            "NAME_W" => "", //Наименование фирменное (исполнение)
+            "NAME_X" => "", //Наименование фирменное часть2
+            "NAME_Y" => "TWc 50TS" //Фирменное наименование
         ]
     ];
 
 
     /**
-     * получить товар из правочника шифра
-     *
+     * получить товар из справочника шифра
+     * временно поиск по массиву $arXls
      * @param $xmlId
      * @return void
      */
     public function getProductFromHL($xmlId) {
-
+        $key = array_search($xmlId, array_column(self::$arXls, 'XML_ID'));
+        return self::$arXls[$key];
     }
 
     /**
@@ -96,11 +97,21 @@ class Nomenclature
      * получить фирменное название товара
      * @return void
      */
-    public static function getBrandedProductName($product)
+    public static function getBrandedProductName($product, $hlProduct)
     {
-        $name = '';
+        $name = $hlProduct['CUSTOM_NAME'];
 
+        if (!empty($hlProduct["NAME_V"])) {
+            $name = $name . ' ' . $hlProduct["NAME_V"];
+        }
 
+        if (!empty($hlProduct["NAME_W"])) {
+            $name = $name . ' ' . $hlProduct["NAME_W"];
+        }
+
+        if (!empty($hlProduct["NAME_X"])) {
+            $name = $name . ' ' . $hlProduct["NAME_X"];
+        }
 
         return $name;
     }
@@ -130,13 +141,14 @@ class Nomenclature
         if (empty($params['XML_ID'])) return ['error' => 'Не передан XML_ID'];
 
         //получаем товар
-        $product = self::getProductByCode($params['XML_ID']);
+        $product = self::getProductByCode($params['XML_ID'])[0];
+        $hlProduct = self::getProductFromHL($product['XML_ID']);
 
-        if ($product[0]["TABS"]["props"]["VID_OPTSII"]["VALUE"] == "Базовый агрегат") {
-            $gostName = self::getGostProductName($product[0]);
-            $brandedName = self::getBrandedProductName($product[0]);
+        if ($product["TABS"]["props"]["VID_OPTSII"]["VALUE"] == "Базовый агрегат" && $hlProduct) {
+            $gostName = self::getGostProductName($product, $hlProduct);
+            $brandedName = self::getBrandedProductName($product, $hlProduct);
         } else {
-            $gostName = $brandedName = $product[0]["NAME"];
+            $gostName = $brandedName = $product["NAME"];
         }
 
         $arNames = [
