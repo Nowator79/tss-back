@@ -177,7 +177,10 @@ class Profile
             $result = $oUser->Update($params['userId'], $arFields);
 
             if ($result) {
-                return ['success' => 'Логоти загружен!'];
+                return [
+                    'url' => \CFile::GetPath($fileId),
+                    'success' => 'Логоти загружен!'
+                ];
             }
         }
     }
