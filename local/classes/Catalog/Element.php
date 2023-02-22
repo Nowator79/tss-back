@@ -112,7 +112,7 @@ class Element extends Base
 	{
         $params = Misc::getPostDataFromJson();
 
-//        $params['code'] ='kozhukh_dlya_generatora_mk_1_1_so_sborkoy_bez_ustanovochnogo_komplekta_dgu';
+//        $params['code'] ='dizel_generator_kipor_kde_12_sta3_utsenka';
 
         if (empty($params['code']) || !isset($params['code']))
 		{
@@ -242,11 +242,18 @@ class Element extends Base
         $res = \CIBlockElement::GetList(Array(), array_merge(self::getDefaultFilter(), $filter), false, Array(), Array('*'));
         while($ob = $res->GetNextElement()){
             $product = $ob->GetFields();
-
             $arProps = $ob->GetProperties();
-
         }
-
+        $store_mas = [];
+        $rsStoreProduct = \Bitrix\Catalog\StoreProductTable::getList(array(
+            'filter' => array('=PRODUCT_ID'=>$product['ID'], '!STORE.ADDRESS'=>false, 'ACTIVE'>='Y'),
+            'select' => array('AMOUNT','STORE_ADDRESS'=>'STORE.ADDRESS', 'STORE_TITLE' => 'STORE.TITLE', 'PRODUCT_NAME' => 'PRODUCT.IBLOCK_ELEMENT.NAME'),
+        ));
+        while($arStoreProduct=$rsStoreProduct->fetch())
+        {
+            if($store_mas[$arStoreProduct['STORE_ADDRESS']]==NULL)$store_mas[$arStoreProduct['STORE_ADDRESS']]=0;
+            $store_mas[$arStoreProduct['STORE_ADDRESS']] += $arStoreProduct['AMOUNT'];
+        }
         // множественное свойство "Картинки галереи"
         $pictures = self::getPropertyFiles($product['ID'], 'MORE_PHOTO');
 
@@ -365,6 +372,7 @@ class Element extends Base
                 'article'=>$product['PROPERTY_CML2_ARTICLE_VALUE'],
                 'in_basket'=>$inBasket,
                 'qa'=>$qa,
+                'store'=>$store_mas,
                 'code' => $product['CODE'],
                 'name' => $product['NAME'],
                 'artnumber' => $product['PROPERTY_CML2_ARTICLE_VALUE'] ?? '',
