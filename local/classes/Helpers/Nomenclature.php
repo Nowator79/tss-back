@@ -13,6 +13,7 @@ class Nomenclature
         "0" => [
             "XML_ID" => "26032d02-4d89-11ea-80dd-a672da4d5bad",
             "NAME" => "АД-360С-Т400-1РМ6",
+            "CUSTOM_NAME" => "Дизельный генератор",
             "NAMENCLATURE" => "Дизельный генератор ТСС АД-360С-Т400-1РМ6",
             "CODE1" => "ТСС",
             "CODE2" => "АД",
@@ -35,6 +36,7 @@ class Nomenclature
         "1" => [
             "XML_ID" => "b9aacea9-5ea1-11ed-80fa-bc8c5a150f9b",
             "NAME" => "АД-36С-Т400-1РМ7",
+            "CUSTOM_NAME" => "Дизельный генератор",
             "NAMENCLATURE" => "Дизельный генератор ТСС АД-36С-Т400-1РМ7",
             "CODE1" => "ТСС",
             "CODE2" => "АД",
@@ -55,6 +57,17 @@ class Nomenclature
             "NAME_Y" => "TWc 50TS"
         ]
     ];
+
+
+    /**
+     * получить товар из правочника шифра
+     *
+     * @param $xmlId
+     * @return void
+     */
+    public function getProductFromHL($xmlId) {
+
+    }
 
     /**
      * получить товар по внешнему коду
@@ -99,6 +112,9 @@ class Nomenclature
     public static function getGostProductName($product)
     {
         $name = '';
+
+
+
         return $name;
     }
 
