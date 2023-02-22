@@ -179,7 +179,7 @@ class Profile
             if ($result) {
                 return [
                     'url' => \CFile::GetPath($fileId),
-                    'success' => 'Логоти загружен!'
+                    'success' => 'Логотип загружен!'
                 ];
             }
         }
