@@ -2,7 +2,6 @@
 
 namespace Godra\Api\Helpers;
 
-
 use Godra\Api\Helpers\Utility\Misc;
 use Godra\Api\SetsBuilder\Builder;
 use Bitrix\Main\Loader;
@@ -124,7 +123,53 @@ class Nomenclature
     {
         $name = '';
 
+        if (!empty($hlProduct["CODE1"])) {
+            $name = $name . ' ' . $hlProduct["CODE1"];
+        }
 
+        if (!empty($hlProduct["CODE2"])) {
+            $name = $name . ' ' . $hlProduct["CODE2"];
+        }
+
+        if (!empty($hlProduct["CODE3"])) {
+            $name = $name . ' ' . $hlProduct["CODE3"];
+        }
+
+        if (!empty($hlProduct["CODE4"])) {
+            $name = $name . ' ' . $hlProduct["CODE4"];
+        }
+
+        if (!empty($hlProduct["CODE5"])) {
+            $name = $name . ' ' . $hlProduct["CODE5"];
+        }
+
+        if (!empty($hlProduct["CODE6"])) {
+            $name = $name . ' ' . $hlProduct["CODE6"];
+        }
+
+        if (!empty($hlProduct["CODE7"])) {
+            $name = $name . ' ' . $hlProduct["CODE7"];
+        }
+
+        if (!empty($hlProduct["CODE8"])) {
+            $name = $name . ' ' . $hlProduct["CODE8"];
+        }
+
+        if (!empty($hlProduct["CODE9"])) {
+            $name = $name . ' ' . $hlProduct["CODE9"];
+        }
+
+        if (!empty($hlProduct["CODE10"])) {
+            $name = $name . ' ' . $hlProduct["CODE10"];
+        }
+
+        if (!empty($hlProduct["CODE11"])) {
+            $name = $name . ' ' . $hlProduct["CODE11"];
+        }
+
+        if (!empty($hlProduct["CODE12"])) {
+            $name = $name . ' ' . $hlProduct["CODE12"];
+        }
 
         return $name;
     }
