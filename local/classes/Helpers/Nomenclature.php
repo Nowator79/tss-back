@@ -119,9 +119,9 @@ class Nomenclature
      * получить название товара по ГОСТ
      * @return void
      */
-    public static function getGostProductName($product)
+    public static function getGostProductName($product, $hlProduct)
     {
-        $name = '';
+        $name = $hlProduct['CUSTOM_NAME'];
 
         if (!empty($hlProduct["CODE1"])) {
             $name = $name . ' ' . $hlProduct["CODE1"];
