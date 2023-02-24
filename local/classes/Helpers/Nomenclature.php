@@ -122,7 +122,16 @@ class Nomenclature
      */
     public static function getOptionsParams($selectedOptions)
     {
-        return Builder::getOptions($selectedOptions);
+        $options = [];
+        $res = Builder::getOptions($selectedOptions);
+
+        foreach ($res as $item) {
+            $options["VID"][] = $item["TABS"]["props"]["VID_OPTSII"]["VALUE"];
+            $options["ART"][] = $item["TABS"]["props"]["ARTICLE"]["VALUE"];
+            $options["STA"][] = $item["TABS"]["props"]["STEPEN_AVTOMATIZATSII"]["VALUE"];
+        }
+
+        return $options;
     }
 
     /**
@@ -140,6 +149,9 @@ class Nomenclature
         }
 
         if (!empty($hlProduct["CODE2"])) {
+            if(in_array("прицеп",$arOptionsParams["VID"]) || in_array("прицеп для контейнера",$arOptionsParams["VID"])) {
+                $hlProduct["CODE2"] = "ЭД";
+            }
             $name = $name . ' ' . $hlProduct["CODE2"];
         }
 
@@ -160,6 +172,13 @@ class Nomenclature
         }
 
         if (!empty($hlProduct["CODE7"])) {
+            if(in_array("Блок АВР",$arOptionsParams["VID"])) {
+                $hlProduct["CODE7"] = 2;
+            }
+            if(in_array("231020", $arOptionsParams["ART"])) {
+                $hlProduct["CODE7"] = 3;
+            }
+
             $name = $name . ' ' . $hlProduct["CODE7"];
         }
 
@@ -168,6 +187,15 @@ class Nomenclature
         }
 
         if (!empty($hlProduct["CODE9"])) {
+            if(in_array("контейнер",$arOptionsParams["VID"])) {
+                $hlProduct["CODE9"] = "Н";
+            }
+            if(in_array("капот",$arOptionsParams["VID"])) {
+                $hlProduct["CODE9"] = "П";
+            }
+            if(in_array("кожух",$arOptionsParams["VID"])) {
+                $hlProduct["CODE9"] = "К";
+            }
             $name = $name . ' ' . $hlProduct["CODE9"];
         }
 
@@ -180,6 +208,16 @@ class Nomenclature
         }
 
         if (!empty($hlProduct["CODE12"])) {
+            if(in_array("ПЖД", $arOptionsParams["VID"])) {
+                $hlProduct["CODE12"] = "ПЖД";
+            }
+
+            if(in_array("ПОЖ", $arOptionsParams["VID"])) {
+               if(in_array("2", $arOptionsParams["STA"]) || in_array("Блок АВР", $arOptionsParams["VID"])) {
+                   $hlProduct["CODE12"] = ($hlProduct["CODE12"] == "ПЖД") ? "ПЖД" : "ПОЖ";
+               }
+            }
+
             $name = $name . ' ' . $hlProduct["CODE12"];
         }
 
