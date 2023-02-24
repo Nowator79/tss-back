@@ -96,7 +96,7 @@ class Nomenclature
      * получить фирменное название товара
      * @return void
      */
-    public static function getBrandedProductName($product, $hlProduct)
+    public static function getBrandedProductName($product, $hlProduct, $arOptionsParams)
     {
         $name = $hlProduct['CUSTOM_NAME'];
 
@@ -116,12 +116,24 @@ class Nomenclature
     }
 
     /**
+     * получить свойства опций
+     *
+     * @return void
+     */
+    public static function getOptionsParams($selectedOptions)
+    {
+        return Builder::getOptions($selectedOptions);
+    }
+
+    /**
      * получить название товара по ГОСТ
      * @return void
      */
-    public static function getGostProductName($product, $hlProduct)
+    public static function getGostProductName($product, $hlProduct, $arOptionsParams)
     {
         $name = $hlProduct['CUSTOM_NAME'];
+
+        $is_complex = false;
 
         if (!empty($hlProduct["CODE1"])) {
             $name = $name . ' ' . $hlProduct["CODE1"];
@@ -189,9 +201,14 @@ class Nomenclature
         $product = self::getProductByCode($params['XML_ID'])[0];
         $hlProduct = self::getProductFromHL($product['XML_ID']);
 
-        if ($product["TABS"]["props"]["VID_OPTSII"]["VALUE"] == "Базовый агрегат" && $hlProduct) {
-            $gostName = self::getGostProductName($product, $hlProduct);
-            $brandedName = self::getBrandedProductName($product, $hlProduct);
+        if ($product["TABS"]["props"]["VID_OPTSII"]["VALUE"] == "Базовый агрегат" && $hlProduct["NOCODE"] == 'Нет') {
+            $arOptionsParams = [];
+            if(!empty($params['SELECTED_OPTIONS'])) {
+                $arOptionsParams = self::getOptionsParams($params['SELECTED_OPTIONS']);
+            }
+
+            $gostName = self::getGostProductName($product, $hlProduct, $arOptionsParams);
+            $brandedName = self::getBrandedProductName($product, $hlProduct, $arOptionsParams);
         } else {
             $gostName = $brandedName = $product["NAME"];
         }

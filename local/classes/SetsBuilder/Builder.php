@@ -162,7 +162,7 @@ class Builder
      *
      * @return array|string[]|null
      */
-    public static function getProduct($code)
+    public static function getProduct($code = '')
     {
         $params = Misc::getPostDataFromJson();
 
@@ -206,9 +206,13 @@ class Builder
      * метод получения опций
      * @return array|string[]
      */
-    public static function getOptions(): array
+    public static function getOptions($arOptionsIds = []): array
     {
         $params = Misc::getPostDataFromJson();
+
+        if (!empty($arOptionsIds)){
+            $params['ids'] = $arOptionsIds;
+        }
 
         if (empty($params['ids']) || !isset($params['ids'])) {
             return ['error' => 'Пустое поле ids'];
