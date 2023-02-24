@@ -2,99 +2,222 @@
 
 namespace Godra\Api\Helpers;
 
-use CIBlockElement;
+use Godra\Api\Helpers\Utility\Misc;
+use Godra\Api\SetsBuilder\Builder;
+use Bitrix\Main\Loader;
 
 class Nomenclature
 {
-	// array [productId] => xml_id
-    public function getByUserId($userId)
-    {
-        $result = [];
-        
-        if ($userId)
-        {
-            $bitrixUserApi = new Auth\Bitrix();
-            
-            $userSelectedContract = $bitrixUserApi->getUserSelectedContract($userId);
-            
-            if ($userSelectedContract)
-            {
-                $nomenclatureId = (new Contract)->getNomenclatureId($userSelectedContract);
-                
-				// id ассортимента
-                if ($nomenclatureId)
-                {
-                    $map = [];
-                    
-                    $utils = new Utility\Misc();
-                    
-					// старый вариант, по xml_id
-					
-					/*
-					// все товары каталога
-                    $res = CIBlockElement::GetList([], ['IBLOCK_ID' => IBLOCK_CATALOG], false, false, ['ID', 'XML_ID']);
-		
-                    while ($arFields = $res->GetNext())
-                    {
-                        if ($arFields['XML_ID'] && $arFields['ID'])
-                        {
-                            $map[$arFields['XML_ID']] = $arFields['ID'];
-                        }
-                    }
+    public static $arXls = [
+        "0" => [
+            "XML_ID" => "26032d02-4d89-11ea-80dd-a672da4d5bad",
+            "NAME" => "АД-360С-Т400-1РМ6",
+            "CUSTOM_NAME" => "Дизельный генератор",
+            "NAMENCLATURE" => "Дизельный генератор ТСС АД-360С-Т400-1РМ6",
+            "CODE1" => "ТСС",
+            "CODE2" => "АД",
+            "CODE3" => "360",
+            "CODE4" => "С",
+            "CODE5" => "Т",
+            "CODE6" => "400",
+            "CODE7" => "1",
+            "CODE8" => "Р",
+            "CODE9" => "",
+            "CODE10" => "М",
+            "CODE11" => "6",
+            "CODE12" => "",
+            "NOCODE" => "Нет",
+            "NAME_V" => "TDz 500TS",
+            "NAME_W" => "",
+            "NAME_X" => "",
+            "NAME_Y" => ""
+        ],
+        "1" => [
+            "XML_ID" => "b9aacea9-5ea1-11ed-80fa-bc8c5a150f9b",
+            "NAME" => "АД-36С-Т400-1РМ7",
+            "CUSTOM_NAME" => "Дизельный генератор",
+            "NAMENCLATURE" => "Дизельный генератор ТСС АД-36С-Т400-1РМ7",
+            "CODE1" => "ТСС",
+            "CODE2" => "АД",
+            "CODE3" => "36",
+            "CODE4" => "С",
+            "CODE5" => "Т",
+            "CODE6" => "400",
+            "CODE7" => "1",
+            "CODE8" => "Р",
+            "CODE9" => "",
+            "CODE10" => "М",
+            "CODE11" => "7",
+            "CODE12" => "",
+            "NOCODE" => "Нет",
+            "NAME_V" => "TWc 50TS", //Наименование фирменное часть1
+            "NAME_W" => "", //Наименование фирменное (исполнение)
+            "NAME_X" => "", //Наименование фирменное часть2
+            "NAME_Y" => "TWc 50TS" //Фирменное наименование
+        ]
+    ];
 
-					// 123 => xml_id[be707f6b-e077-11ea-ab76-00155d0a8003, 1d41bc38-3bdd-11e8-ab34-00155d07b505]
-                    $items = $utils->getHLData(HIGHLOAD_BLOCK_NOMENCLATURE, ['=UF_IDASSORTIMENTA' => $nomenclatureId]);
-                    
-                    if ($items['records'])
-                    {
-                        foreach ($items['records'] as $item)
-                        {
-                            if ($map[$item['UF_IDNOMENKLATURY']])
-                            {
-                                $result[$map[$item['UF_IDNOMENKLATURY']]] = $item['UF_IDNOMENKLATURY']; // productId => xml_id
-                            }
-                        }
-                    }
-					*/
-					
-					// новый вариант, по артикулам
-					
-					// все товары каталога
-                    $res = CIBlockElement::GetList([], ['IBLOCK_ID' => IBLOCK_CATALOG], false, false, ['ID', 'XML_ID', 'PROPERTY_CML2_ARTICLE']);
-		
-                    while ($arFields = $res->GetNext())
-                    {
-                        if ($arFields['PROPERTY_CML2_ARTICLE_VALUE'] && $arFields['ID'])
-                        {
-                            $map[$arFields['PROPERTY_CML2_ARTICLE_VALUE']] = ['ID' => $arFields['ID'], 'XML_ID' => $arFields['XML_ID']];
-                        }
-                    }
-					
-					// 123 => articles[456,789]
-					$items = $utils->getHLData(HIGHLOAD_BLOCK_NOMENCLATURE, ['=UF_IDASSORTIMENTA' => $nomenclatureId]);
-					
-					if ($items['records'])
-                    {
-                        foreach ($items['records'] as $item)
-                        {
-							$articles = explode(',', $item['UF_IDNOMENKLATURY']);
-							
-							if ($articles)
-							{
-								foreach ($articles as $article)
-								{
-									if ($map[$article]['ID'])
-									{
-										$result[$map[$article]['ID']] = $map[$article]['XML_ID'];
-									}
-								}
-							}
-                        }
-                    }
-                }
-            }
+
+    /**
+     * получить товар из справочника шифра
+     * временно поиск по массиву $arXls
+     * @param $xmlId
+     * @return void
+     */
+    public function getProductFromHL($xmlId) {
+        $key = array_search($xmlId, array_column(self::$arXls, 'XML_ID'));
+        return self::$arXls[$key];
+    }
+
+    /**
+     * получить товар по внешнему коду
+     *
+     * @param $ID
+     * @return void
+     */
+    public function getProductByCode($ID) {
+        Loader::includeModule('iblock');
+        $arFilter = [
+            "XML_ID" => $ID
+        ];
+
+        $arFields = \CIBlockElement::GetList([],$arFilter,false,[] ,["ID", "CODE"])->Fetch();
+
+        if ($arFields["CODE"]) {
+            $res = Builder::getProduct($arFields["CODE"]);
+        } else {
+            $res = ['error' => 'Товар не найден'];
         }
-        
-        return $result;
+
+        return $res;
+    }
+
+    /**
+     * получить фирменное название товара
+     * @return void
+     */
+    public static function getBrandedProductName($product, $hlProduct, $arOptionsParams)
+    {
+        $name = $hlProduct['CUSTOM_NAME'];
+
+        if (!empty($hlProduct["NAME_V"])) {
+            $name = $name . ' ' . $hlProduct["NAME_V"];
+        }
+
+        if (!empty($hlProduct["NAME_W"])) {
+            $name = $name . ' ' . $hlProduct["NAME_W"];
+        }
+
+        if (!empty($hlProduct["NAME_X"])) {
+            $name = $name . ' ' . $hlProduct["NAME_X"];
+        }
+
+        return $name;
+    }
+
+    /**
+     * получить свойства опций
+     *
+     * @return void
+     */
+    public static function getOptionsParams($selectedOptions)
+    {
+        return Builder::getOptions($selectedOptions);
+    }
+
+    /**
+     * получить название товара по ГОСТ
+     * @return void
+     */
+    public static function getGostProductName($product, $hlProduct, $arOptionsParams)
+    {
+        $name = $hlProduct['CUSTOM_NAME'];
+
+        $is_complex = false;
+
+        if (!empty($hlProduct["CODE1"])) {
+            $name = $name . ' ' . $hlProduct["CODE1"];
+        }
+
+        if (!empty($hlProduct["CODE2"])) {
+            $name = $name . ' ' . $hlProduct["CODE2"];
+        }
+
+        if (!empty($hlProduct["CODE3"])) {
+            $name = $name . ' ' . $hlProduct["CODE3"];
+        }
+
+        if (!empty($hlProduct["CODE4"])) {
+            $name = $name . ' ' . $hlProduct["CODE4"];
+        }
+
+        if (!empty($hlProduct["CODE5"])) {
+            $name = $name . ' ' . $hlProduct["CODE5"];
+        }
+
+        if (!empty($hlProduct["CODE6"])) {
+            $name = $name . ' ' . $hlProduct["CODE6"];
+        }
+
+        if (!empty($hlProduct["CODE7"])) {
+            $name = $name . ' ' . $hlProduct["CODE7"];
+        }
+
+        if (!empty($hlProduct["CODE8"])) {
+            $name = $name . ' ' . $hlProduct["CODE8"];
+        }
+
+        if (!empty($hlProduct["CODE9"])) {
+            $name = $name . ' ' . $hlProduct["CODE9"];
+        }
+
+        if (!empty($hlProduct["CODE10"])) {
+            $name = $name . ' ' . $hlProduct["CODE10"];
+        }
+
+        if (!empty($hlProduct["CODE11"])) {
+            $name = $name . ' ' . $hlProduct["CODE11"];
+        }
+
+        if (!empty($hlProduct["CODE12"])) {
+            $name = $name . ' ' . $hlProduct["CODE12"];
+        }
+
+        return $name;
+    }
+
+    /**
+     * получить варианты названий товара
+     *
+     * @return void
+     */
+    public static function getCustomNames()
+    {
+        $params = Misc::getPostDataFromJson();
+
+        if (empty($params['XML_ID'])) return ['error' => 'Не передан XML_ID'];
+
+        //получаем товар
+        $product = self::getProductByCode($params['XML_ID'])[0];
+        $hlProduct = self::getProductFromHL($product['XML_ID']);
+
+        if ($product["TABS"]["props"]["VID_OPTSII"]["VALUE"] == "Базовый агрегат" && $hlProduct["NOCODE"] == 'Нет') {
+            $arOptionsParams = [];
+            if(!empty($params['SELECTED_OPTIONS'])) {
+                $arOptionsParams = self::getOptionsParams($params['SELECTED_OPTIONS']);
+            }
+
+            $gostName = self::getGostProductName($product, $hlProduct, $arOptionsParams);
+            $brandedName = self::getBrandedProductName($product, $hlProduct, $arOptionsParams);
+        } else {
+            $gostName = $brandedName = $product["NAME"];
+        }
+
+        $arNames = [
+            "GOST_NAME" => $gostName,
+            "BRANDED_NAME" => $brandedName
+        ];
+
+        return $arNames;
     }
 }
