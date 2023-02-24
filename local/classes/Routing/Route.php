@@ -134,8 +134,12 @@ class Route
             # Получить данные фильтра для текущего состояния структуры каталога
             '/api/catalog/filter/get' => [Api\Catalog\Filter::class, 'getData'],
 
-            # Получить данные свойств фильтра для текущего состояния структуры каталога
+            # получить данные свойств фильтра для текущего состояния структуры каталога
             '/api/catalog/filter/getFilterProperty' => [Api\Catalog\Filter::class, 'getFilterProperty'],
+
+            # получить кастомные названия товара
+            '/api/catalog/getCustomProductNames' => [Api\Helpers\Nomenclature::class, 'getCustomNames'],
+
         #----------------  Каталог END ---------------------------#
 
 

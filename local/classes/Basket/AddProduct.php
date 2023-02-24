@@ -6,6 +6,7 @@ use Bitrix\Main\UserTable;
 use \Godra\Api\Helpers\Auth\Authorisation;
 use Godra\Api\Helpers\Utility\Misc;
 use Godra\Api\User\Get;
+use CIBlockElement;
 
 class AddProduct extends Base
 {
@@ -45,8 +46,9 @@ class AddProduct extends Base
     {
         $params = Misc::getPostDataFromJson();
 //        $params = [array (
-//            'id' => 16217,
-//            'quintity' => 1,
+//            'id' => 19139,
+//            'quantity' => 1,
+//            'customName'=>'sdfsdf',
 //            'code' => 'dizelnyy_generator_tss_ad_1400s_t400_1rm9',
 //            'options' =>
 //                array (
@@ -56,21 +58,49 @@ class AddProduct extends Base
 //            'price' => 111111,
 //        )];
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
+
         foreach ($params as $key=>$item){
             $productId = intval($item['id']);
             $quantity = intval($item['quantity']);
+            $prodName = $item['customName'];
             $properties = [];
             $option = [];
             $price = 0;
-            $price += \CPrice::GetBasePrice(intval($item['id']));
+            $price_mas = \CPrice::GetBasePrice(intval($item['id']));
+            $price += $price_mas['PRICE'];
 
             $arSelect = Array("ID", "NAME", "XML_ID");
             $arFilter = Array("IBLOCK_ID"=>5, "ACTIVE"=>"Y");
             if($item['options']){
                 $arFilter['ID']=$item['options'];
 
+                $el = new CIBlockElement;
+                $PROP = array();
+                global $USER;
+                $arLoadProductArray = Array(
+                    "MODIFIED_BY"    => $USER->GetID(), // элемент изменен текущим пользователем
+                    "IBLOCK_SECTION_ID" => 1060,          // элемент лежит в корне раздела
+                    "IBLOCK_ID"      => 5,
+                    "PROPERTY_VALUES"=> $PROP,
+                    "NAME"           => $prodName,
+                    "ACTIVE"         => "Y",            // активен
+                    "PREVIEW_TEXT"   => "",
+                    "DETAIL_TEXT"    => "",
+                );
 
-
+                if($productId = $el->Add($arLoadProductArray)){
+                    $arFields = [
+                        "ID" => $productId,
+                        "VAT_ID" => 1, //выставляем тип ндс (задается в админке)
+                        "VAT_INCLUDED" => "Y", //НДС входит в стоимость
+//                        'QUANTITY'=>10,
+//                        'QUANTITY_RESERVED'=>1,
+//                        'QUANTITY_TRACE'=>'N',
+                    ];
+                    \Bitrix\Catalog\Model\Product::add($arFields);
+                    \CPrice::SetBasePrice($productId,$price,$price_mas['CURRENCY']);
+                    $params[$key]['id'] = $productId;
+                }
             }else{
                 $arFilter['ID']=$item['id'];
             }
@@ -78,40 +108,45 @@ class AddProduct extends Base
             while($ob = $res->GetNextElement())
             {
                 $arFields = $ob->GetFields();
+                $arProps = $ob->GetProperties();
 
-                if($item['options'])$option[] = $arFields['XML_ID'];
-                $ar_res =\CPrice::GetBasePrice($arFields['ID']);
-                $price += $ar_res['PRICE'];
+                if($item['options']){
+                    $option[] = $arFields['XML_ID'].'|'.$arProps['VID_OPTSII']['VALUE'];
+                    $ar_res =\CPrice::GetBasePrice($arFields['ID']);
+                    $price += $ar_res['PRICE'];
+                }
             }
 
             $params[$key]['price'] = $price;
 
             if($item['options'])
-            $properties['OPTION'] = array(
-                'NAME' => 'OPTION',
-                'CODE' => 'OPTION',
-                'VALUE' => implode(";", $option),
-                'SORT' => 100
-            );
+                $properties['OPTION'] = array(
+                    'NAME' => 'OPTION',
+                    'CODE' => 'OPTION',
+                    'VALUE' => implode(";", $option),
+                    'SORT' => 100
+                );
             if($item['comment'])
-            $properties['COMMENT']= array(
-                'NAME' => 'COMMENT',
-                'CODE' => 'COMMENT',
-                'VALUE' => $item['comment'],
-                'SORT' => 100
-            );
+                $properties['COMMENT']= array(
+                    'NAME' => 'COMMENT',
+                    'CODE' => 'COMMENT',
+                    'VALUE' => $item['comment'],
+                    'SORT' => 100
+                );
             if($item['props'])
-            $properties['PROPS']= array(
-                'NAME' => 'PROPS',
-                'CODE' => 'PROPS',
-                'VALUE' => json_encode($item['props']),
-                'SORT' => 100
-            );
+                $properties['PROPS']= array(
+                    'NAME' => 'PROPS',
+                    'CODE' => 'PROPS',
+                    'VALUE' => json_encode($item['props']),
+                    'SORT' => 100
+                );
+
 
             $xml_id = 'bx_'.rand(1000000000000,9999999999999);
-
             $item = $basket->createItem('catalog', $productId);
+
             $item->setFields(array(
+                'NAME'=> $prodName,
                 'QUANTITY' => $quantity,
                 'CURRENCY' => \Bitrix\Currency\CurrencyManager::getBaseCurrency(),
                 'LID' => \Bitrix\Main\Context::getCurrent()->getSite(),
@@ -119,15 +154,17 @@ class AddProduct extends Base
                 'PRICE' => $price,
                 'CUSTOM_PRICE' => 'Y',
                 'XML_ID'=>$xml_id
-                ));
-
+            ));
             if(isset($properties)) {
                 $basketPropertyCollection = $item->getPropertyCollection();
                 $basketPropertyCollection->setProperty($properties);
             }
+
             $params[$key]['basket_id'] = $xml_id;
+
         }
-        $basket->save();
+        $bs=$basket->save();
+
         $dbRes = \Bitrix\Sale\Basket::getList([
             'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
             'filter' => [
@@ -145,12 +182,11 @@ class AddProduct extends Base
                 if($value['basket_id']==$item['XML_ID'])$params[$key]['basket_id'] = $item['ID'];
             }
         }
-
         return $params;
     }
     public function byId()
     {
-		/*
+        /*
         $headers = apache_request_headers();
 
         // определить id пользователя по токену
@@ -187,9 +223,9 @@ class AddProduct extends Base
 
         $deal =  \Godra\Api\Catalog\Element::getDeal($dealId);
         $priceTypeXmlId = $deal['UF_IDTIPACEN'];
-		*/
-		
-		$priceTypeXmlId = (new \Godra\Api\Helpers\Contract)->getPriceTypeByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId());
+        */
+
+        $priceTypeXmlId = (new \Godra\Api\Helpers\Contract)->getPriceTypeByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId());
 
         // передавать id пользователя
         $this->addProductById(
