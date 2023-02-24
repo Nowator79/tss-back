@@ -801,6 +801,7 @@ class Element extends Base
      */
     public function getAvailableProductsId($headers) 
 	{
+        return [];
 		//return (new \Godra\Api\Helpers\Nomenclature)->getByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId());
 
 		/*
