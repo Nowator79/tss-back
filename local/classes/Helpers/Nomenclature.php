@@ -127,7 +127,7 @@ class Nomenclature
 
         foreach ($res as $item) {
             $options["VID"][] = $item["TABS"]["props"]["VID_OPTSII"]["VALUE"];
-            $options["ART"][] = $item["TABS"]["props"]["ARTICLE"]["VALUE"];
+            $options["ART"][] = $item["TABS"]["props"]["CML2_ARTICLE"]["VALUE"];
             $options["STA"][] = $item["TABS"]["props"]["STEPEN_AVTOMATIZATSII"]["VALUE"];
         }
 
