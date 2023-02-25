@@ -128,7 +128,7 @@ class Helper extends Base
 
                     <table border="1">
                         <tr>
-                            <td colspan="3">Коммерческое предложение от '.NOW().'</td>
+                            <td colspan="3">Коммерческое предложение от '.date("Y-m-d H:i:s").'</td>
                             <td colspan="3">'.$params["contragent"].'</td>
                         </tr>
                         <tr>
