@@ -37,6 +37,7 @@ class Helper extends Base
                     "BASKET_ID" => $item['ID'],
                 ),
             ));
+
             $db_res = \CPrice::GetList(
                 array(),
                 array(
@@ -50,10 +51,16 @@ class Helper extends Base
             }
 
             while ($property = $basketPropRes->fetch()) {
+                $property_buf = $property;
                 if ($property['NAME'] == 'OPTION' && $property['VALUE']) {
                     $item_el['options'] = [];
                     $arSelect = array("ID", "NAME", "XML_ID");
-                    $arFilter = array("IBLOCK_ID" => 5, 'XML_ID' => explode(';', $property['VALUE']), "ACTIVE" => "Y");
+                    $buf_option_id = explode(';', $property['VALUE']);
+                    foreach ($buf_option_id as $key=>$value){
+                        $buf_val = explode('|', $value);
+                        $buf_option_id[$key]=$buf_val[0];
+                    }
+                    $arFilter = array("IBLOCK_ID" => 5, 'XML_ID' => $buf_option_id, "ACTIVE" => "Y");
                     $res = \CIBlockElement::GetList(array(), $arFilter, false, array(), $arSelect);
                     while ($ob = $res->GetNextElement()) {
                         $arFields = $ob->GetFields();
@@ -79,6 +86,7 @@ class Helper extends Base
                     $item_el['comment'] = json_decode($property['VALUE']);
                 }
             }
+
             if (!isset($item_el['options'])) {
                 $db_res = \CPrice::GetList(
                     array(),
@@ -93,7 +101,6 @@ class Helper extends Base
             }
             $mas_item[] = $item_el;
         }
-
         return $mas_item;
     }
 
