@@ -102,6 +102,7 @@ class Helper extends Base
     {
         global $USER;
         $useId = ($USER->GetID() == 0) ? 1 : $USER->GetID();
+        $params = Misc::getPostDataFromJson();
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
 
         if (count($basket->getQuantityList())) {
@@ -110,7 +111,7 @@ class Helper extends Base
             $tempDir = $_SESSION['REPORT_EXPORT_TEMP_DIR'] = \CTempFile::GetDirectoryName(1, array('invoice', uniqid('basket_invoice_')));
             \CheckDirPath($tempDir);
             $filePath = "{$tempDir}{$fileName}";
-
+            $logoSrc = "";
             $fileType = 'application/vnd.ms-excel';
             $fileHeader = '<?
                     Header("Content-Type: application/force-download");
@@ -127,6 +128,20 @@ class Helper extends Base
 
                     <table border="1">
                         <tr>
+                            <td colspan="3">Коммерческое предложение от '.NOW().'</td>
+                            <td colspan="3">'.$params["contragent"].'</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><img src="'.$logoSrc.'">Лого</td>
+                            <td colspan="3">
+                                <tr>'.$params["company"].'</tr>
+                                <tr>'.$params["name"].'</tr>
+                                <tr>'.$params["phone"].'</tr>
+                                <tr>'.$params["email"].'</tr>
+                            </td>
+                        </tr>
+                        <tr colspan="6">На ваш запрос предлагаем вам следующее решение под вашу индивидуальную потребность:</tr>
+                        <tr>
                             <td>N</td>
                             <td>Наименование товара</td>
                             <td>Кол-во</td>
@@ -138,7 +153,8 @@ class Helper extends Base
 
             // рендерим таблицу
             foreach ($basket as $item) {
-                $row = '<tr><td>' . $item->getProductId() . '</td>
+                $row = '<tr>
+                                    <td>' . $item->getProductId() . '</td>
                                     <td>' . $item->getField("NAME") . '</td>
                                     <td>' . $item->getQuantity() . '</td>
                                     <td>шт</td>
@@ -147,11 +163,29 @@ class Helper extends Base
                                 </tr>';
                 file_put_contents($filePath, $row, FILE_APPEND);
             }
-            //
+
+            $row =  '<tr colspan="6">Детализация комплектации указана в Приложении №1 к данному технико-коммерческому предложению (ТКП)</tr>
+                     <tr colspan="6">Ваш персональный менеджер:</tr>
+                     <tr colspan="6">ФИО_Пользователя_кабинета</tr>
+                     <tr colspan="6">Телефон_Ползователя_кабинета</tr>
+                     <tr colspan="6">Почта_ползователя_кабинетп</tr>
+                     <tr colspan="6"></tr>
+                     <tr colspan="6"></tr>
+                     <tr colspan="6"></tr>
+                     <tr colspan="6">Приложение 1</tr>
+                     <tr colspan="6"></tr>';
+
+            file_put_contents($filePath, $row, FILE_APPEND);
+            foreach ($basket as $item) {
+                $row =  '<tr colspan="6">'. $item->getField("NAME") .'</tr>
+                         <tr colspan="6">'. $item->getField("DETAIL_PICTURE") .'</tr>
+                         <tr colspan="6"></tr>';
+            }
+
+            file_put_contents($filePath, $row, FILE_APPEND);
             file_put_contents($filePath, '</table></body></html>', FILE_APPEND);
 
-            return str_replace(\Bitrix\Main\Application::getDocumentRoot(
-            ), '', $filePath);
+            return str_replace(\Bitrix\Main\Application::getDocumentRoot(), '', $filePath);
         }
     }
 }
