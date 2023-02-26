@@ -405,7 +405,7 @@ class Element extends Base
                 'code' => $product['CODE'],
                 'name' => $product['NAME'],
                 'artnumber' => $product['PROPERTY_CML2_ARTICLE_VALUE'] ?? '',
-                'description' => $arProps['DETALNOE_OPISANIE_TOVARA']['VALUE'].$arProps['OPISANIE_TOVARA']['VALUE'],
+                'description' => $arProps['OPISANIE_TOVARA']['VALUE'],
                 'pictures' => $pictures ?? [],
                 // для авторизованных пользователей
                 // цены
