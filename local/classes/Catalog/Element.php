@@ -112,7 +112,7 @@ class Element extends Base
 	{
         $params = Misc::getPostDataFromJson();
 
-//        $params['code'] ='dizel_generator_kipor_kde_12_sta3_utsenka';
+//        $params['code'] ='dizelnyy_generator_tss_ad_2000s_t400_1rm26';
 
         if (empty($params['code']) || !isset($params['code']))
 		{
@@ -152,6 +152,7 @@ class Element extends Base
             $priceTypeXmlId,
         );
 
+//        return '<pre>'.Print_r($product).'</pre>';
         return $product;
     }
 
@@ -339,13 +340,24 @@ class Element extends Base
             array(),
             array(
                 "PRODUCT_ID" => (int) $product['ID'],
-                "CATALOG_GROUP_ID" => array(496,510)
+                "CATALOG_GROUP_ID" => array(496)
             )
         );
         while ($ar_res = $db_res->Fetch())
         {
             $price[]=$ar_res["PRICE"];
         }
+        global $USER;
+        $quantity = 1;
+        $renewal = 'N';
+        $arPrice = \CCatalogProduct::GetOptimalPrice(
+            $product['ID'],
+            $quantity,
+            $USER->GetUserGroupArray(),
+            $renewal
+        );
+        $price[]=$arPrice['PRICE']['PRICE'];
+
         Loader::includeModule("sale");
         $cntBasketItems = \CSaleBasket::GetList(
             array(),
