@@ -41,9 +41,8 @@ $eventManager->addEventHandler('catalog', 'OnGetOptimalPriceResult', function(&$
         $cont_discount =  $arData["UF_DISCOUNT"];
     }
     if($cont_discount) {
-        $result['PRICE']['PRICE'] += $result['PRICE']['PRICE'] * $cont_discount / 100;
+        $result['PRICE']['PRICE'] -= $result['PRICE']['PRICE'] * $cont_discount / 100;
     }
-
 });
 
 // после добавление элемента в highload-блок Договоры
