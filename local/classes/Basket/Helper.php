@@ -111,80 +111,41 @@ class Helper extends Base
             $tempDir = $_SESSION['REPORT_EXPORT_TEMP_DIR'] = \CTempFile::GetDirectoryName(1, array('invoice', uniqid('basket_invoice_')));
             \CheckDirPath($tempDir);
             $filePath = "{$tempDir}{$fileName}";
-            $logoSrc = "";
-            $fileType = 'application/vnd.ms-excel';
-            $fileHeader = '<?
-                    Header("Content-Type: application/force-download");
-                    Header("Content-Type: application/octet-stream");
-                    Header("Content-Type: application/download");
-                    Header("Content-Disposition: attachment;filename={$fileName}");
-                    Header("Content-Transfer-Encoding: binary");
-                    ?>
-                    <html>
-                    <head>
-                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                    </head>
-                    <body>
+            require_once $_SERVER["DOCUMENT_ROOT"] .'/local/classes/Helpers/PHPExcel/Classes/PHPExcel.php';
+            $objPHPExcel = new \PHPExcel();
+            $objPHPExcel->getProperties()->setCreator("TSS")
+                ->setLastModifiedBy("TSS")
+                ->setTitle("invoice_{$basket->getFUserId()}")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("invoice_{$basket->getFUserId()}")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("invoice");
 
-                    <table border="1">
-                        <tr>
-                            <td colspan="3">Коммерческое предложение от '.date("Y-m-d H:i:s").'</td>
-                            <td colspan="3">'.$params["contragent"].'</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><img src="'.$logoSrc.'">Лого</td>
-                            <td colspan="3">
-                                <tr>'.$params["company"].'</tr>
-                                <tr>'.$params["name"].'</tr>
-                                <tr>'.$params["phone"].'</tr>
-                                <tr>'.$params["email"].'</tr>
-                            </td>
-                        </tr>
-                        <tr colspan="6">На ваш запрос предлагаем вам следующее решение под вашу индивидуальную потребность:</tr>
-                        <tr>
-                            <td>N</td>
-                            <td>Наименование товара</td>
-                            <td>Кол-во</td>
-                            <td>Ед.</td>
-                            <td>Цена руб.</td>
-                            <td>Сумма руб.</td>
-                        </tr>';
-            file_put_contents($filePath, $fileHeader, FILE_APPEND);
+            //рендеринг
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
+                $objPHPExcel->getActiveSheet()->mergeCells($ column_index. ''. $ beginRow. ":". $ column_index. ''. $ endRow);
+                $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot().'/local/tmp/logo.754be02.jpg');
+                $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
+                $objDrawing->setDescription('barcode');
+                $objDrawing->setImageResource($imgBarcode);
+                $objDrawing->setHeight(150);
+                $objDrawing->setCoordinates('A2');
+                $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            //
 
-            // рендерим таблицу
-            foreach ($basket as $item) {
-                $row = '<tr>
-                                    <td>' . $item->getProductId() . '</td>
-                                    <td>' . $item->getField("NAME") . '</td>
-                                    <td>' . $item->getQuantity() . '</td>
-                                    <td>шт</td>
-                                    <td>' . $item->getPrice() . '</td>
-                                    <td>' . $item->getFinalPrice() . '</td>
-                                </tr>';
-                file_put_contents($filePath, $row, FILE_APPEND);
-            }
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="01simple.xls"');
+            header('Cache-Control: max-age=0');
+            header('Cache-Control: max-age=1');
 
-            $row =  '<tr colspan="6">Детализация комплектации указана в Приложении №1 к данному технико-коммерческому предложению (ТКП)</tr>
-                     <tr colspan="6">Ваш персональный менеджер:</tr>
-                     <tr colspan="6">ФИО_Пользователя_кабинета</tr>
-                     <tr colspan="6">Телефон_Ползователя_кабинета</tr>
-                     <tr colspan="6">Почта_ползователя_кабинетп</tr>
-                     <tr colspan="6"></tr>
-                     <tr colspan="6"></tr>
-                     <tr colspan="6"></tr>
-                     <tr colspan="6">Приложение 1</tr>
-                     <tr colspan="6"></tr>';
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
 
-            file_put_contents($filePath, $row, FILE_APPEND);
-            foreach ($basket as $item) {
-                $row =  '<tr colspan="6">'. $item->getField("NAME") .'</tr>
-                         <tr colspan="6">'. $item->getField("DETAIL_PICTURE") .'</tr>
-                         <tr colspan="6"></tr>';
-            }
-
-            file_put_contents($filePath, $row, FILE_APPEND);
-            file_put_contents($filePath, '</table></body></html>', FILE_APPEND);
-
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save($filePath);
             return str_replace(\Bitrix\Main\Application::getDocumentRoot(), '', $filePath);
         }
     }
