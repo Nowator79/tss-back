@@ -38,17 +38,27 @@ class Helper extends Base
                 ),
             ));
 
-            $db_res = \CPrice::GetList(
-                array(),
-                array(
-                    "PRODUCT_ID" =>  $item['PRODUCT_ID'],
-                    "CATALOG_GROUP_ID" => 496
-                )
+//            $db_res = \CPrice::GetList(
+//                array(),
+//                array(
+//                    "PRODUCT_ID" =>  $item['PRODUCT_ID'],
+//                    "CATALOG_GROUP_ID" => 496
+//                )
+//            );
+//            if ($ar_res = $db_res->Fetch())
+//            {
+//                $item_el['origin_price']+=$ar_res["PRICE"];
+//            }
+            global $USER;
+            $quantity = 1;
+            $renewal = 'N';
+            $arPrice = \CCatalogProduct::GetOptimalPrice(
+                $item['PRODUCT_ID'],
+                $quantity,
+                $USER->GetUserGroupArray(),
+                $renewal
             );
-            if ($ar_res = $db_res->Fetch())
-            {
-                $item_el['origin_price']+=$ar_res["PRICE"];
-            }
+            $item_el['origin_price'] +=$arPrice['PRICE']['PRICE'];
 
             while ($property = $basketPropRes->fetch()) {
                 $property_buf = $property;
@@ -66,16 +76,23 @@ class Helper extends Base
                         $arFields = $ob->GetFields();
                         $item_el['options'][] = $arFields['ID'];
 
-                        $db_res = \CPrice::GetList(
-                            array(),
-                            array(
-                                "PRODUCT_ID" => $arFields['ID'],
-                                "CATALOG_GROUP_ID" => 496
-                            )
+//                        $db_res = \CPrice::GetList(
+//                            array(),
+//                            array(
+//                                "PRODUCT_ID" => $arFields['ID'],
+//                                "CATALOG_GROUP_ID" => 496
+//                            )
+//                        );
+//                        if ($ar_res = $db_res->Fetch()) {
+//                            $item_el['origin_price'] += $ar_res["PRICE"];
+//                        }
+                        $arPrice = \CCatalogProduct::GetOptimalPrice(
+                            $item['PRODUCT_ID'],
+                            $quantity,
+                            $USER->GetUserGroupArray(),
+                            $renewal
                         );
-                        if ($ar_res = $db_res->Fetch()) {
-                            $item_el['origin_price'] += $ar_res["PRICE"];
-                        }
+                        $item_el['origin_price'] +=$arPrice['PRICE']['PRICE'];
                     }
 
                 }
@@ -87,18 +104,18 @@ class Helper extends Base
                 }
             }
 
-            if (!isset($item_el['options'])) {
-                $db_res = \CPrice::GetList(
-                    array(),
-                    array(
-                        "PRODUCT_ID" => $item_el['id'],
-                        "CATALOG_GROUP_ID" => 496
-                    )
-                );
-                if ($ar_res = $db_res->Fetch()) {
-                    $item_el['origin_price'] = $ar_res["PRICE"];
-                }
-            }
+//            if (!isset($item_el['options'])) {
+//                $db_res = \CPrice::GetList(
+//                    array(),
+//                    array(
+//                        "PRODUCT_ID" => $item_el['id'],
+//                        "CATALOG_GROUP_ID" => 496
+//                    )
+//                );
+//                if ($ar_res = $db_res->Fetch()) {
+//                    $item_el['origin_price'] = $ar_res["PRICE"];
+//                }
+//            }
             $mas_item[] = $item_el;
         }
         return $mas_item;
