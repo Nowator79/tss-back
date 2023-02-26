@@ -25,7 +25,7 @@ $eventManager->addEventHandler('catalog', 'OnGetOptimalPriceResult', function(&$
     $rsUser = \CUser::GetByID($USER->GetID());
     $arUser = $rsUser->Fetch();
     Loader::includeModule("highloadblock");
-    $hlbl = 4; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlbl = 60; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
     $entity = HL\HighloadBlockTable::compileEntity($hlblock);
@@ -34,7 +34,7 @@ $eventManager->addEventHandler('catalog', 'OnGetOptimalPriceResult', function(&$
     $rsData = $entity_data_class::getList(array(
         "select" => array("*"),
         "order" => array("ID" => "ASC"),
-        "filter" => array("UF_IDKONTRAGENTA"=>$arUser['UF_CONTRAGENT_ID']),  // Задаем параметры фильтра выборки
+        "filter" => array("UF_USER"=>$arUser['UF_CONTRAGENT_ID']),  // Задаем параметры фильтра выборки
     ));
 
     while($arData = $rsData->Fetch()){
