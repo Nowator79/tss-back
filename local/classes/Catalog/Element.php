@@ -112,7 +112,7 @@ class Element extends Base
 	{
         $params = Misc::getPostDataFromJson();
 
-        $params['code'] ='dizelnyy_generator_tss_ad_2000s_t400_1rm26';
+//        $params['code'] ='dizelnyy_generator_tss_ad_2000s_t400_1rm26';
 
         if (empty($params['code']) || !isset($params['code']))
 		{
@@ -152,7 +152,7 @@ class Element extends Base
             $priceTypeXmlId,
         );
 
-        return '<pre>'.Print_r($product).'</pre>';
+//        return '<pre>'.Print_r($product).'</pre>';
         return $product;
     }
 
