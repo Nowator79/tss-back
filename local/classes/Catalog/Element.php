@@ -161,6 +161,21 @@ class Element extends Base
      *
      * @return array
      */
+    public static function getIgnoreElementProps() {
+        return [
+            'YAVLYAETSYA_DGU',
+            'CML2_MANUFACTURER',
+            'VARIANTY_ISPOLNENIYA',
+            'ZAPCHASTI',
+            'MATERINSKIE_IZDELIYA',
+            'DOP_OBORUDOVANIE',
+            'DOP_KOMPLEKTATSIYA',
+            'TEKHNICHESKOE_OBSLUZHIVANIE',
+            'PORYADOK_SVOYSTV',
+            'PRIVYAZKA_OPTSIY',
+            'VID_OPTSII',
+        ];
+    }
     public static function getAllElementProps() {
         $props = [];
         $propsObj = \Bitrix\Iblock\PropertyTable::getList([
@@ -270,11 +285,13 @@ class Element extends Base
 //        $allProps = self::getAllElementProps();
 //        $props = self::getDefaultProductProps();
 //        return '<pre>'.Print_r($arProps).'</pre>';
+        $ignore_prop = getIgnoreElementProps();
         $product['PROPERTY_CML2_ARTICLE_VALUE'] = $arProps['CML2_ARTICLE']['VALUE'];
         foreach ($arProps as $k => $prop) {
             if ($prop['CODE'] !== 'CML2_ARTICLE'
                 && $prop['VALUE'] !== null
                 && $prop['VALUE'] !== 'null'
+                && !in_array($prop['CODE'], $ignore_prop)
                 && $prop['VALUE'] !== '') {
                  $tabs['props'][] = [
                             'name' => $prop['NAME'],
@@ -388,7 +405,7 @@ class Element extends Base
                 'code' => $product['CODE'],
                 'name' => $product['NAME'],
                 'artnumber' => $product['PROPERTY_CML2_ARTICLE_VALUE'] ?? '',
-                'description' => !empty($product['~PREVIEW_TEXT']) ? $product['~PREVIEW_TEXT'] : '',
+                'description' => $arProps['OPISANIE_TOVARA']['VALUE'],
                 'pictures' => $pictures ?? [],
                 // для авторизованных пользователей
                 // цены
