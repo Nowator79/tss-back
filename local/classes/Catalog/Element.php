@@ -1274,7 +1274,7 @@ class Element extends Base
 		$result['priceRange'] = self::$priceRange;
 
 		foreach($sectionElements as $key=>$value){
-		    if($value['article']==NULL){
+		    if($value['compl']==NULL){
                 $sectionElements[$key]['option_flag'] = false;
             }else{
                 $sectionElements[$key]['option_flag'] = true;
@@ -1824,6 +1824,7 @@ class Element extends Base
                     'id' => (int) $row['ID'],
                     //артикул
                     'article'=>$row['PROPERTY_CML2_ARTICLE_VALUE'],
+                    'compl'=>$row['PROPERTY_DOP_KOMPLEKTATSIYA_VALUE'],
                     // название
                     'name' => $row['NAME'],
                     // код
