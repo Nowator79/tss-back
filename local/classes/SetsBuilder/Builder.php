@@ -94,6 +94,21 @@ class Builder
             "order" => ["CATALOG_GROUP_ID" => "ASC"]
         ])->fetchAll();
 
+        global $USER;
+        $quantity = 1;
+        $renewal = 'N';
+        $arPrice = \CCatalogProduct::GetOptimalPrice(
+            $productId,
+            $quantity,
+            $USER->GetUserGroupArray(),
+            $renewal
+        );
+        $allProductPrices[]=[
+            "CATALOG_GROUP_ID"=> "496",
+            "PRICE"=> $arPrice['PRICE']['PRICE'],
+            "CURRENCY"=> "RUB"
+        ];
+
         return $allProductPrices;
     }
 
