@@ -872,7 +872,7 @@ class Element extends Base
 		// Dmitry
 		$priceTypeXmlId = (new \Godra\Api\Helpers\Contract)->getPriceTypeByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId());
 		
-		$priceType = 510; // базовый тип цен
+		$priceType = 496; // базовый тип цен
 		
 		if ($priceTypeXmlId)
 		{
@@ -1575,6 +1575,7 @@ class Element extends Base
             'PROPERTY_STOCK',
             // Артикул
             'PROPERTY_CML2_ARTICLE',
+            'PROPERTY_DOP_KOMPLEKTATSIYA',
             // хит
             'PROPERTY_HIT',
             // новинка
@@ -1787,13 +1788,23 @@ class Element extends Base
                 array(),
                 array(
                     "PRODUCT_ID" => (int) $row['ID'],
-                    "CATALOG_GROUP_ID" => array(496,510)
+                    "CATALOG_GROUP_ID" => array(496)
                 )
             );
             while ($ar_res = $db_res->Fetch())
             {
                  $price[]=$ar_res["PRICE"];
             }
+            global $USER;
+            $quantity = 1;
+            $renewal = 'N';
+            $arPrice = \CCatalogProduct::GetOptimalPrice(
+                $row['ID'],
+                $quantity,
+                $USER->GetUserGroupArray(),
+                $renewal
+            );
+            $price[]=$arPrice['PRICE']['PRICE'];
             Loader::includeModule("sale");
             $cntBasketItems = \CSaleBasket::GetList(
                 array(
@@ -1847,7 +1858,6 @@ class Element extends Base
                     'qa'=>$qa,
 
                 ];
-
         }
 
         return $elements;
