@@ -98,8 +98,8 @@ class Filter extends Base
             $arProps = $ob->GetProperties();
 
             if($arFields['CATALOG_PRICE_496']){
-                if($arFields['CATALOG_PRICE_496']<$mas_prop['PRICE']['VALUE_MIN'])$mas_prop['PRICE']['VALUE_MIN'] = $arFields['CATALOG_PRICE_496'];
-                if($arFields['CATALOG_PRICE_496']>$mas_prop['PRICE']['VALUE_MAX'])$mas_prop['PRICE']['VALUE_MAX'] = $arFields['CATALOG_PRICE_496'];
+                if(!$mas_prop['PRICE']['VALUE_MIN']||$arFields['CATALOG_PRICE_496']<$mas_prop['PRICE']['VALUE_MIN'])$mas_prop['PRICE']['VALUE_MIN'] = $arFields['CATALOG_PRICE_496'];
+                if(!$mas_prop['PRICE']['VALUE_MAX']||$arFields['CATALOG_PRICE_496']>$mas_prop['PRICE']['VALUE_MAX'])$mas_prop['PRICE']['VALUE_MAX'] = $arFields['CATALOG_PRICE_496'];
             }
 
             foreach ($arProps as $key => $value){
