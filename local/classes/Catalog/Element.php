@@ -285,7 +285,7 @@ class Element extends Base
 //        $allProps = self::getAllElementProps();
 //        $props = self::getDefaultProductProps();
 //        return '<pre>'.Print_r($arProps).'</pre>';
-        $ignore_prop = getIgnoreElementProps();
+        $ignore_prop = self::getIgnoreElementProps();
         $product['PROPERTY_CML2_ARTICLE_VALUE'] = $arProps['CML2_ARTICLE']['VALUE'];
         foreach ($arProps as $k => $prop) {
             if ($prop['CODE'] !== 'CML2_ARTICLE'
