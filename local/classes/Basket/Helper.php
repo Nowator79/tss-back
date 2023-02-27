@@ -215,6 +215,8 @@ class Helper extends Base
             return str_replace(\Bitrix\Main\Application::getDocumentRoot(
             ), '', $filePath);
         }
+
+        return ['error' => 'Корзна пуста!'];
     }
 }
 
