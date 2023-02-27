@@ -56,7 +56,6 @@ class Filter extends Base
     public function getFilterProperty()
     {
         $params = Misc::getPostDataFromJson();
-
         $IBLOCK_ID = 5;
         $SECTION_ID = $this->SECTION_ID;
         $mas_prop = [];
@@ -66,20 +65,24 @@ class Filter extends Base
             $res = \CIBlockSection::GetList(array(), array('IBLOCK_ID' => $IBLOCK_ID, 'CODE' => $params['code']));
             if($section = $res->Fetch())$SECTION_ID=$section["ID"];
         }
-
+        $mas_prop['PRICE']=[
+            'NAME'=>'Цена',
+            'CODE'=>'PRICE',
+            'PROPERTY_TYPE'=>'DIAPASON',
+        ];
         foreach (\CIBlockSectionPropertyLink::GetArray($IBLOCK_ID, $SECTION_ID) as $PID => $arLink) {
             if ($arLink["SMART_FILTER"] !== "Y") {
                 continue;
             }
             $rsProperty = \CIBlockProperty::GetByID($PID);
             $arProperty = $rsProperty->Fetch();
-            if ($arProperty) {
+
+            if ($arProperty){
                 $mas_prop[$arProperty['CODE']]['NAME'] = $arProperty['NAME'];
                 $mas_prop[$arProperty['CODE']]['CODE'] = $arProperty['CODE'];
                 $mas_prop[$arProperty['CODE']]['PROPERTY_TYPE'] = $mas_type_prop[$arProperty['PROPERTY_TYPE']];
             }
         }
-
 //        $arSelect = Array("ID");
 //        foreach (array_keys($mas_prop) as $value){
 //            $arSelect[] = 'PROPERTY_'.$value;
@@ -89,10 +92,15 @@ class Filter extends Base
             $arFilter["SECTION_ID"]= $SECTION_ID;
         }
 
-        $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), array("ID", "IBLOCK_ID", "NAME", "DATE_ACTIVE_FROM",'PROPERTY_*'));
+        $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), array("ID", "IBLOCK_ID","catalog_PRICE_496", "NAME", "DATE_ACTIVE_FROM",'PROPERTY_*'));
         while($ob = $res->GetNextElement()){
             $arFields = $ob->GetFields();
             $arProps = $ob->GetProperties();
+
+            if($arFields['CATALOG_PRICE_496']){
+                if($arFields['CATALOG_PRICE_496']<$mas_prop['PRICE']['VALUE_MIN'])$mas_prop['PRICE']['VALUE_MIN'] = $arFields['CATALOG_PRICE_496'];
+                if($arFields['CATALOG_PRICE_496']>$mas_prop['PRICE']['VALUE_MAX'])$mas_prop['PRICE']['VALUE_MAX'] = $arFields['CATALOG_PRICE_496'];
+            }
 
             foreach ($arProps as $key => $value){
 //                $test_mas = $ob;

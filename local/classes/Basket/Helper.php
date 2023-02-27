@@ -87,7 +87,7 @@ class Helper extends Base
 //                            $item_el['origin_price'] += $ar_res["PRICE"];
 //                        }
                         $arPrice = \CCatalogProduct::GetOptimalPrice(
-                            $item['PRODUCT_ID'],
+                            $arFields['ID'],
                             $quantity,
                             $USER->GetUserGroupArray(),
                             $renewal
