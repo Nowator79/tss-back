@@ -216,7 +216,7 @@ class Helper extends Base
             ), '', $filePath);
         }
 
-        return ['error' => 'Корзна пуста!'];
+        return ['error' => 'Корзина пуста!'];
     }
 }
 
