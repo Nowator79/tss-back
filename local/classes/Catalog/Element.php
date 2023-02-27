@@ -163,15 +163,22 @@ class Element extends Base
      */
     public static function getIgnoreElementProps() {
         return [
+            'OPISANIE_TOVARA',
+            'DETALNOE_OPISANIE_TOVARA',
+            'CML2_TRAITS',
+            'CML2_TAXES',
+            'MORE_PHOTO',
+            'FILES',
+            'VNESHNYAYA_SSYLKA_NA_IZOBRAZHENIE',
             'YAVLYAETSYA_DGU',
+            'ZAPCHASTI',
+            'PORYADOK_SVOYSTV',
             'CML2_MANUFACTURER',
             'VARIANTY_ISPOLNENIYA',
-            'ZAPCHASTI',
             'MATERINSKIE_IZDELIYA',
             'DOP_OBORUDOVANIE',
             'DOP_KOMPLEKTATSIYA',
             'TEKHNICHESKOE_OBSLUZHIVANIE',
-            'PORYADOK_SVOYSTV',
             'PRIVYAZKA_OPTSIY',
             'VID_OPTSII',
         ];
@@ -1808,10 +1815,7 @@ class Element extends Base
 			//
 			
             // для авторизованного
-
-
-
-                $price = [];
+            $price = [];
 
             $db_res = \CPrice::GetList(
                 array(),
