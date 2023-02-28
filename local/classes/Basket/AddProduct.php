@@ -56,7 +56,10 @@ class AddProduct extends Base
 //                ),
 //            'price' => 111111,
 //        )];
+
+
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
+
         global $USER;
         $quantity = 1;
         $renewal = 'N';
@@ -183,8 +186,8 @@ class AddProduct extends Base
             $params[$key]['basket_id'] = $xml_id;
 
         }
-        $params['basket_id']=$basket->save();
-
+        $basket->save();
+        
         $dbRes = \Bitrix\Sale\Basket::getList([
             'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
             'filter' => [
