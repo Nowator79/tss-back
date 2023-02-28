@@ -873,48 +873,7 @@ class Element extends Base
     // метод для получения элентов разделов 1-2 уровня
     public static function getSectionElements() {
 
-        $headers = apache_request_headers();
-		
-        $availableProductsXmlId = self::getAvailableProductsId($headers);
-
-		/*
-        // определить id пользователя по токену
-        $decoded = Authorisation::getUserId($headers);
-        if (!isset($decoded['error'])) {
-            $tokenUserId = $decoded;
-        }
-
-        // является ли суперпользователем
-        if (Authorisation::isSuperUser($headers)) {
-            $superUserId = $tokenUserId;
-        } else {
-            // искать суперпользователя для текущего пользователя
-            $superUserXmlId = Get::getParentUserXmlId($tokenUserId);
-            $superUserId = Get::getUserIdByXmlId($superUserXmlId);
-        }
-
-        // Идентификатор текущего договора
-        $dealId = UserTable::getList([
-            'filter' => [ 'ID' => $superUserId, 'ACTIVE' => 'Y' ],
-            'select' => [ 'ID', 'UF_ID_DOGOVOR' ]
-        ])->Fetch()['UF_ID_DOGOVOR'];
-
-        $deal = self::getDeal($dealId);
-        $priceTypeXmlId = $deal['UF_IDTIPACEN'];
-		*/
-		
-		// 
-		
-		// Dmitry
-		$priceTypeXmlId = (new \Godra\Api\Helpers\Contract)->getPriceTypeByUserId(\Bitrix\Main\Engine\CurrentUser::get()->getId());
-		
 		$priceType = 496; // базовый тип цен
-		
-		if ($priceTypeXmlId)
-		{
-			$priceType = (new \Godra\Api\Helpers\Catalog)->getpriceTypeIdByTypeXmlId($priceTypeXmlId);
-		}
-		//
 
         $params = Misc::getPostDataFromJson();
 //        $params['section_code'] = 'dizelnye_elektrostantsii';
@@ -961,20 +920,6 @@ class Element extends Base
         $result['section_code'] = $sectionData['CODE'];
         // название раздела
         $result['section_name'] = $sectionData['NAME'];
-
-        // сортировка
-        // по умолчанию сортировка по популярности
-        if (empty($params['sort']) || !isset($params['sort'])) {
-            $params['sort_by'] = [
-                'code' => 'name'
-            ];
-
-            $result['sort_by'] = [
-                'code' => 'name'
-            ];
-        } else {
-            $result['sort_by'] = $params['sort'];
-        }
 
         switch ($params['sort']['code']) {
             case 'price':
@@ -1025,249 +970,6 @@ class Element extends Base
         // если не нужно фильтровать по разделу
         $arFilter['SECTION_CODE'] = $result['section_code'];
 
-        // бренды
-        $result['filter_params']['brands'] = [
-            'name' => 'Бренды',
-            'list' => self::getAllSectionBrands($arFilter['SECTION_CODE'])
-        ];
-
-		/*
-        // лейблы всего раздела (подраздела)
-        // сортировка по лейблам
-        if (!empty($params['sort_by_labels']) && isset($params['sort_by_labels'])) {
-            $arOrderTemp = $arOrder;
-            $arOrder = [];
-
-            foreach ($params['sort_by_labels'] as $label) {
-                switch ($label['type']) {
-                    // акции
-                    case 'stock':
-                        switch ($label['name']) {
-                            case 'Акция -30%':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_STOCK' => 'asc,nulls'
-                                ]);
-                                break;
-                            case 'Акция 3=2':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_STOCK' => 'desc,nulls'
-                                ]);
-                                break;
-                        }
-                        break;
-                    // хит
-                    case 'hit':
-                        switch ($label['name']) {
-                            case 'ХИТ':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_HIT' => 'asc,nulls'
-                                ]);
-                                break;
-                            case 'ТОП 40':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_HIT' => 'desc,nulls'
-                                ]);
-                                break;
-                        }
-                        break;
-                    // сортировка
-                    case 'new':
-                        switch ($label['name']) {
-                            case 'Новинка':
-                                $arOrder = array_merge($arOrder, [
-                                    'CREATED_DATE' => 'desc,nulls'
-                                ]);
-                                break;
-                        }
-                        break;
-                    // фасовка
-                    case 'fasovka':
-                        switch ($label['name']) {
-                            case 'Весовой':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_FASOVKA' => 'asc,nulls'
-                                ]);
-                                break;
-                            case 'Штучный':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_FASOVKA' => 'desc,nulls'
-                                ]);
-                                break;
-                        }
-                        break;
-                    // упаковка
-                    case 'packing':
-                        switch ($label['name']) {
-                            case 'Новая упаковка':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_PACKING' => 'asc,nulls'
-                                ]);
-                                break;
-                            case 'Новый объём':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_PACKING' => 'desc,nulls'
-                                ]);
-                                break;
-                        }
-                        break;
-                    // сертификация
-                    case 'certification':
-                        switch ($label['name']) {
-                            case 'ГОСТ':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_CERTIFICATION' => 'asc,nulls'
-                                ]);
-                                break;
-                            case 'ТУ':
-                                $arOrder = array_merge($arOrder, [
-                                    'propertysort_CERTIFICATION' => 'desc,nulls'
-                                ]);
-                                break;
-                        }
-                }
-            }
-
-            $arOrder = array_merge($arOrder, $arOrderTemp);
-        }
-		*/
-		
-        // apply_filter
-        if (isset($params['apply_filter']) && !empty($params['apply_filter'])) 
-		{
-            // фильтр по брендам
-            if ($params['apply_filter']['brands']) 
-			{
-                $arFilter['PROPERTY_BREND'] = self::getBrandIdsByBrandName($params['apply_filter']['brands']);
-            }
-
-            // фильтр по категориям, по подразделам
-            if ($params['apply_filter']['subsections']) 
-			{
-                //$arFilter['SECTION_CODE'] = $params['apply_filter']['subsections'];
-
-				/*
-                $filter1 = [
-                    'LOGIC' => 'AND',
-                    [
-                        'SECTION_CODE' => $params['section_code'],
-                        'INCLUDE_SUBSECTIONS' => 'Y'
-                    ],
-                    [
-                        'SECTION_CODE' => $params['apply_filter']['subsections'],
-                        'INCLUDE_SUBSECTIONS' => 'Y'
-                    ]
-                ];
-				*/
-				
-				$filter1 = 
-				[
-                    'SECTION_CODE' => $params['apply_filter']['subsections'],
-                    'INCLUDE_SUBSECTIONS' => 'Y'
-                ];
-
-                if ($availableProductsXmlId) 
-				{
-                    $arFilter[] = 
-					[
-                        'LOGIC' => 'AND',
-                        $filter1,
-                        [ 'XML_ID' => $availableProductsXmlId ]
-                    ];
-                } 
-				else 
-				{
-                    $arFilter[] = $filter1;
-                }
-
-                unset($arFilter['SECTION_CODE']);
-            }
-
-			// с фронта приходит не тот параметр // Dmitry
-			//$params['apply_filter']['is_compete'] = $params['apply_filter']['isDiscount'];
-			//
-			
-            // фильтр по "Участвует ли акции"
-            if ($params['apply_filter']['is_compete']) 
-			{
-                // найти id товаров участвующих в акции
-                $stocks = self::getStockProducts();
-
-                switch ($params['apply_filter']['is_compete']) {
-                    // участвуют в акции
-                    case 'Y':
-                        $additionalCondition = [
-                            'LOGIC' => 'OR',
-                            ['SECTION_ID' => $stocks['stockSects']],
-                            ['ID' => $stocks['stockProds']]
-                        ];
-                        break;
-                    // не участвует в акции
-                    case 'N':
-                        $additionalCondition = [
-                            'LOGIC' => 'AND',
-                            ['!SECTION_ID' => $stocks['stockSects']],
-                            ['!ID' => $stocks['stockProds']]
-                        ];
-                        break;
-                }
-
-                $filter2 = [
-                    'LOGIC' => 'AND',
-                    [
-                        'SECTION_CODE' => $params['section_code'],
-                        'INCLUDE_SUBSECTIONS' => 'Y'
-                    ],
-                    $additionalCondition
-                ];
-
-                if ($availableProductsXmlId) {
-                    $arFilter[] = [
-                        'LOGIC' => 'AND',
-                        $filter2,
-                        [ 'XML_ID' => $availableProductsXmlId ]
-                    ];
-                } else {
-                    $arFilter[] = $filter2;
-                }
-
-                unset($arFilter['SECTION_CODE']);
-            }
-			
-			// фильтр по лейблам
-			if ($params['apply_filter']['labels'])
-			{
-				$filterLabels = [];
-				
-				foreach ($params['apply_filter']['labels'] as $propLabel)
-				{
-					$propLabelArr = explode(':', $propLabel);
-					
-					if (count($propLabelArr) == 2)
-					{
-						$filterLabels['PROPERTY_'.$propLabelArr[0]][] = $propLabelArr[1];
-					}
-				}
-				
-				if ($filterLabels)
-				{
-					$filterLabels['LOGIC'] = 'OR';
-					
-					$arFilter[] = 
-					[
-                        'LOGIC' => 'AND',
-                        $filterLabels,
-                    ];
-				}
-			}
-        }
-
-        // фильтр по доступным товарам по договору
-        if ((!isset($params['apply_filter']['is_compete']) || empty($params['apply_filter']['is_compete']))
-            && (!isset($params['apply_filter']['subsections']) || empty($params['apply_filter']['subsections']))
-            && $availableProductsXmlId) {
-            $arFilter['XML_ID'] = $availableProductsXmlId ?? '';
-        }
-
 		if ($arFilter)
 		{
 			$arFilter = array_merge($arFilter, ['INCLUDE_SUBSECTIONS' => 'Y']);
@@ -1276,9 +978,6 @@ class Element extends Base
 		{
 			$arFilter = ['INCLUDE_SUBSECTIONS' => 'Y'];
 		}
-
-
-
 
         foreach ($params['filter'] as $key => $value){
             if($key=='PRICE'){
@@ -1293,7 +992,7 @@ class Element extends Base
                 }
             }
         }
-
+//        return $arFilter;
         // получение всех элементов раздела
         $sectionElements = self::getElements(
             self::getSelectFields(),
@@ -1306,75 +1005,6 @@ class Element extends Base
             $priceTypeXmlId ?? false,
 			'catalog'
         );
-
-		$result['priceRange'] = self::$priceRange;
-
-		foreach($sectionElements as $key=>$value){
-		    if($value['compl']==NULL){
-                $sectionElements[$key]['option_flag'] = false;
-            }else{
-                $sectionElements[$key]['option_flag'] = true;
-            }
-        }
-		
-//		echo '<pre>'; print_r($sectionElements); echo '</pre>'; exit;
-
-        // получение дочерних подразделов
-        $subSections = self::getSubsections([
-            'IBLOCK_SECTION_ID' => $result['section_id']
-        ]);
-
-		$arFilterSubsections = [];
-		//$arFilterSubsections = $arFilter;
-		
-		unset($arFilterSubsections['SECTION_CODE']);
-		
-		//print_r($subSections);
-		
-        foreach ($subSections as $key => $subsection) 
-		{
-			$arFilterSubsections['INCLUDE_SUBSECTIONS'] = 'Y';
-			
-			$arFilterSubsections['SECTION_ID'] = $subsection['id'];
-			
-			if ($availableProductsXmlId)
-			{
-				$arFilterSubsections['XML_ID'] = $availableProductsXmlId;
-			}
-			
-			//print_r($arFilterSubsections);
-			
-			$subSections[$key]['count'] = \CIBlockElement::GetList(false, $arFilterSubsections, ['ID'])->SelectedRowsCount();
-			
-			/*
-            $subSections[$key]['count'] =
-                $availableProductsXmlId ?
-                    \CIBlockElement::GetList(
-                        false,
-                        [
-                            'LOGIC' => 'AND',
-                            $arFilterSubsections,
-                            [ 'XML_ID' => $availableProductsXmlId , 'SECTION_ID' => $subsection['id'], 'INCLUDE_SUBSECTIONS' => 'Y']
-                        ],
-                        ['ID']
-                    )->SelectedRowsCount() :
-                    \CIBlockElement::GetList(
-                        false,
-                        $arFilterSubsections,
-                        ['ID']
-                    )->SelectedRowsCount();
-			*/
-        }
-
-        foreach ($subSections as $k => $section) 
-		{
-            if ($section['count'] == 0) 
-			{
-                unset($subSections[$k]);
-            }
-        }
-		
-		$subSections = array_values($subSections); // иначе после unset массив в js становится объектом и js отваливается
 
         // всего товаров
         $result['all_elements_count'] = self::getAllSectionElementsCount($arFilter);
@@ -1390,31 +1020,6 @@ class Element extends Base
         // товары
         $result['elements'] = $sectionElements ?? '';
 
-        // параметры фильтров
-        // подразделы
-        $result['filter_params']['sections'] = $subSections;
-
-        // авторизованный пользователь, реализовать в будущем
-        // $result['filter_params']['price'] = [];
-
-        // фильтр Участвует в акции
-        $result['filter_params']['is_compete'] = [
-            'name' => 'Участвует в акции',
-            'variants' => [
-                [
-                    'name' => 'да',
-                    'id' => 1
-                ],
-                [
-                    'name' => 'нет',
-                    'id' => 2
-                ]
-            ]
-        ];
-
-		// лейблы
-		$result['filter_params']['labels']['name'] = 'Теги';
-		$result['filter_params']['labels']['list'] = (new \Godra\Api\Helpers\Filter)->getLabels();
 
         // есть ли следующая страница
         if ($params['page']) {
@@ -1605,38 +1210,10 @@ class Element extends Base
      */
     public static function getSelectFields() {
         return [
-            '*',
-            # лейблы
-            // акция
-            'PROPERTY_STOCK',
             // Артикул
+            '*',
             'PROPERTY_CML2_ARTICLE',
             'PROPERTY_DOP_KOMPLEKTATSIYA',
-            // хит
-            'PROPERTY_HIT',
-            // новинка
-            'PROPERTY_NEW',
-            // фасовка
-            'PROPERTY_FASOVKA',
-            // упаковка
-            'PROPERTY_PACKING',
-            # лейблы
-            // вес
-            'PROPERTY_WEIGHT',
-            // срок годности
-            'PROPERTY_EXPERATION_DATE',
-            // фасовка
-            'PROPERTY_FASOVKA_2',
-            // бренд
-            'PROPERTY_BREND',
-            // популярное предложение
-            'PROPERTY_POPULAR_OFFER',
-            // популярное предложение 1С
-            'PROPERTY_POPULAR_OFFER_1C',
-
-            // множественные свойства не учитываются, иначе дублирование элементов
-            // Картинки галереи
-            // 'PROPERTY_MORE_PHOTO'
         ];
     }
 
@@ -1663,36 +1240,26 @@ class Element extends Base
         $defaultFilter = self::getDefaultFilter();
 		
 		$mainFilter = $filter ? array_merge($defaultFilter, $filter) : $defaultFilter;
-		
-		// диапазон цен
-		if ($requestType == 'catalog')
-		{
-			$priceRange = ['min' => '', 'max' => ''];
-			
-			$bitrixUserApi = new \Godra\Api\Helpers\Auth\Bitrix();
-			
-			if ($bitrixUserApi->isAuth())
-			{
-				$productsIdList = [];
-				
-				$elementPrice = \CIBlockElement::GetList([], $mainFilter, false, false, ['ID']);
-				
-				while ($rowPrice = $elementPrice->GetNext()) 
-				{
-					$productsIdList[] = $rowPrice['ID'];
-				}
-				
-				if ($productsIdList)
-				{
-					/*$priceRange = (new \Godra\Api\Helpers\Catalog)->getPriceRangeByProductsId($productsIdList, $bitrixUserApi->getUserId());*/
-				}
-			}
-			
-			self::$priceRange = $priceRange;
-		}
-		//
-		
-		//print_r($mainFilter);
+
+        global $USER;
+        $rsUser = \CUser::GetByID($USER->GetID());
+        $arUser = $rsUser->Fetch();
+        Loader::includeModule("highloadblock");
+        $hlbl = 60; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+
+        $rsData = $entity_data_class::getList(array(
+            "select" => array("*"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array("UF_USER"=>$arUser['UF_CONTRAGENT_ID']),  // Задаем параметры фильтра выборки
+        ));
+
+        while($arData = $rsData->Fetch()){
+            $cont_discount =  $arData["UF_DISCOUNT"];
+        }
 
         $elementsRaw = \CIBlockElement::GetList(
             $order ? $order : [],
@@ -1705,89 +1272,6 @@ class Element extends Base
         //while ($row = $elementsRaw->Fetch())
 		while ($row = $elementsRaw->GetNext())
 		{
-			//file_put_contents($_SERVER['DOCUMENT_ROOT'].'/local/log.txt', print_r($row, 1)."\r\n", FILE_APPEND);exit;
-
-            $labels = [];
-
-            if ($row['PROPERTY_STOCK_VALUE']) {
-                $labels[] = [
-                    //'code' => '',
-                    'name' => $row['PROPERTY_STOCK_VALUE'],
-                    'color' => '#EA4B48',
-                    'type' => 'stock'
-                ];
-            }
-
-            if ($row['PROPERTY_HIT_VALUE']) {
-                $labels[] = [
-                    //'code' => '',
-                    'name' => $row['PROPERTY_HIT_VALUE'],
-                    'color' => '#4875EA',
-                    'type' => 'hit'
-                ];
-            }
-
-            if ($row['PROPERTY_NEW_VALUE']) {
-                switch ($row['PROPERTY_NEW_VALUE']) {
-                    case 'Y':
-                        $labels[] = [
-                            //'code' => '',
-                            'name' => 'Новинка',
-                            'color' => '#2388FF',
-                            'type' => 'new'
-                        ];
-                        break;
-                    case 'N':
-
-                        break;
-                }
-            }
-
-            if ($row['PROPERTY_FASOVKA_VALUE']) {
-                $labels[] = [
-                    //'code' => '',
-                    'name' => $row['PROPERTY_FASOVKA_VALUE'],
-                    'color' => '#D84F83',
-                    'type' => 'fasovka'
-                ];
-            }
-
-            if ($row['PROPERTY_PACKING_VALUE']) {
-                $labels[] = [
-                    //'code' => '',
-                    'name' => $row['PROPERTY_PACKING_VALUE'],
-                    'color' => '#2388FF',
-                    'type' => 'packing'
-                ];
-            }
-
-            $cardProps = [];
-            if ($row['PROPERTY_WEIGHT_VALUE']) {
-                $cardProps[] = [
-                    'code' => 'weight',
-                    //'name' => 'вес',
-                    //'icon' => '',
-                    'value' => $row['PROPERTY_WEIGHT_VALUE']
-                ];
-            }
-
-            if ($row['PROPERTY_EXPERATION_DATE_VALUE']) {
-                $cardProps[] = [
-                    'code' => 'experation_date',
-                    //'name' => 'срок годности',
-                    //'icon' => '',
-                    'value' => $row['PROPERTY_EXPERATION_DATE_VALUE']
-                ];
-            }
-
-            if ($row['PROPERTY_FASOVKA_2_VALUE']) {
-                $cardProps[] = [
-                    'code' => 'weight',
-                    //'name' => 'вес',
-                    //'icon' => '',
-                    'value' => $row['PROPERTY_FASOVKA_2_VALUE']
-                ];
-            }
 
             // множественное свойство "Картинки галереи"
             $pictures = self::getPropertyFiles($row['ID'], 'MORE_PHOTO');
@@ -1816,28 +1300,22 @@ class Element extends Base
 
             // для авторизованного
             $price = [];
+            $price[]=$row["CATALOG_PRICE_496"];
 
-            $db_res = \CPrice::GetList(
-                array(),
-                array(
-                    "PRODUCT_ID" => (int) $row['ID'],
-                    "CATALOG_GROUP_ID" => array(496)
-                )
-            );
-            while ($ar_res = $db_res->Fetch())
-            {
-                 $price[]=$ar_res["PRICE"];
+//            global $USER;
+//            $quantity = 1;
+//            $renewal = 'N';
+//            $arPrice = \CCatalogProduct::GetOptimalPrice(
+//                $row['ID'],
+//                $quantity,
+//                $USER->GetUserGroupArray(),
+//                $renewal
+//            );
+
+            if($cont_discount) {
+                $price[] = $price[0] - ($price[0] * $cont_discount / 100);
             }
-            global $USER;
-            $quantity = 1;
-            $renewal = 'N';
-            $arPrice = \CCatalogProduct::GetOptimalPrice(
-                $row['ID'],
-                $quantity,
-                $USER->GetUserGroupArray(),
-                $renewal
-            );
-            $price[]=$arPrice['PRICE']['PRICE'];
+//            $price[]=$arPrice['PRICE']['PRICE'];
             Loader::includeModule("sale");
             $cntBasketItems = \CSaleBasket::GetList(
                 array(
@@ -1884,16 +1362,12 @@ class Element extends Base
                     'price' => $price ?? [],
                     // единица измерения товара
                     //'measure_count' => $measureCount ?? '',
-                    // доступное количество
-                    'available_count' => self::getAvailableCount($row['ID']) ?? '',
 					'section_code' => $section_code,
                     'in_basket'=>$inBasket,
                     'qa'=>$qa,
-
                 ];
-        }
-
-        return $elements;
+		}
+    return $elements;
     }
 
     /**
