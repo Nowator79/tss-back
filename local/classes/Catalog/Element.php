@@ -1256,7 +1256,6 @@ class Element extends Base
             "order" => array("ID" => "ASC"),
             "filter" => array("UF_USER"=>$arUser['UF_CONTRAGENT_ID']),  // Задаем параметры фильтра выборки
         ));
-
         while($arData = $rsData->Fetch()){
             $cont_discount =  $arData["UF_DISCOUNT"];
         }
@@ -1275,14 +1274,6 @@ class Element extends Base
 
             // множественное свойство "Картинки галереи"
             $pictures = self::getPropertyFiles($row['ID'], 'MORE_PHOTO');
-
-             $measure = '';
-
-             if ($row['ID'])
-             {
-                 $measure = \Bitrix\Catalog\ProductTable::getCurrentRatioWithMeasure($row['ID'])[$row['ID']]['MEASURE']['SYMBOL_RUS'];
-             }
-
 			//
 			$section_code = '';
 
@@ -1314,6 +1305,8 @@ class Element extends Base
 
             if($cont_discount) {
                 $price[] = $price[0] - ($price[0] * $cont_discount / 100);
+            }else{
+                $price[] = $price[0];
             }
 //            $price[]=$arPrice['PRICE']['PRICE'];
             Loader::includeModule("sale");
@@ -1351,13 +1344,8 @@ class Element extends Base
                     'name' => $row['NAME'],
                     // код
                     'code' => $row['CODE'],
-                    'labels' => $labels ?? '',
-                    // свойства после нажатия на i
-                    'card_props' => $cardProps ?? '',
                     // картинке на анонсе
                     'pictures' => $pictures ?? '',
-                    // бренд
-                    'brand' => $row['PROPERTY_BREND_VALUE'] ?? '',
                     // цена
                     'price' => $price ?? [],
                     // единица измерения товара

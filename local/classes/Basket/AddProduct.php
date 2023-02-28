@@ -183,7 +183,7 @@ class AddProduct extends Base
             $params[$key]['basket_id'] = $xml_id;
 
         }
-        $bs=$basket->save();
+        $params['basket_id']=$basket->save();
 
         $dbRes = \Bitrix\Sale\Basket::getList([
             'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
