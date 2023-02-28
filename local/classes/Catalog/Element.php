@@ -1701,12 +1701,12 @@ class Element extends Base
             $nav ? $nav : [],
             $select ? $select : ['*']
         );
-		
-        //while ($row = $elementsRaw->Fetch()) 
-		while ($row = $elementsRaw->GetNext()) 
+
+        //while ($row = $elementsRaw->Fetch())
+		while ($row = $elementsRaw->GetNext())
 		{
 			//file_put_contents($_SERVER['DOCUMENT_ROOT'].'/local/log.txt', print_r($row, 1)."\r\n", FILE_APPEND);exit;
-			
+
             $labels = [];
 
             if ($row['PROPERTY_STOCK_VALUE']) {
@@ -1793,27 +1793,27 @@ class Element extends Base
             $pictures = self::getPropertyFiles($row['ID'], 'MORE_PHOTO');
 
              $measure = '';
-             
+
              if ($row['ID'])
              {
-                 $measure = \Bitrix\Catalog\ProductTable::getCurrentRatioWithMeasure($row['ID'])[$row['ID']]['MEASURE']['SYMBOL_RUS'];   
+                 $measure = \Bitrix\Catalog\ProductTable::getCurrentRatioWithMeasure($row['ID'])[$row['ID']]['MEASURE']['SYMBOL_RUS'];
              }
 
 			//
 			$section_code = '';
-			
+
 			if ($row['DETAIL_PAGE_URL'])
 			{
 				// костыль для сайта, там очень странные самодельные url товаров
 				$urlArr = explode('/', $row['DETAIL_PAGE_URL']);
-				
+
 				if ($urlArr[2])
 				{
 					$section_code = $urlArr[2];
 				}
 			}
 			//
-			
+
             // для авторизованного
             $price = [];
 
