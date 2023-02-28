@@ -5,9 +5,13 @@ namespace Godra\Api\Helpers;
 use Godra\Api\Helpers\Utility\Misc;
 use Godra\Api\SetsBuilder\Builder;
 use Bitrix\Main\Loader;
+use Shuchkin\SimpleXLSX;
+use Bitrix\Highloadblock as HL,
+	Bitrix\Main\Entity;
 
 class Nomenclature
 {
+    public static $customName = "Дизельный генератор";
     public static $arXls = [
         "0" => [
             "XML_ID" => "26032d02-4d89-11ea-80dd-a672da4d5bad",
@@ -57,6 +61,49 @@ class Nomenclature
         ]
     ];
 
+    public static function importFromXls($path) {
+        if ( $xlsx = SimpleXLSX::parse($path) ) {
+            Loader::includeModule("highloadblock");
+
+            $hlblock = HL\HighloadBlockTable::getById(HIGHLOAD_PRODUCT_CODE_ID)->fetch();
+            $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+            $entity_data_class = $entity->getDataClass();
+
+            $arRows = $xlsx->rows();
+            foreach ($arRows as $row => $r ) {
+                if ($row === 0 || empty($r[3])) {
+                    continue;
+                }
+
+                $data = [
+                    "UF_XML_ID" => "",
+                    "UF_NAME" => $r[3],
+                    "UF_CUSTOM_NAME" => self::$customName,
+                    "UF_NAMENCLATURE" => $r[3],
+                    "UF_CODE1" => $r[8],
+                    "UF_CODE2" => $r[9],
+                    "UF_CODE3" => $r[10],
+                    "UF_CODE4" => $r[11],
+                    "UF_CODE5" => $r[12],
+                    "UF_CODE6" => $r[13],
+                    "UF_CODE7" => $r[14],
+                    "UF_CODE8" => $r[15],
+                    "UF_CODE9" => $r[16],
+                    "UF_CODE10" => $r[17],
+                    "UF_CODE11" => $r[18],
+                    "UF_CODE12" => $r[19],
+                    "UF_NOCODE" => $r[20],
+                    "UF_NAME_V" => $r[21],
+                    "UF_NAME_W" => $r[22],
+                    "UF_NAME_X" => $r[23],
+                    "UF_NAME_Y" => $r[24]
+                ];
+
+                $entity_data_class::add($data);
+            }
+            return $xlsx;
+        }
+    }
 
     /**
      * получить товар из справочника шифра
