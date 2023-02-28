@@ -56,7 +56,6 @@ class Filter extends Base
     public function getFilterProperty()
     {
         $params = Misc::getPostDataFromJson();
-
         $IBLOCK_ID = 5;
         $SECTION_ID = $this->SECTION_ID;
         $mas_prop = [];
@@ -66,50 +65,77 @@ class Filter extends Base
             $res = \CIBlockSection::GetList(array(), array('IBLOCK_ID' => $IBLOCK_ID, 'CODE' => $params['code']));
             if($section = $res->Fetch())$SECTION_ID=$section["ID"];
         }
-
+        $mas_prop['PRICE']=[
+            'NAME'=>'Цена',
+            'CODE'=>'PRICE',
+            'PROPERTY_TYPE'=>'DIAPASON',
+        ];
         foreach (\CIBlockSectionPropertyLink::GetArray($IBLOCK_ID, $SECTION_ID) as $PID => $arLink) {
             if ($arLink["SMART_FILTER"] !== "Y") {
                 continue;
             }
             $rsProperty = \CIBlockProperty::GetByID($PID);
             $arProperty = $rsProperty->Fetch();
-            if ($arProperty) {
+
+            if ($arProperty){
                 $mas_prop[$arProperty['CODE']]['NAME'] = $arProperty['NAME'];
                 $mas_prop[$arProperty['CODE']]['CODE'] = $arProperty['CODE'];
                 $mas_prop[$arProperty['CODE']]['PROPERTY_TYPE'] = $mas_type_prop[$arProperty['PROPERTY_TYPE']];
             }
         }
 
-//        $arSelect = Array("ID");
-//        foreach (array_keys($mas_prop) as $value){
-//            $arSelect[] = 'PROPERTY_'.$value;
-//        }
+
+        foreach (array_keys($mas_prop) as $value){
+            $prop[] = $value;
+        }
         $arFilter = Array("IBLOCK_ID"=>$IBLOCK_ID, "ACTIVE"=>"Y");
         if($params['code']){
             $arFilter["SECTION_ID"]= $SECTION_ID;
         }
 
-        $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), array("ID", "IBLOCK_ID", "NAME", "DATE_ACTIVE_FROM",'PROPERTY_*'));
-        while($ob = $res->GetNextElement()){
-            $arFields = $ob->GetFields();
-            $arProps = $ob->GetProperties();
+        $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), Array("ID","catalog_PRICE_496"));
+        while($arOffer = $res->GetNext()){
 
-            foreach ($arProps as $key => $value){
-//                $test_mas = $ob;
-//                $key =  mb_substr($key,9,-6);
-                if($value['VALUE']&& in_array($key, array_keys($mas_prop))){
-                        if($mas_prop[$key]['PROPERTY_TYPE']=='DIAPASON'){
-                            if(!$mas_prop[$key]['VALUE_MIN']||$value['VALUE']<$mas_prop[$key]['VALUE_MIN'])$mas_prop[$key]['VALUE_MIN'] = $value['VALUE'];
-                            if(!$mas_prop[$key]['VALUE_MIN']||$value['VALUE']>$mas_prop[$key]['VALUE_MAX'])$mas_prop[$key]['VALUE_MAX'] = $value['VALUE'];
-                        }else{
-                            if(!in_array($value['VALUE'], $mas_prop[$key]['VALUE'])) {
+            $arOffer['PROPERTIES'] = [];
+            $arOffers[$arOffer['ID']] = $arOffer;
+            $offerIds[] = $arOffer['ID'];
+
+            if($arOffer['CATALOG_PRICE_496']){
+                if(!$mas_prop['PRICE']['VALUE_MIN']||$arOffer['CATALOG_PRICE_496']<$mas_prop['PRICE']['VALUE_MIN'])$mas_prop['PRICE']['VALUE_MIN'] = $arOffer['CATALOG_PRICE_496'];
+                if(!$mas_prop['PRICE']['VALUE_MAX']||$arOffer['CATALOG_PRICE_496']>$mas_prop['PRICE']['VALUE_MAX'])$mas_prop['PRICE']['VALUE_MAX'] = $arOffer['CATALOG_PRICE_496'];
+            }
+        }
+        \CIBlockElement::GetPropertyValuesArray(
+            $arOffers,
+            $IBLOCK_ID,
+            [
+                'ACTIVE' => 'Y',
+                'ID' => array_keys($arOffers)
+            ],
+            [
+                'CODE' => $prop
+            ],
+            [
+                'PROPERTY_FIELDS' => [ // Получаем только значения (VALUE и DESCRIPTION добавляются автоматически)
+                    'ID',
+                    'CODE',
+                ]
+            ]
+        );
+            foreach ($arOffers as $offer){
+                foreach ($offer['PROPERTIES'] as $key=>$value) {
+                    if ($value['VALUE'] && in_array($key, array_keys($mas_prop))) {
+                        if ($mas_prop[$key]['PROPERTY_TYPE'] == 'DIAPASON') {
+                            if (!$mas_prop[$key]['VALUE_MIN'] || $value['VALUE'] < $mas_prop[$key]['VALUE_MIN']) $mas_prop[$key]['VALUE_MIN'] = $value['VALUE'];
+                            if (!$mas_prop[$key]['VALUE_MIN'] || $value['VALUE'] > $mas_prop[$key]['VALUE_MAX']) $mas_prop[$key]['VALUE_MAX'] = $value['VALUE'];
+                        } else {
+                            if (!in_array($value['VALUE'], $mas_prop[$key]['VALUE'])) {
                                 $mas_prop[$key]['VALUE'][] = $value['VALUE'];
                             }
                         }
+                    }
                 }
             }
-        }
-
         foreach ($mas_prop as $key => $value){
             if(!$value['VALUE']&&!$value['VALUE_MIN']){
                 unset($mas_prop[$key]);

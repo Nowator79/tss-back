@@ -28,7 +28,7 @@ Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type,
 Header add Access-Control-Allow-Credentials "true"
 
 #<IfModule mod_headers.c>
-#    SetEnvIf Origin "^http(s)?://(.+\.)?(localhost|sibir\.fishlab\.su|wcshop\.fvds\.ru)$" origin_is=$0
+#    SetEnvIf Origin "^http(s)?://(.+\.)?(localhost|sibir\.fishlab\.su|agrokomplexb2bapi2\.fvds\.ru)$" origin_is=$0
 #    Header always set Access-Control-Allow-Origin %{origin_is}e env=origin_is
 #</IfModule>
 #Header add Access-Control-Allow-Origin "http://localhost:8020"

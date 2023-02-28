@@ -163,15 +163,22 @@ class Element extends Base
      */
     public static function getIgnoreElementProps() {
         return [
+            'OPISANIE_TOVARA',
+            'DETALNOE_OPISANIE_TOVARA',
+            'CML2_TRAITS',
+            'CML2_TAXES',
+            'MORE_PHOTO',
+            'FILES',
+            'VNESHNYAYA_SSYLKA_NA_IZOBRAZHENIE',
             'YAVLYAETSYA_DGU',
+            'ZAPCHASTI',
+            'PORYADOK_SVOYSTV',
             'CML2_MANUFACTURER',
             'VARIANTY_ISPOLNENIYA',
-            'ZAPCHASTI',
             'MATERINSKIE_IZDELIYA',
             'DOP_OBORUDOVANIE',
             'DOP_KOMPLEKTATSIYA',
             'TEKHNICHESKOE_OBSLUZHIVANIE',
-            'PORYADOK_SVOYSTV',
             'PRIVYAZKA_OPTSIY',
             'VID_OPTSII',
         ];
@@ -285,7 +292,7 @@ class Element extends Base
 //        $allProps = self::getAllElementProps();
 //        $props = self::getDefaultProductProps();
 //        return '<pre>'.Print_r($arProps).'</pre>';
-        $ignore_prop = getIgnoreElementProps();
+        $ignore_prop = self::getIgnoreElementProps();
         $product['PROPERTY_CML2_ARTICLE_VALUE'] = $arProps['CML2_ARTICLE']['VALUE'];
         foreach ($arProps as $k => $prop) {
             if ($prop['CODE'] !== 'CML2_ARTICLE'
@@ -1694,12 +1701,12 @@ class Element extends Base
             $nav ? $nav : [],
             $select ? $select : ['*']
         );
-		
-        //while ($row = $elementsRaw->Fetch()) 
-		while ($row = $elementsRaw->GetNext()) 
+
+        //while ($row = $elementsRaw->Fetch())
+		while ($row = $elementsRaw->GetNext())
 		{
 			//file_put_contents($_SERVER['DOCUMENT_ROOT'].'/local/log.txt', print_r($row, 1)."\r\n", FILE_APPEND);exit;
-			
+
             $labels = [];
 
             if ($row['PROPERTY_STOCK_VALUE']) {
@@ -1786,32 +1793,29 @@ class Element extends Base
             $pictures = self::getPropertyFiles($row['ID'], 'MORE_PHOTO');
 
              $measure = '';
-             
+
              if ($row['ID'])
              {
-                 $measure = \Bitrix\Catalog\ProductTable::getCurrentRatioWithMeasure($row['ID'])[$row['ID']]['MEASURE']['SYMBOL_RUS'];   
+                 $measure = \Bitrix\Catalog\ProductTable::getCurrentRatioWithMeasure($row['ID'])[$row['ID']]['MEASURE']['SYMBOL_RUS'];
              }
 
 			//
 			$section_code = '';
-			
+
 			if ($row['DETAIL_PAGE_URL'])
 			{
 				// костыль для сайта, там очень странные самодельные url товаров
 				$urlArr = explode('/', $row['DETAIL_PAGE_URL']);
-				
+
 				if ($urlArr[2])
 				{
 					$section_code = $urlArr[2];
 				}
 			}
 			//
-			
+
             // для авторизованного
-
-
-
-                $price = [];
+            $price = [];
 
             $db_res = \CPrice::GetList(
                 array(),

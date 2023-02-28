@@ -133,7 +133,7 @@ class Builder
             ['NAME' => 'ASC'],
             $filter,
             false,
-            false,
+            ["nPageSize" => 50],
             $select ?? ['*']
         );
 
