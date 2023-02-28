@@ -1275,14 +1275,6 @@ class Element extends Base
 
             // множественное свойство "Картинки галереи"
             $pictures = self::getPropertyFiles($row['ID'], 'MORE_PHOTO');
-
-             $measure = '';
-
-             if ($row['ID'])
-             {
-                 $measure = \Bitrix\Catalog\ProductTable::getCurrentRatioWithMeasure($row['ID'])[$row['ID']]['MEASURE']['SYMBOL_RUS'];
-             }
-
 			//
 			$section_code = '';
 
