@@ -279,7 +279,6 @@ class Nomenclature
     public static function getCustomNames()
     {
         $params = Misc::getPostDataFromJson();
-
         if (empty($params['XML_ID'])) return ['error' => 'Не передан XML_ID'];
 
         //получаем товар
