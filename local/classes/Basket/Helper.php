@@ -100,8 +100,7 @@ class Helper extends Base
      */
     public function getInvoice()
     {
-        global $USER;
-        $useId = ($USER->GetID() == 0) ? 1 : $USER->GetID();
+        $useId = \Bitrix\Sale\Fuser::getId();
         $params = Misc::getPostDataFromJson();
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
 
@@ -124,7 +123,7 @@ class Helper extends Base
             //рендеринг
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
-                $objPHPExcel->getActiveSheet()->mergeCells($ column_index. ''. $ beginRow. ":". $ column_index. ''. $ endRow);
+                $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
                 $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot().'/local/tmp/logo.754be02.jpg');
                 $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
                 $objDrawing->setDescription('barcode');
