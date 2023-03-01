@@ -140,8 +140,14 @@ class Builder
         while ($ar_res = $dbProduct->GetNextElement()) {
             $ar_fields = $ar_res->GetFields();
             $ar_props = $ar_res->GetProperties([],['ACTIVE' => 'Y', 'EMPTY' => 'N']);
+            $ignore_prop = Element::getIgnoreElementProps();
 
-
+            foreach ($ar_props as $k => $prop) {
+                if ($prop['CODE'] == 'CML2_ARTICLE' || empty($prop['VALUE']) || in_array($prop['CODE'], $ignore_prop))
+                {
+                    unset($ar_props[$prop['CODE']]);
+                }
+            }
 
             if (!empty($ar_fields['PREVIEW_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['PREVIEW_PICTURE'])->Fetch()['SRC'];
             if (!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['DETAIL_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];

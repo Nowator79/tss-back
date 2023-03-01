@@ -312,7 +312,8 @@ class Helper extends Base
 
             $startRowId = $startRowId + 4;
             foreach ($basket as $item) {
-                $arProduct = Builder::getProduct($item->getField("PRODUCT_XML_ID"))[0];
+                $arProduct = Builder::getProduct('',$item->getField("PRODUCT_XML_ID"))[0];
+                $startRowId++;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $startRowId, $arProduct['NAME']);
                 if(!empty($arProduct["DETAIL_PICTURE"])){
@@ -328,6 +329,19 @@ class Helper extends Base
 
             }
 
+            if(!empty($arProduct["DETAIL_TEXT"])){
+                $startRowId++;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $startRowId, strip_tags($arProduct['DETAIL_TEXT']));
+            }
+
+            foreach ($arProduct['TABS']['props'] as $prop) {
+                $startRowId = $startRowId + 3;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $startRowId, $prop['NAME']);
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('B' . $startRowId, $prop['VALUE']);
+            }
 
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="01simple.xls"');
