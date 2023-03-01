@@ -105,13 +105,13 @@ class Helper extends Base
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
 
         //for test
-            $params = [
-               'contragent' => 'Название контрагента',
-               'company' => 'ООО "Вектор"',
-               'name' => 'Иванов И.И.',
-               'phone' => '+7999 9999 99 99',
-               'email' => 'mail@mail.ru'
-            ];
+        $params = [
+            'contragent' => 'Название контрагента',
+            'company' => 'ООО "Вектор"',
+            'name' => 'Иванов И.И.',
+            'phone' => '+7999 9999 99 99',
+            'email' => 'mail@mail.ru'
+        ];
         //
 
         if (count($basket->getQuantityList())) {
@@ -120,7 +120,7 @@ class Helper extends Base
             $tempDir = $_SESSION['REPORT_EXPORT_TEMP_DIR'] = \CTempFile::GetDirectoryName(1, array('invoice', uniqid('basket_invoice_')));
             \CheckDirPath($tempDir);
             $filePath = "{$tempDir}{$fileName}";
-            require_once $_SERVER["DOCUMENT_ROOT"] .'/local/classes/Helpers/PHPExcel/Classes/PHPExcel.php';
+            require_once $_SERVER["DOCUMENT_ROOT"] . '/local/classes/Helpers/PHPExcel/Classes/PHPExcel.php';
             $objPHPExcel = new \PHPExcel();
             $objPHPExcel->getProperties()->setCreator("TSS")
                 ->setLastModifiedBy("TSS")
@@ -131,39 +131,73 @@ class Helper extends Base
                 ->setCategory("invoice");
 
             //рендеринг
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
+            $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot() . '/local/tmp/logo.754be02.jpg');
+            $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
+            $objDrawing->setDescription('barcode');
+            $objDrawing->setImageResource($imgBarcode);
+            $objDrawing->setHeight(80);
+            $objDrawing->setCoordinates('A3');
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E3', $params["company"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('E3:G3');
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E4', $params["name"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('E4:G4');
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E5', $params["phone"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('E5:G5');
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E6', $params["email"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('E6:G6');
+
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A8', 'На ваш запрос предлагаем вам следующее решение под вашу индивидуальную потребность:');
+            $objPHPExcel->getActiveSheet()->mergeCells('A8:G8');
+
+            //хедер таблицы
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A11', 'N');
+            $objPHPExcel->getActiveSheet()->mergeCells('A9:B9');
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('C11', 'Наименование');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('D11', 'Кол-во');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E11', 'Ед. изм.');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('F11', 'Цена руб.');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('G11', 'Сумма');
+
+            //табличная часть корзины
+            $startRowId = 12;
+            foreach ($basket as $item) {
+                $startRowId++;
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
-                $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
-                $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot().'/local/tmp/logo.754be02.jpg');
-                $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
-                $objDrawing->setDescription('barcode');
-                $objDrawing->setImageResource($imgBarcode);
-                $objDrawing->setHeight(80);
-                $objDrawing->setCoordinates('A3');
+                    ->setCellValue('A' . $startRowId, $item->getProductId());
+                $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':B' . $startRowId);
 
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('E3', $params["company"]);
-                $objPHPExcel->getActiveSheet()->mergeCells('E3:G3');
-
+                    ->setCellValue('C' . $startRowId, $item->getField("NAME"));
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('E4', $params["name"]);
-                $objPHPExcel->getActiveSheet()->mergeCells('E4:G4');
-
+                    ->setCellValue('D' . $startRowId, $item->getQuantity());
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('E5', $params["phone"]);
-                $objPHPExcel->getActiveSheet()->mergeCells('E5:G5');
-
+                    ->setCellValue('E' . $startRowId, 'шт');
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('E6', $params["email"]);
-                $objPHPExcel->getActiveSheet()->mergeCells('E6:G6');
-
-                $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
-
+                    ->setCellValue('F' . $startRowId, $item->getPrice());
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A8', 'На ваш запрос предлагаем вам следующее решение под вашу индивидуальную потребность:');
-                $objPHPExcel->getActiveSheet()->mergeCells('A8:G8');
-
-
+                    ->setCellValue('G' . $startRowId, $item->getFinalPrice());
+            }
             //
 
             header('Content-Type: application/vnd.ms-excel');
@@ -171,10 +205,10 @@ class Helper extends Base
             header('Cache-Control: max-age=0');
             header('Cache-Control: max-age=1');
 
-            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-            header ('Pragma: public'); // HTTP/1.0
+            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+            header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header('Pragma: public'); // HTTP/1.0
 
             $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
             $objWriter->save($filePath);
