@@ -171,16 +171,21 @@ class Helper extends Base
         $userData = \CUser::GetByID(1)->Fetch();
         //
         $params = Misc::getPostDataFromJson();
-        $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
+        if(!empty($params['orderId'])) {
+            $order = \Bitrix\Sale\Order::load($params['orderId']);
+            $basket = $order->getBasket();
+        } else {
+            $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
+        }
 
         //for test
-        $params = [
-            'contragent' => 'Название контрагента',
-            'company' => 'ООО "Вектор"',
-            'name' => 'Иванов И.И.',
-            'phone' => '+7999 9999 99 99',
-            'email' => 'mail@mail.ru'
-        ];
+//        $params = [
+//            'contragent' => 'Название контрагента',
+//            'company' => 'ООО "Вектор"',
+//            'name' => 'Иванов И.И.',
+//            'phone' => '+7999 9999 99 99',
+//            'email' => 'mail@mail.ru'
+//        ];
         //
 
         if (count($basket->getQuantityList())) {
