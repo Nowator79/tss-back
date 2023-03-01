@@ -1,0 +1,144 @@
+<?php
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+
+CModule::IncludeModule('iblock');
+
+//$userId = 8;
+
+//$nomenclature = (new \Godra\Api\Helpers\Nomenclature)->getByUserId($userId);
+
+//print_r($nomenclature);
+
+/*
+Array
+(
+    [4479] => fac29524-65cb-11e0-a1ac-003048619700
+    [4797] => 8a6336fc-37f8-11e8-ab34-00155d07b505
+    [3619] => a163ae99-0083-11e6-88eb-782bcb24e027
+    [1474] => be7cb6dd-7d7d-11ea-ab72-00155d0a8003
+    [2469] => adfba911-d3c9-11e9-ab69-00155d0a8003
+    [3211] => 52c91db0-6e85-11e6-90c4-782bcb24e027
+    [5290] => 6c2edd63-40bd-11e8-ab34-00155d07b505
+    [10777] => bacc9985-bc68-11eb-ab81-00155d0a8003
+)
+*/
+
+/*
+$labels = (new \Godra\Api\Helpers\Filter)->getLabels();
+
+print_r($labels);
+*/
+
+/*
+Array
+(
+    [SECTION_CODE] => bakaleya
+    [0] => Array
+        (
+            [LOGIC] => AND
+            [0] => Array
+                (
+                    [PROPERTY_57] => Array
+                        (
+                            [0] => 4541
+                        )
+
+                    [LOGIC] => OR
+                )
+
+        )
+
+    [XML_ID] => Array
+        (
+            [4479] => fac29524-65cb-11e0-a1ac-003048619700
+            [4797] => 8a6336fc-37f8-11e8-ab34-00155d07b505
+            [3619] => a163ae99-0083-11e6-88eb-782bcb24e027
+            [1474] => be7cb6dd-7d7d-11ea-ab72-00155d0a8003
+            [2469] => adfba911-d3c9-11e9-ab69-00155d0a8003
+            [3211] => 52c91db0-6e85-11e6-90c4-782bcb24e027
+            [5290] => 6c2edd63-40bd-11e8-ab34-00155d07b505
+            [10777] => bacc9985-bc68-11eb-ab81-00155d0a8003
+        )
+
+    [INCLUDE_SUBSECTIONS] => Y
+)
+
+Array
+(
+    [SECTION_CODE] => bakaleya
+    [0] => Array
+        (
+            [LOGIC] => AND
+            [0] => Array
+                (
+                    [PROPERTY_57] => Array
+                        (
+                            [0] => 4541
+                        )
+
+                    [PROPERTY_59] => Array
+                        (
+                            [0] => Y
+                        )
+
+                    [LOGIC] => OR
+                )
+
+        )
+
+    [XML_ID] => Array
+        (
+            [4479] => fac29524-65cb-11e0-a1ac-003048619700
+            [4797] => 8a6336fc-37f8-11e8-ab34-00155d07b505
+            [3619] => a163ae99-0083-11e6-88eb-782bcb24e027
+            [1474] => be7cb6dd-7d7d-11ea-ab72-00155d0a8003
+            [2469] => adfba911-d3c9-11e9-ab69-00155d0a8003
+            [3211] => 52c91db0-6e85-11e6-90c4-782bcb24e027
+            [5290] => 6c2edd63-40bd-11e8-ab34-00155d07b505
+            [10777] => bacc9985-bc68-11eb-ab81-00155d0a8003
+        )
+
+    [INCLUDE_SUBSECTIONS] => Y
+)
+*/
+
+$filter = 
+[
+	'SECTION_CODE'        => 'bakaleya',
+	'INCLUDE_SUBSECTIONS' => 'Y',
+	'XML_ID'              => 
+	[
+		'fac29524-65cb-11e0-a1ac-003048619700',
+		'8a6336fc-37f8-11e8-ab34-00155d07b505',
+		'a163ae99-0083-11e6-88eb-782bcb24e027',
+		'be7cb6dd-7d7d-11ea-ab72-00155d0a8003',
+		'adfba911-d3c9-11e9-ab69-00155d0a8003',
+		'52c91db0-6e85-11e6-90c4-782bcb24e027',
+		'6c2edd63-40bd-11e8-ab34-00155d07b505',
+		'bacc9985-bc68-11eb-ab81-00155d0a8003',
+	],
+	[
+		0 => 
+		[
+			'LOGIC' => 'AND',
+			[
+				0 => 
+				[
+					'PROPERTY_57' => [0 => 4541],
+					'PROPERTY_59' => [0 => 'Y'],
+					'LOGIC'       => 'OR',
+				]
+			]
+		]
+	]
+];
+
+$elementsRaw = CIBlockElement::GetList([], $filter, false, false, ['*']);
+
+while ($row = $elementsRaw->GetNext()) 
+{
+	print_r($row);
+}
+
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");  
+?>
