@@ -904,7 +904,8 @@ class Element extends Base
         $sectionData = self::getSection(['CODE' => $params['section_code']]);
 
         if (!$sectionData) {
-            return ['error' => 'Нет раздела с таким section_code'];
+            http_response_code(400); exit;
+//            return ['error' => 'Нет раздела с таким section_code'];
         }
 
         // проверка раздела - является ли разделом первого или второго уровня
