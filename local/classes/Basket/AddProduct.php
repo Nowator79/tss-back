@@ -49,15 +49,20 @@ class AddProduct extends Base
 //            'id' => 19139,
 //            'quantity' => 1,
 //            'customName'=>'sdfsdf',
-//            'code' => 'dizelnyy_generator_tss_ad_1400s_t400_1rm9',
 //            'options' =>
 //                array (
-//                    0 => '16440',
-//                    1 => '16441',
+//                    0 => '19135',
+//                    1 => '19136',
 //                ),
 //            'price' => 111111,
 //        )];
+
+
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
+
+        global $USER;
+        $quantity = 1;
+        $renewal = 'N';
 
         foreach ($params as $key=>$item){
             $productId = intval($item['id']);
@@ -66,8 +71,18 @@ class AddProduct extends Base
             $properties = [];
             $option = [];
             $price = 0;
+            $origin_price = 0;
+
             $price_mas = \CPrice::GetBasePrice(intval($item['id']));
             $price += $price_mas['PRICE'];
+
+            $arPrice = \CCatalogProduct::GetOptimalPrice(
+                $productId,
+                $quantity,
+                $USER->GetUserGroupArray(),
+                $renewal
+            );
+            $origin_price +=$arPrice['PRICE']['PRICE'];
 
             $arSelect = Array("ID", "NAME", "XML_ID");
             $arFilter = Array("IBLOCK_ID"=>5, "ACTIVE"=>"Y");
@@ -104,7 +119,7 @@ class AddProduct extends Base
             }else{
                 $arFilter['ID']=$item['id'];
             }
-            $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), $arSelect);
+            $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), Array());
             while($ob = $res->GetNextElement())
             {
                 $arFields = $ob->GetFields();
@@ -112,8 +127,16 @@ class AddProduct extends Base
 
                 if($item['options']){
                     $option[] = $arFields['XML_ID'].'|'.$arProps['VID_OPTSII']['VALUE'];
-                    $ar_res =\CPrice::GetBasePrice($arFields['ID']);
-                    $price += $ar_res['PRICE'];
+//                    $ar_res =\CPrice::GetBasePrice($arFields['ID']);
+//                    $price += $ar_res['PRICE'];
+
+                    $arPrice = \CCatalogProduct::GetOptimalPrice(
+                        $arFields['ID'],
+                        $quantity,
+                        $USER->GetUserGroupArray(),
+                        $renewal
+                    );
+                    $origin_price +=$arPrice['PRICE']['PRICE'];
                 }
             }
 
@@ -151,7 +174,7 @@ class AddProduct extends Base
                 'CURRENCY' => \Bitrix\Currency\CurrencyManager::getBaseCurrency(),
                 'LID' => \Bitrix\Main\Context::getCurrent()->getSite(),
                 'PRODUCT_PROVIDER_CLASS' => 'CCatalogProductProviderCustom',
-                'PRICE' => $price,
+                'PRICE' => $origin_price,
                 'CUSTOM_PRICE' => 'Y',
                 'XML_ID'=>$xml_id
             ));
@@ -163,8 +186,8 @@ class AddProduct extends Base
             $params[$key]['basket_id'] = $xml_id;
 
         }
-        $bs=$basket->save();
-
+        $basket->save();
+        
         $dbRes = \Bitrix\Sale\Basket::getList([
             'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
             'filter' => [
