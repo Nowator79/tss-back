@@ -216,5 +216,4 @@ class Helper extends Base
         }
     }
 }
-
 ?>
