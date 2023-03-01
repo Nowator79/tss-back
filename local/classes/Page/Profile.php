@@ -163,7 +163,7 @@ class Profile
     {
         $params = Misc::getPostDataFromJson();
 
-        if (empty($params['userId'])) {
+        if (!empty($params['userId'])) {
             \CModule::IncludeModule("main");
             $oUser = new \CUser;
 
