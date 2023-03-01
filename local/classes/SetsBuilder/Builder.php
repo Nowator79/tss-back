@@ -140,6 +140,14 @@ class Builder
         while ($ar_res = $dbProduct->GetNextElement()) {
             $ar_fields = $ar_res->GetFields();
             $ar_props = $ar_res->GetProperties([],['ACTIVE' => 'Y', 'EMPTY' => 'N']);
+            $ignore_prop = Element::getIgnoreElementProps();
+
+            foreach ($ar_props as $k => $prop) {
+                if ($prop['CODE'] == 'CML2_ARTICLE' || empty($prop['VALUE']) || in_array($prop['CODE'], $ignore_prop))
+                {
+                    unset($ar_props[$prop['CODE']]);
+                }
+            }
 
             if (!empty($ar_fields['PREVIEW_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['PREVIEW_PICTURE'])->Fetch()['SRC'];
             if (!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['DETAIL_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];
@@ -177,7 +185,7 @@ class Builder
      *
      * @return array|string[]|null
      */
-    public static function getProduct($code = '')
+    public static function getProduct($code = '', $xmlId = '')
     {
         $params = Misc::getPostDataFromJson();
 
@@ -189,26 +197,30 @@ class Builder
             'INCLUDE_SUBSECTIONS' => 'Y',
         ];
 
-        if (isset($params['options'])) {
-            $filter['ID'] = $params['options'];
-        }
-
-        if (isset($params['query'])) {
-            array_push(self::$select_rows, 'PROPERTY_CML2_ARTICLE');
-
-            if (is_numeric($params['query'])) {
-                $filter['PROPERTY_CML2_ARTICLE'] = $params['query'];
-            } else {
-                $filter['NAME'] = '%'.$params['query'].'%';
-            }
+        if(!empty($xmlId)){
+            $filter['XML_ID'] = $xmlId;
         } else {
-            if (empty($params['code']) || !isset($params['code'])) {
-                return ['error' => 'Пустой поле code'];
+
+            if (isset($params['options'])) {
+                $filter['ID'] = $params['options'];
             }
 
-            $filter['CODE'] = $params['code'];
-        }
+            if (isset($params['query'])) {
+                array_push(self::$select_rows, 'PROPERTY_CML2_ARTICLE');
 
+                if (is_numeric($params['query'])) {
+                    $filter['PROPERTY_CML2_ARTICLE'] = $params['query'];
+                } else {
+                    $filter['NAME'] = '%' . $params['query'] . '%';
+                }
+            } else {
+                if (empty($params['code']) || !isset($params['code'])) {
+                    return ['error' => 'Пустой поле code'];
+                }
+
+                $filter['CODE'] = $params['code'];
+            }
+        }
         $products = self::getElement(
             self::$select_rows,
             $filter
