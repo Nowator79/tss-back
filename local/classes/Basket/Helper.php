@@ -162,8 +162,8 @@ class Helper extends Base
      */
     public function getInvoice()
     {
-        global $USER;
-        $useId = ($USER->GetID() == 0) ? 1 : $USER->GetID();
+        $useId = \Bitrix\Sale\Fuser::getId();
+        $params = Misc::getPostDataFromJson();
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
 
         if (count($basket->getQuantityList())) {
@@ -172,48 +172,42 @@ class Helper extends Base
             $tempDir = $_SESSION['REPORT_EXPORT_TEMP_DIR'] = \CTempFile::GetDirectoryName(1, array('invoice', uniqid('basket_invoice_')));
             \CheckDirPath($tempDir);
             $filePath = "{$tempDir}{$fileName}";
+            require_once $_SERVER["DOCUMENT_ROOT"] .'/local/classes/Helpers/PHPExcel/Classes/PHPExcel.php';
+            $objPHPExcel = new \PHPExcel();
+            $objPHPExcel->getProperties()->setCreator("TSS")
+                ->setLastModifiedBy("TSS")
+                ->setTitle("invoice_{$basket->getFUserId()}")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("invoice_{$basket->getFUserId()}")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("invoice");
 
-            $fileType = 'application/vnd.ms-excel';
-            $fileHeader = '<?
-                    Header("Content-Type: application/force-download");
-                    Header("Content-Type: application/octet-stream");
-                    Header("Content-Type: application/download");
-                    Header("Content-Disposition: attachment;filename={$fileName}");
-                    Header("Content-Transfer-Encoding: binary");
-                    ?>
-                    <html>
-                    <head>
-                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                    </head>
-                    <body>
-
-                    <table border="1">
-                        <tr>
-                            <td>N</td>
-                            <td>Наименование товара</td>
-                            <td>Кол-во</td>
-                            <td>Ед.</td>
-                            <td>Цена руб.</td>
-                            <td>Сумма руб.</td>
-                        </tr>';
-            file_put_contents($filePath, $fileHeader, FILE_APPEND);
-
-            // рендерим таблицу
-            foreach ($basket as $item) {
-                $row = '<tr><td>' . $item->getProductId() . '</td>
-                                    <td>' . $item->getField("NAME") . '</td>
-                                    <td>' . $item->getQuantity() . '</td>
-                                    <td>шт</td>
-                                    <td>' . $item->getPrice() . '</td>
-                                    <td>' . $item->getFinalPrice() . '</td>
-                                </tr>';
-                file_put_contents($filePath, $row, FILE_APPEND);
-            }
+            //рендеринг
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
+                $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
+                $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot().'/local/tmp/logo.754be02.jpg');
+                $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
+                $objDrawing->setDescription('barcode');
+                $objDrawing->setImageResource($imgBarcode);
+                $objDrawing->setHeight(150);
+                $objDrawing->setCoordinates('A2');
+                $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
             //
-            file_put_contents($filePath, '</table></body></html>', FILE_APPEND);
 
-            return str_replace(\Bitrix\Main\Application::getDocumentRoot(
-            ), '', $filePath);
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="01simple.xls"');
+            header('Cache-Control: max-age=0');
+            header('Cache-Control: max-age=1');
+
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save($filePath);
+            return str_replace(\Bitrix\Main\Application::getDocumentRoot(), '', $filePath);
         }
 
         return ['error' => 'Корзина пуста!'];
