@@ -49,3 +49,4 @@ test local git
 test fix
 test fix1234--
 fix 1234 --final
+fix 12345 --final
