@@ -104,6 +104,16 @@ class Helper extends Base
         $params = Misc::getPostDataFromJson();
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
 
+        //for test
+            $params = [
+               'contragent' => 'Название контрагента',
+               'company' => 'ООО "Вектор"',
+               'name' => 'Иванов И.И.',
+               'phone' => '+7999 9999 99 99',
+               'email' => 'mail@mail.ru'
+            ];
+        //
+
         if (count($basket->getQuantityList())) {
             $fileExt = 'xls';
             $fileName = "invoice_{$basket->getFUserId()}.{$fileExt}";
@@ -128,9 +138,32 @@ class Helper extends Base
                 $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
                 $objDrawing->setDescription('barcode');
                 $objDrawing->setImageResource($imgBarcode);
-                $objDrawing->setHeight(150);
-                $objDrawing->setCoordinates('A2');
+                $objDrawing->setHeight(80);
+                $objDrawing->setCoordinates('A3');
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('E3', $params["company"]);
+                $objPHPExcel->getActiveSheet()->mergeCells('E3:G3');
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('E4', $params["name"]);
+                $objPHPExcel->getActiveSheet()->mergeCells('E4:G4');
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('E5', $params["phone"]);
+                $objPHPExcel->getActiveSheet()->mergeCells('E5:G5');
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('E6', $params["email"]);
+                $objPHPExcel->getActiveSheet()->mergeCells('E6:G6');
+
                 $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A8', 'На ваш запрос предлагаем вам следующее решение под вашу индивидуальную потребность:');
+                $objPHPExcel->getActiveSheet()->mergeCells('A8:G8');
+
+
             //
 
             header('Content-Type: application/vnd.ms-excel');
