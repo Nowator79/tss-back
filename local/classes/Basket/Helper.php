@@ -3,6 +3,7 @@
 namespace Godra\Api\Basket;
 
 use Godra\Api\Helpers\Utility\Misc;
+use Godra\Api\SetsBuilder\Builder;
 
 /**
  * Класс для обращений к публичным функциям абстрактного класса корзины Godra\Api\Basket\Base
@@ -102,6 +103,11 @@ class Helper extends Base
     public function getInvoice()
     {
         $useId = \Bitrix\Sale\Fuser::getId();
+        //данные по персональному мененджеру
+        global $USER;
+        //$userData = \CUser::GetByID($USER->GetID())->Fetch();
+        $userData = \CUser::GetByID(1)->Fetch();
+        //
         $params = Misc::getPostDataFromJson();
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
 
@@ -208,6 +214,58 @@ class Helper extends Base
 
             $objPHPExcel->getActiveSheet()->getStyle('A11:F'.$startRowId)->applyFromArray($styleArray);
             unset($styleArray);
+            $startRowId = $startRowId + 5;
+
+            $startRowId++;
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId, 'Детализация комплектации указана в Приложении №1 к данному технико-коммерческому предложению (ТКП)');
+            $objPHPExcel->getActiveSheet()->mergeCells('A'.$startRowId.':G'.$startRowId);
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId++, 'Ваш персональный менеджер:');
+
+            $startRowId++;
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId, 'Ф.И.О');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('B' . $startRowId, $userData["NAME"].' '.$userData["LAST_NAME"]);
+            if(!empty($userData["PERSONAL_PHONE"])) {
+                $startRowId++;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $startRowId, 'Телефон');
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('B' . $startRowId, $userData["PERSONAL_PHONE"]);
+            }
+            $startRowId++;
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId, 'Email');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('B' . $startRowId, $userData["EMAIL"]);
+
+            //карточки товаров
+            $startRowId = $startRowId + 5;
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId, 'Приложение1');
+            $objPHPExcel->getActiveSheet()->mergeCells('A'.$startRowId.':G'.$startRowId);
+
+            $startRowId = $startRowId + 4;
+            foreach ($basket as $item) {
+                $arProduct = Builder::getProduct($item->getField("PRODUCT_XML_ID"))[0];
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $startRowId, $arProduct['NAME']);
+                if(!empty($arProduct["DETAIL_PICTURE"])){
+                    $startRowId++;
+                    $objPHPExcel->getActiveSheet()->mergeCells('A'.$startRowId.':G'.$startRowId);
+                    $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot() . $arProduct["DETAIL_PICTURE"]);
+                    $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
+                    $objDrawing->setDescription('barcode');
+                    $objDrawing->setImageResource($imgBarcode);
+                    $objDrawing->setHeight(100);
+                    $objDrawing->setCoordinates('A'.$startRowId);
+                }
+
+            }
+
 
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="01simple.xls"');
