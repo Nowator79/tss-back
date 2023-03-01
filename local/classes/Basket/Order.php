@@ -1,5 +1,4 @@
 <?
-
 namespace Godra\Api\Basket;
 
 use Godra\Api\Helpers\Utility\Misc;
