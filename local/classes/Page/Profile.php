@@ -168,7 +168,7 @@ class Profile
             $oUser = new \CUser;
 
             if (!empty($_FILES["logo"]['name'])) {
-                $fileId = \CFile::SaveFile($_FILES["logo"], 'avatar');
+                $fileId = \CFile::SaveFile($_FILES["logo"], 'logo');
                 $arFile = \CFile::MakeFileArray($fileId);
                 $arFile['del'] = "Y";
                 $arFields['PERSONAL_PHOTO'] = $arFile;
