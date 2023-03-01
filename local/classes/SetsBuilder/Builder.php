@@ -140,6 +140,7 @@ class Builder
         while ($ar_res = $dbProduct->GetNextElement()) {
             $ar_fields = $ar_res->GetFields();
             $ar_props = $ar_res->GetProperties([],['ACTIVE' => 'Y', 'EMPTY' => 'N']);
+            $all_props = $ar_props;
             $ignore_prop = Element::getIgnoreElementProps();
 
             foreach ($ar_props as $k => $prop) {
@@ -168,6 +169,7 @@ class Builder
             // Формируем выходной массив
             $ar_fields['TABS']['description'] = !empty($product['PREVIEW_TEXT']) ? $product['PREVIEW_TEXT'] : '';
             $ar_fields['TABS']['props'] = $ar_props;
+            $ar_fields['TABS']['all_props'] = $all_props;
             $ar_fields['TABS']['delivery'] = 'Доставка осуществляется курьером или возможен самовывоз';
             $ar_fields['TABS']['stocks'] = Element::getProductStocks($ar_fields['ID']);
 
