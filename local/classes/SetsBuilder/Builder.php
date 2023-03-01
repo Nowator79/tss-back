@@ -94,6 +94,21 @@ class Builder
             "order" => ["CATALOG_GROUP_ID" => "ASC"]
         ])->fetchAll();
 
+        global $USER;
+        $quantity = 1;
+        $renewal = 'N';
+        $arPrice = \CCatalogProduct::GetOptimalPrice(
+            $productId,
+            $quantity,
+            $USER->GetUserGroupArray(),
+            $renewal
+        );
+        $allProductPrices[]=[
+            "CATALOG_GROUP_ID"=> "496",
+            "PRICE"=> $arPrice['PRICE']['PRICE'],
+            "CURRENCY"=> "RUB"
+        ];
+
         return $allProductPrices;
     }
 
@@ -118,7 +133,7 @@ class Builder
             ['NAME' => 'ASC'],
             $filter,
             false,
-            false,
+            ["nPageSize" => 50],
             $select ?? ['*']
         );
 
@@ -164,9 +179,12 @@ class Builder
      *
      * @return array|string[]|null
      */
-    public static function getProduct($xmlId = '')
+    public static function getProduct($code = '', $xmlId = '')
     {
         $params = Misc::getPostDataFromJson();
+
+        if (!empty($code)) $params["code"] = $code;
+
         $filter = [
             'IBLOCK_ID' => IBLOCK_CATALOG,
             'ACTIVE' => 'Y',
@@ -209,9 +227,13 @@ class Builder
      * метод получения опций
      * @return array|string[]
      */
-    public static function getOptions(): array
+    public static function getOptions($arOptionsIds = []): array
     {
         $params = Misc::getPostDataFromJson();
+
+        if (!empty($arOptionsIds)){
+            $params['ids'] = $arOptionsIds;
+        }
 
         if (empty($params['ids']) || !isset($params['ids'])) {
             return ['error' => 'Пустое поле ids'];

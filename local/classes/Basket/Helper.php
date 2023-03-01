@@ -14,8 +14,6 @@ class Helper extends Base
     public function getBasketItems_new()
     {
         $mas_item = [];
-        $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
-
         $dbRes = \Bitrix\Sale\Basket::getList([
             'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'QUANTITY', 'XML_ID'],
             'filter' => [
@@ -31,22 +29,50 @@ class Helper extends Base
             $item_el = [
                 'id' => $item['PRODUCT_ID'],
                 'quantity' => $item['QUANTITY'],
-                'price' => $item['PRICE'],
+                'origin_price' => $item['PRICE'],
                 'basket_id' => $item['ID'],
             ];
 
-            $item_el['origin_price'] = 0;
+            $item_el['price'] = 0;
             $basketPropRes = \Bitrix\Sale\Internals\BasketPropertyTable::getList(array(
                 'filter' => array(
                     "BASKET_ID" => $item['ID'],
                 ),
             ));
 
+            $db_res = \CPrice::GetList(
+                array(),
+                array(
+                    "PRODUCT_ID" =>  $item['PRODUCT_ID'],
+                    "CATALOG_GROUP_ID" => 496
+                )
+            );
+            if ($ar_res = $db_res->Fetch())
+            {
+                $item_el['price']+=$ar_res["PRICE"];
+            }
+//            global $USER;
+//            $quantity = 1;
+//            $renewal = 'N';
+//            $arPrice = \CCatalogProduct::GetOptimalPrice(
+//                $item['PRODUCT_ID'],
+//                $quantity,
+//                $USER->GetUserGroupArray(),
+//                $renewal
+//            );
+//            $item_el['origin_price'] +=$arPrice['PRICE']['PRICE'];
+
             while ($property = $basketPropRes->fetch()) {
+                $property_buf = $property;
                 if ($property['NAME'] == 'OPTION' && $property['VALUE']) {
                     $item_el['options'] = [];
                     $arSelect = array("ID", "NAME", "XML_ID");
-                    $arFilter = array("IBLOCK_ID" => 5, 'XML_ID' => explode(';', $property['VALUE']), "ACTIVE" => "Y");
+                    $buf_option_id = explode(';', $property['VALUE']);
+                    foreach ($buf_option_id as $key=>$value){
+                        $buf_val = explode('|', $value);
+                        $buf_option_id[$key]=$buf_val[0];
+                    }
+                    $arFilter = array("IBLOCK_ID" => 5, 'XML_ID' => $buf_option_id, "ACTIVE" => "Y");
                     $res = \CIBlockElement::GetList(array(), $arFilter, false, array(), $arSelect);
                     while ($ob = $res->GetNextElement()) {
                         $arFields = $ob->GetFields();
@@ -60,8 +86,15 @@ class Helper extends Base
                             )
                         );
                         if ($ar_res = $db_res->Fetch()) {
-                            $item_el['origin_price'] += $ar_res["PRICE"];
+                            $item_el['price'] += $ar_res["PRICE"];
                         }
+//                        $arPrice = \CCatalogProduct::GetOptimalPrice(
+//                            $arFields['ID'],
+//                            $quantity,
+//                            $USER->GetUserGroupArray(),
+//                            $renewal
+//                        );
+//                        $item_el['origin_price'] +=$arPrice['PRICE']['PRICE'];
                     }
 
                 }
@@ -72,26 +105,55 @@ class Helper extends Base
                     $item_el['comment'] = json_decode($property['VALUE']);
                 }
             }
-            if (!isset($item_el['options'])) {
-                $db_res = \CPrice::GetList(
-                    array(),
-                    array(
-                        "PRODUCT_ID" => $item_el['id'],
-                        "CATALOG_GROUP_ID" => 496
-                    )
-                );
-                if ($ar_res = $db_res->Fetch()) {
-                    $item_el['origin_price'] = $ar_res["PRICE"];
-                }
-            }
+
+//            if (!isset($item_el['options'])) {
+//                $db_res = \CPrice::GetList(
+//                    array(),
+//                    array(
+//                        "PRODUCT_ID" => $item_el['id'],
+//                        "CATALOG_GROUP_ID" => 496
+//                    )
+//                );
+//                if ($ar_res = $db_res->Fetch()) {
+//                    $item_el['origin_price'] = $ar_res["PRICE"];
+//                }
+//            }
             $mas_item[] = $item_el;
         }
-
         return $mas_item;
     }
 
     public function deleteAll()
     {
+        $compl_section_id = 1060;
+        $mas_el_id = [];
+        $dbRes = \Bitrix\Sale\Basket::getList([
+            'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
+            'filter' => [
+                '=FUSER_ID' => \Bitrix\Sale\Fuser::getId(),
+                '=ORDER_ID' => null,
+                '=LID' => \Bitrix\Main\Context::getCurrent()->getSite(),
+                '=CAN_BUY' => 'Y',
+
+            ]
+        ]);
+        while ($item = $dbRes->fetch())
+        {
+            $mas_el_id[] = $item['PRODUCT_ID'];
+        }
+        if($mas_el_id){
+            $filter =[
+                'ID'=>$mas_el_id,
+                'IBLOCK_ID'=>5,
+                'SECTION_ID'=>$compl_section_id
+            ];
+            $res = \CIBlockElement::GetList(Array(),$filter, false, Array(), Array('*'));
+            while($ob = $res->GetNextElement()){
+                $arFields = $ob->GetFields();
+                \CIBlockElement::Delete($arFields['ID']);
+            }
+        }
+
         \CSaleBasket::DeleteAll(\Bitrix\Sale\Fuser::getId());
     }
 
@@ -281,6 +343,8 @@ class Helper extends Base
             $objWriter->save($filePath);
             return str_replace(\Bitrix\Main\Application::getDocumentRoot(), '', $filePath);
         }
+
+        return ['error' => 'Корзина пуста!'];
     }
 }
 ?>

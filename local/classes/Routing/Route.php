@@ -68,6 +68,8 @@ class Route
 
         // получение документов
         '/api/getDoc' => [Auth\Restore::class, 'getDoc'],
+        // получение bannera
+        '/api/getBanner' => [Auth\Restore::class, 'getBanner'],
 
         # новое восстановление пароля #
         // первый шаг - отправка логина
@@ -78,9 +80,6 @@ class Route
 
         // третий шаг - отправка пароля
         '/api/recovery/sendPassword' => [Auth\Restore::class, 'sendPassword'],
-
-        # новое восстановление пароля #
-
 
         // получить контакты
         '/api/get_contacts' => [Api\Information\Contacts::class, 'getList'],
@@ -135,8 +134,12 @@ class Route
             # Получить данные фильтра для текущего состояния структуры каталога
             '/api/catalog/filter/get' => [Api\Catalog\Filter::class, 'getData'],
 
-            # Получить данные свойств фильтра для текущего состояния структуры каталога
+            # получить данные свойств фильтра для текущего состояния структуры каталога
             '/api/catalog/filter/getFilterProperty' => [Api\Catalog\Filter::class, 'getFilterProperty'],
+
+            # получить кастомные названия товара
+            '/api/catalog/getCustomProductNames' => [Api\Helpers\Nomenclature::class, 'getCustomNames'],
+
         #----------------  Каталог END ---------------------------#
 
 
@@ -186,10 +189,22 @@ class Route
                 # Добавить проверку на суперпользователя
             '/api/users/update' => [Api\User\Update::class, 'updateUser'],
 
-            # Редактировать пользователя
+            # Удалить пользователя
                 # Добавить проверку владения точкой
                 # Добавить проверку на суперпользователя
             '/api/users/delete' => [Api\User\Delete::class, 'deleteUser'],
+
+            # запросить изменение личных данных пользователя у менеджера
+            '/api/users/checkData' => [Api\Page\Profile::class, 'changeUserData'],
+
+            # получить план продаж
+            '/api/users/getSalesPlan' => [Api\Page\Profile::class, 'getSalesPlan'],
+
+            # получить контрагентов
+            '/api/user/getContragents' => [Api\Page\Profile::class, 'getContragents'],
+
+            # загрузить логоти
+            '/api/user/changeLogo' => [Api\Page\Profile::class, 'changeLogo'],
 
             # Редактировать пользователя
                 # Добавить проверку владения точкой

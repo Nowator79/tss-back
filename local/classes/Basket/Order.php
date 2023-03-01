@@ -7,19 +7,6 @@ use Bitrix\Sale,
     Bitrix\Currency;
 use Bitrix\Main\Context;
 
-/**
- *  метод для создания заказа
- *  {
- * "FIO": "Иванов Иван Иванович",
- * "PHONE": "+799953333111",
- * "EMAIL": "ya1331@ya.ru",
- * "USER_DESCRIPTION":"Это комментарий",
- * "DELIVERY_ID": "4",
- * "PAYMENT_ID": "2",
- * "DELIVERY_ADRESS":"Сан-Франциско ул. Слава Коммунизму 1",
- * "STATUS":"draft"
- * }
- */
 class Order
 {
     protected static $orderFields = [
@@ -29,6 +16,19 @@ class Order
         'DELIVERY_ADRESS'
     ];
 
+    /**
+     *  метод для создания заказа
+     *  {
+     * "FIO": "Иванов Иван Иванович",
+     * "PHONE": "+799953333111",
+     * "EMAIL": "ya1331@ya.ru",
+     * "USER_DESCRIPTION":"Это комментарий",
+     * "DELIVERY_ID": "4",
+     * "PAYMENT_ID": "2",
+     * "DELIVERY_ADRESS":"Сан-Франциско ул. Слава Коммунизму 1",
+     * "STATUS":"draft"
+     * }
+     */
     public static function add()
     {
         $params = Misc::getPostDataFromJson();
@@ -361,6 +361,9 @@ class Order
                 $arOrder['LOCK_CHANGE_PAYSYSTEM'] = 'Y';
             }
 
+            $arOrder['DATE_INSERT'] = $arOrder['DATE_INSERT']->toString();
+            $arOrder['DATE_UPDATE'] = $arOrder['DATE_UPDATE']->toString();
+
             $listOrders[$arOrder["ID"]] = $arOrder;
             $orderIdList[] = $arOrder["ID"];
         }
@@ -376,8 +379,19 @@ class Order
         while ($basket = $listBaskets->fetch()) {
             if (\CSaleBasketHelper::isSetItem($basket))
                 continue;
+            $basket['DATE_INSERT'] = $basket['DATE_INSERT']->toString();
+            $basket['DATE_UPDATE'] = $basket['DATE_UPDATE']->toString();
 
             $listOrderBasket[$basket['ORDER_ID']][$basket['ID']] = $basket;
+            //
+            $dbProp = \CSaleBasket::GetPropsList(
+                ["ID" => "DESC"],
+                ["BASKET_ID" => $basket['ID']]
+            );
+
+           while($arProp = $dbProp -> GetNext())
+               $listOrderBasket[$basket['ORDER_ID']][$basket['ID']]["PROPS"][] = $arProp;
+            //
         }
 
         $trackingManager = \Bitrix\Sale\Delivery\Tracking\Manager::getInstance();
