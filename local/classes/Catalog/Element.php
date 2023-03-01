@@ -1006,7 +1006,7 @@ class Element extends Base
 			'catalog'
         );
 
-        // всего товаров
+        // всего товаров #
         $result['all_elements_count'] = self::getAllSectionElementsCount($arFilter);
 
         // номер страницы
