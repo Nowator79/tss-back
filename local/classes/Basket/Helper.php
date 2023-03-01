@@ -164,7 +164,7 @@ class Helper extends Base
      */
     public function getInvoice()
     {
-        $useId = \Bitrix\Sale\Fuser::getId();
+        $useId = \Bitrix\Sale\Fuser::getId(true);
         //данные по персональному мененджеру
         global $USER;
         //$userData = \CUser::GetByID($USER->GetID())->Fetch();
