@@ -1,5 +1,4 @@
 <?
-
 namespace Godra\Api\Basket;
 
 use Godra\Api\Helpers\Utility\Misc;
@@ -139,9 +138,9 @@ class Order
             $BITRIX_DATETIME_FORMAT = 'd.m.Y H:i:s';
             $dateBegin = new \DateTime(sprintf($params['date_begin'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
             $dateEnd = new \DateTime(sprintf($params['date_end'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
-            $dateBegin->modify('+1 day -1 second');
-            $filter['<=DATE_INSERT'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
-            $filter['>=DATE_INSERT'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
+            $dateEnd->modify('+1 day -1 second');
+            $filter['<=DATE_INSERT'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
+            $filter['>=DATE_INSERT'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
         }
 
         $listOrders = array();
