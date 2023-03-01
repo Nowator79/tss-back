@@ -1331,8 +1331,12 @@ class Element extends Base
                 $inBasket=1;
                 $qa=$arItems['QUANTITY'];
             }
-                // Если в корзине нет товаров
 
+            if($row['PROPERTY_DOP_KOMPLEKTATSIYA_VALUE']==NULL){
+                $option_flag  = false;
+            }else{
+                $option_flag = true;
+            }
                 // карточка товара
                 $elements[] = [
                     // id
@@ -1341,6 +1345,7 @@ class Element extends Base
                     'article'=>$row['PROPERTY_CML2_ARTICLE_VALUE'],
                     'compl'=>$row['PROPERTY_DOP_KOMPLEKTATSIYA_VALUE'],
                     // название
+                    'option_flag'=>$option_flag,
                     'name' => $row['NAME'],
                     // код
                     'code' => $row['CODE'],
