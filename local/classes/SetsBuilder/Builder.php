@@ -168,8 +168,8 @@ class Builder
 
             // Формируем выходной массив
             $ar_fields['TABS']['description'] = !empty($product['PREVIEW_TEXT']) ? $product['PREVIEW_TEXT'] : '';
-            $ar_fields['TABS']['props'] = $ar_props;
-            $ar_fields['TABS']['all_props'] = $all_props;
+            $ar_fields['TABS']['props'] = $all_props;
+            $ar_fields['TABS']['filtered_props'] = $ar_props;
             $ar_fields['TABS']['delivery'] = 'Доставка осуществляется курьером или возможен самовывоз';
             $ar_fields['TABS']['stocks'] = Element::getProductStocks($ar_fields['ID']);
 
