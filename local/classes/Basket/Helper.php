@@ -9,6 +9,7 @@ use Godra\Api\Helpers\Utility\Misc;
  */
 class Helper extends Base
 {
+    const BORDER_THIN = 'thin';
     public function getBasketItems_new()
     {
         $mas_item = [];
@@ -166,39 +167,47 @@ class Helper extends Base
             //хедер таблицы
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A11', 'N');
-            $objPHPExcel->getActiveSheet()->mergeCells('A9:B9');
 
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('C11', 'Наименование');
+                ->setCellValue('B11', 'Наименование');
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('D11', 'Кол-во');
+                ->setCellValue('C11', 'Кол-во');
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('E11', 'Ед. изм.');
+                ->setCellValue('D11', 'Ед. изм.');
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('F11', 'Цена руб.');
+                ->setCellValue('E11', 'Цена руб.');
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('G11', 'Сумма');
+                ->setCellValue('F11', 'Сумма');
 
             //табличная часть корзины
             $startRowId = 12;
             foreach ($basket as $item) {
-                $startRowId++;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $startRowId, $item->getProductId());
-                $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':B' . $startRowId);
-
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('C' . $startRowId, $item->getField("NAME"));
+                    ->setCellValue('B' . $startRowId, $item->getField("NAME"));
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('D' . $startRowId, $item->getQuantity());
+                    ->setCellValue('C' . $startRowId, $item->getQuantity());
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('E' . $startRowId, 'шт');
+                    ->setCellValue('D' . $startRowId, 'шт');
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('F' . $startRowId, $item->getPrice());
+                    ->setCellValue('E' . $startRowId, $item->getPrice());
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('G' . $startRowId, $item->getFinalPrice());
+                    ->setCellValue('F' . $startRowId, $item->getFinalPrice());
+                $startRowId++;
             }
             //
+
+            $styleArray = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN
+                    )
+                )
+            );
+
+            $objPHPExcel->getActiveSheet()->getStyle('A11:F'.$startRowId)->applyFromArray($styleArray);
+            unset($styleArray);
 
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="01simple.xls"');
