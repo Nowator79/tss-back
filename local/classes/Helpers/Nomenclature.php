@@ -1,5 +1,4 @@
 <?
-
 namespace Godra\Api\Helpers;
 
 use Godra\Api\Helpers\Utility\Misc;
