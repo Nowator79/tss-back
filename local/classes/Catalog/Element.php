@@ -904,7 +904,7 @@ class Element extends Base
         $sectionData = self::getSection(['CODE' => $params['section_code']]);
 
         if (!$sectionData) {
-            http_response_code(400); exit;
+            http_response_code(404); exit;
 //            return ['error' => 'Нет раздела с таким section_code'];
         }
 
