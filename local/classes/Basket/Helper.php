@@ -106,18 +106,6 @@ class Helper extends Base
                 }
             }
 
-//            if (!isset($item_el['options'])) {
-//                $db_res = \CPrice::GetList(
-//                    array(),
-//                    array(
-//                        "PRODUCT_ID" => $item_el['id'],
-//                        "CATALOG_GROUP_ID" => 496
-//                    )
-//                );
-//                if ($ar_res = $db_res->Fetch()) {
-//                    $item_el['origin_price'] = $ar_res["PRICE"];
-//                }
-//            }
             $mas_item[] = $item_el;
         }
         return $mas_item;
