@@ -153,11 +153,11 @@ class Builder
             if (!empty($ar_fields['PREVIEW_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['PREVIEW_PICTURE'])->Fetch()['SRC'];
             if (!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['DETAIL_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];
 
-            if (isset($ar_props['MORE_PHOTO'])) {
-                foreach ($ar_props['MORE_PHOTO']['VALUE'] as $photo) {
+            if (isset($all_props['MORE_PHOTO'])) {
+                foreach ($all_props['MORE_PHOTO']['VALUE'] as $photo) {
                     $arPhoto[] = \CFile::GetByID($photo)->Fetch()['SRC'];
                 }
-                $ar_props['MORE_PHOTO'] = $arPhoto;
+                $all_props['MORE_PHOTO'] = $arPhoto;
             }
 
             if ($withOptions) {
