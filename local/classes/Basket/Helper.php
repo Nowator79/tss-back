@@ -113,7 +113,7 @@ class Helper extends Base
 
     public function deleteAll()
     {
-        $compl_section_id = 1060;
+        $compl_section_id = 1223;
         $mas_el_id = [];
         $dbRes = \Bitrix\Sale\Basket::getList([
             'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
