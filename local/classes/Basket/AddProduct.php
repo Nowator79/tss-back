@@ -137,6 +137,8 @@ class AddProduct extends Base
                         $renewal
                     );
                     $origin_price +=$arPrice['PRICE']['PRICE'];
+                }else{
+                    $prodName = $arFields['NAME'];
                 }
             }
 
