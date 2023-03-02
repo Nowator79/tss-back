@@ -382,6 +382,11 @@ class Order
             $basket['DATE_INSERT'] = $basket['DATE_INSERT']->toString();
             $basket['DATE_UPDATE'] = $basket['DATE_UPDATE']->toString();
 
+            $resEl = \CIBlockElement::GetByID($basket['PRODUCT_ID']);
+            if($ar_res = $resEl->GetNext())
+                $basket['PREVIEW_PICTURE'] = CFile::GetPath($ar_res['DETAIL_PICTURE']);
+
+
             $listOrderBasket[$basket['ORDER_ID']][$basket['ID']] = $basket;
             //
             $dbProp = \CSaleBasket::GetPropsList(
