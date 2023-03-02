@@ -55,10 +55,7 @@ class Builder
     public static function makeOptionsArray($optionsString) : array
     {
         $arArticles = explode(';', $optionsString);
-        $arArticles = array_diff($arArticles, array(''));
-        if (count($arArticles) > 1) {
-            $arArticles = implode(',', trim($arArticles));
-        }
+        $arArticles = implode(',', $arArticles);
 
         $arOptionsIds = self::GetByArticle($arArticles);
 
