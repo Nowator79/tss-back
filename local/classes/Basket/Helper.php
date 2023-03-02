@@ -96,11 +96,10 @@ class Helper extends Base
                     }
 
                 }
-                if ($property['NAME'] == 'COMMENT') {
-                    $item_el['comment'] = $property['VALUE'];
-                }
+                $prop[] = $property;
+
                 if ($property['NAME'] == 'PROPS') {
-                    $item_el['comment'] = json_decode($property['VALUE']);
+                    $item_el['comment'] = $property['VALUE'];
                 }
             }
 
