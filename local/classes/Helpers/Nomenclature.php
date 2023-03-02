@@ -111,8 +111,19 @@ class Nomenclature
      * @return void
      */
     public function getProductFromHL($xmlId) {
-        $key = array_search($xmlId, array_column(self::$arXls, 'XML_ID'));
-        return self::$arXls[$key];
+        Loader::includeModule("highloadblock");
+
+        $hlblock = HL\HighloadBlockTable::getById(HIGHLOAD_PRODUCT_CODE_ID)->fetch();
+        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+
+        $rsData = $entity_data_class::getList(array(
+            "select" => array("*"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array("UF_XML_ID" => $xmlId)  // Задаем параметры фильтра выборки
+        ));
+
+        return $rsData->Fetch();
     }
 
     /**
@@ -186,7 +197,7 @@ class Nomenclature
      */
     public static function getGostProductName($product, $hlProduct, $arOptionsParams)
     {
-        $name = $hlProduct['CUSTOM_NAME'];
+        $name = $hlProduct['CUSTOM_NAME'] ?? $product['NAME'];
 
         $is_complex = false;
 
