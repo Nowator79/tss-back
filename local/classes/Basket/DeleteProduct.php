@@ -36,12 +36,12 @@ class DeleteProduct extends Base
     {
         $params = Misc::getPostDataFromJson();
         $itemID = $params['basket_id'];
-        $compl_section_id = 1060;
+        $compl_section_id = 1223;
 
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
         $basketItem = $basket->getItemByBasketCode($itemID);
 
-        $el_id =$basketItem->getProductId();
+        $el_id = $basketItem->getProductId();
         if($el_id){
             $filter =[
                 'ID'=>$el_id,
@@ -54,7 +54,7 @@ class DeleteProduct extends Base
                 \CIBlockElement::Delete($arFields['ID']);
             }
         }
-        if($basketItem) {
+        if($basketItem){
             $result = $basketItem->delete();
             if ($result->isSuccess())
             {
