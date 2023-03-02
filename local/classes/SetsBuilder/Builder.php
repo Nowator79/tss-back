@@ -160,8 +160,6 @@ class Builder
             $all_props = $ar_props;
             $ignore_prop = Element::getIgnoreElementProps();
 
-
-
             foreach ($ar_props as $k => $prop) {
                 if ($prop['CODE'] == 'CML2_ARTICLE' || empty($prop['VALUE']) || in_array($prop['CODE'], $ignore_prop))
                 {
