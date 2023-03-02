@@ -94,7 +94,7 @@ class AddProduct extends Base
                 global $USER;
                 $arLoadProductArray = Array(
                     "MODIFIED_BY"    => $USER->GetID(), // элемент изменен текущим пользователем
-                    "IBLOCK_SECTION_ID" => 1060,          // элемент лежит в корне раздела
+                    "IBLOCK_SECTION_ID" => 1223,          // элемент лежит в корне раздела
                     "IBLOCK_ID"      => 5,
                     "PROPERTY_VALUES"=> $PROP,
                     "NAME"           => $prodName,
