@@ -139,8 +139,9 @@ class Order
             $dateBegin = new \DateTime(sprintf($params['date_begin'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
             $dateEnd = new \DateTime(sprintf($params['date_end'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
             $dateEnd->modify('+1 day -1 second');
-            $filter['<=DATE_INSERT'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
             $filter['>=DATE_INSERT'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
+            $filter['<=DATE_INSERT'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
+
         }
 
         $listOrders = array();
