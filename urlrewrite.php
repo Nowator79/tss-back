@@ -40,12 +40,12 @@ $arUrlRewrite=array (
     'PATH' => '/desktop_app/router.php',
     'SORT' => 100,
   ),
-  0 => 
+  7 => 
   array (
-    'CONDITION' => '#^/stssync/calendar/#',
+    'CONDITION' => '#^/catalog/#',
     'RULE' => '',
-    'ID' => 'bitrix:stssync.server',
-    'PATH' => '/bitrix/services/stssync/calendar/index.php',
+    'ID' => 'bitrix:catalog',
+    'PATH' => '/catalog/index.php',
     'SORT' => 100,
   ),
   5 => 

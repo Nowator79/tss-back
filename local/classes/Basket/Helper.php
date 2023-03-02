@@ -152,18 +152,22 @@ class Helper extends Base
      */
     public function getInvoice()
     {
-        $useId = \Bitrix\Sale\Fuser::getId(true);
-        //данные по персональному мененджеру
-        global $USER;
-        $userData = \CUser::GetByID($USER->GetID())->Fetch();
-        //$userData = \CUser::GetByID(1)->Fetch();
-        //
         $params = Misc::getPostDataFromJson();
+        if(!$params["userId"]) {
+            return ['error' => 'Пользователь не найден!'];
+        }
+
+        $arFUser = \CSaleUser::GetList(array('USER_ID' => $params['userId']));
+
+        //данные по персональному мененджеру
+        $userData = \CUser::GetByID($params["userId"])->Fetch();
+        //
+
         if(!empty($params['orderId'])) {
             $order = \Bitrix\Sale\Order::load($params['orderId']);
             $basket = $order->getBasket();
         } else {
-            $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
+            $basket = \Bitrix\Sale\Basket::loadItemsForFUser($arFUser['ID'], \Bitrix\Main\Context::getCurrent()->getSite());
         }
 
         //for test
