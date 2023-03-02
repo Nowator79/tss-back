@@ -167,8 +167,8 @@ class Helper extends Base
         $useId = \Bitrix\Sale\Fuser::getId(true);
         //данные по персональному мененджеру
         global $USER;
-        //$userData = \CUser::GetByID($USER->GetID())->Fetch();
-        $userData = \CUser::GetByID(1)->Fetch();
+        $userData = \CUser::GetByID($USER->GetID())->Fetch();
+        //$userData = \CUser::GetByID(1)->Fetch();
         //
         $params = Misc::getPostDataFromJson();
         if(!empty($params['orderId'])) {
@@ -303,6 +303,7 @@ class Helper extends Base
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('B' . $startRowId, $userData["PERSONAL_PHONE"]);
             }
+
             $startRowId++;
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $startRowId, 'Email');
