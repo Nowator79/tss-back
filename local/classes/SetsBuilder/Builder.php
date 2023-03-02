@@ -32,6 +32,11 @@ class Builder
     {
         global $DB;
         $results = [];
+
+        if (is_array($arArticles)) {
+            $arArticles = $arArticles[0];
+        }
+
         $sql = "SELECT IBLOCK_ELEMENT_ID FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." and VALUE IN(" . $arArticles . ")";
         $dbRes = $DB->Query($sql);
         while ($res = $dbRes->Fetch()) {
@@ -50,7 +55,14 @@ class Builder
     public static function makeOptionsArray($optionsString) : array
     {
         $arArticles = explode(';', $optionsString);
-        $arOptionsIds = self::GetByArticle(implode(',', $arArticles));
+        $arArticles = array_diff($arArticles, array(''));
+        if (count($arArticles) > 1) {
+            $arArticles = implode(',', trim($arArticles));
+        }
+
+        $arOptionsIds = self::GetByArticle($arArticles);
+
+        if (empty($arOptionsIds)) return [];
 
         $arFilter = [
             'IBLOCK_ID' => IBLOCK_CATALOG,
@@ -140,8 +152,15 @@ class Builder
         while ($ar_res = $dbProduct->GetNextElement()) {
             $ar_fields = $ar_res->GetFields();
             $ar_props = $ar_res->GetProperties([],['ACTIVE' => 'Y', 'EMPTY' => 'N']);
+            unset($ar_props["CML2_TRAITS"]);
+            unset($ar_props["CML2_TAXES"]);
+            unset($ar_props["FILES"]);
+            unset($ar_props["YAVLYAETSYA_DGU"]);
+
             $all_props = $ar_props;
             $ignore_prop = Element::getIgnoreElementProps();
+
+
 
             foreach ($ar_props as $k => $prop) {
                 if ($prop['CODE'] == 'CML2_ARTICLE' || empty($prop['VALUE']) || in_array($prop['CODE'], $ignore_prop))
@@ -161,8 +180,8 @@ class Builder
             }
 
             if ($withOptions) {
-                if (isset($ar_props['DOP_KOMPLEKTATSIYA']['VALUE'])) {
-                    $ar_fields['OPTIONS_LIST'] = self::makeOptionsArray($ar_props['DOP_KOMPLEKTATSIYA']['VALUE']);
+                if (isset($all_props['DOP_KOMPLEKTATSIYA']['VALUE'])) {
+                    $ar_fields['OPTIONS_LIST'] = self::makeOptionsArray($all_props['DOP_KOMPLEKTATSIYA']['VALUE']);
                 }
             }
 
