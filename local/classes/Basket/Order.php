@@ -399,7 +399,6 @@ class Order
         }
 
         $trackingManager = \Bitrix\Sale\Delivery\Tracking\Manager::getInstance();
-
         $deliveryStatusClassName = $registry->getDeliveryStatusClassName();
         $deliveryStatuses = $deliveryStatusClassName::getAllStatusesNames(LANGUAGE_ID);
 
