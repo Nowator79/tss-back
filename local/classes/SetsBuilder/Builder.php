@@ -32,9 +32,11 @@ class Builder
     {
         global $DB;
         $results = [];
+
         if (is_array($arArticles)) {
             $arArticles = $arArticles[0];
         }
+
         $sql = "SELECT IBLOCK_ELEMENT_ID FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." and VALUE IN(" . $arArticles . ")";
         $dbRes = $DB->Query($sql);
         while ($res = $dbRes->Fetch()) {
