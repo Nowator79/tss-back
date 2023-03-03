@@ -11,6 +11,7 @@ use Godra\Api\SetsBuilder\Builder;
 class Helper extends Base
 {
     const BORDER_THIN = 'thin';
+
     public function getBasketItems_new()
     {
         $mas_item = [];
@@ -43,13 +44,12 @@ class Helper extends Base
             $db_res = \CPrice::GetList(
                 array(),
                 array(
-                    "PRODUCT_ID" =>  $item['PRODUCT_ID'],
+                    "PRODUCT_ID" => $item['PRODUCT_ID'],
                     "CATALOG_GROUP_ID" => 496
                 )
             );
-            if ($ar_res = $db_res->Fetch())
-            {
-                $item_el['price']+=$ar_res["PRICE"];
+            if ($ar_res = $db_res->Fetch()) {
+                $item_el['price'] += $ar_res["PRICE"];
             }
 //            global $USER;
 //            $quantity = 1;
@@ -71,9 +71,9 @@ class Helper extends Base
                     $item_el['options'] = [];
                     $arSelect = array("ID", "NAME", "XML_ID");
                     $buf_option_id = explode(';', $property['VALUE']);
-                    foreach ($buf_option_id as $key=>$value){
+                    foreach ($buf_option_id as $key => $value) {
                         $buf_val = explode('|', $value);
-                        $buf_option_id[$key]=$buf_val[0];
+                        $buf_option_id[$key] = $buf_val[0];
                     }
                     $arFilter = array("IBLOCK_ID" => 5, 'XML_ID' => $buf_option_id, "ACTIVE" => "Y");
                     $res = \CIBlockElement::GetList(array(), $arFilter, false, array(), $arSelect);
@@ -118,7 +118,7 @@ class Helper extends Base
         $compl_section_id = 1223;
         $mas_el_id = [];
         $dbRes = \Bitrix\Sale\Basket::getList([
-            'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
+            'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'QUANTITY', 'XML_ID'],
             'filter' => [
                 '=FUSER_ID' => \Bitrix\Sale\Fuser::getId(),
                 '=ORDER_ID' => null,
@@ -127,18 +127,17 @@ class Helper extends Base
 
             ]
         ]);
-        while ($item = $dbRes->fetch())
-        {
+        while ($item = $dbRes->fetch()) {
             $mas_el_id[] = $item['PRODUCT_ID'];
         }
-        if($mas_el_id){
-            $filter =[
-                'ID'=>$mas_el_id,
-                'IBLOCK_ID'=>5,
-                'SECTION_ID'=>$compl_section_id
+        if ($mas_el_id) {
+            $filter = [
+                'ID' => $mas_el_id,
+                'IBLOCK_ID' => 5,
+                'SECTION_ID' => $compl_section_id
             ];
-            $res = \CIBlockElement::GetList(Array(),$filter, false, Array(), Array('*'));
-            while($ob = $res->GetNextElement()){
+            $res = \CIBlockElement::GetList(array(), $filter, false, array(), array('*'));
+            while ($ob = $res->GetNextElement()) {
                 $arFields = $ob->GetFields();
                 \CIBlockElement::Delete($arFields['ID']);
             }
@@ -155,34 +154,44 @@ class Helper extends Base
     public function getInvoice()
     {
         $params = Misc::getPostDataFromJson();
-        if(!$params["userId"]) {
+        if (!$params["userId"]) {
             return ['error' => 'Пользователь не найден!'];
         }
 
-        $arFUser = \CSaleUser::GetList(array('USER_ID' => $params['userId']));
-
         //данные по персональному мененджеру
+        $arFUser = \CSaleUser::GetList(array('USER_ID' => $params['userId']));
         $userData = \CUser::GetByID($params["userId"])->Fetch();
         //
 
-        if(!empty($params['orderId'])) {
+        if (!empty($params['orderId'])) {
             $order = \Bitrix\Sale\Order::load($params['orderId']);
             $basket = $order->getBasket();
         } else {
             $basket = \Bitrix\Sale\Basket::loadItemsForFUser($arFUser['ID'], \Bitrix\Main\Context::getCurrent()->getSite());
         }
 
-        //for test
-//        $params = [
-//            'contragent' => 'Название контрагента',
-//            'company' => 'ООО "Вектор"',
-//            'name' => 'Иванов И.И.',
-//            'phone' => '+7999 9999 99 99',
-//            'email' => 'mail@mail.ru'
-//        ];
-        //
-
         if (count($basket->getQuantityList())) {
+            //подготовка данных товаров в корзине
+            $arBasketItems = [];
+            foreach ($basket as $item) {
+                $itemData = [];
+                $arProduct = Builder::getProduct('', $item->getField("PRODUCT_XML_ID"))[0];
+                $itemId = $item->getProductId();
+                $itemData = [
+                    "ID" => $itemId,
+                    "NAME" => $item->getField("NAME") ?? $arProduct["NAME"],
+                    "DETAIL_TEXT" => $arProduct["DETAIL_TEXT"],
+                    "DETAIL_PICTURE" => $arProduct["DETAIL_PICTURE"],
+                    "QUANTITY" => $item->getQuantity(),
+                    "MEASURE_NAME" => $item->getField("MEASURE_NAME"),
+                    "PRICE" => $item->getPrice(),
+                    "FPRICE" => $item->getFinalPrice(),
+                    "PROPS" => $arProduct['TABS']['props']
+                ];
+                $arBasketItems[] = $itemData;
+            }
+            //
+
             $fileExt = 'xls';
             $fileName = "invoice_{$basket->getFUserId()}.{$fileExt}";
             $tempDir = $_SESSION['REPORT_EXPORT_TEMP_DIR'] = \CTempFile::GetDirectoryName(1, array('invoice', uniqid('basket_invoice_')));
@@ -248,19 +257,19 @@ class Helper extends Base
 
             //табличная часть корзины
             $startRowId = 12;
-            foreach ($basket as $item) {
+            foreach ($arBasketItems as $item) {
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $startRowId, $item->getProductId());
+                    ->setCellValue('A' . $startRowId, $item["ID"]);
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('B' . $startRowId, $item->getField("NAME"));
+                    ->setCellValue('B' . $startRowId, $item["NAME"]);
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('C' . $startRowId, $item->getQuantity());
+                    ->setCellValue('C' . $startRowId, $item["QUANTITY"]);
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('D' . $startRowId, 'шт');
+                    ->setCellValue('D' . $startRowId, $item["MEASURE_NAME"]);
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('E' . $startRowId, $item->getPrice());
+                    ->setCellValue('E' . $startRowId, $item["PRICE"]);
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('F' . $startRowId, $item->getFinalPrice());
+                    ->setCellValue('F' . $startRowId, $item["FPRICE"]);
                 $startRowId++;
             }
             //
@@ -273,14 +282,13 @@ class Helper extends Base
                 )
             );
 
-            $objPHPExcel->getActiveSheet()->getStyle('A11:F'.$startRowId)->applyFromArray($styleArray);
+            $objPHPExcel->getActiveSheet()->getStyle('A11:F' . $startRowId)->applyFromArray($styleArray);
             unset($styleArray);
             $startRowId = $startRowId + 5;
 
-            $startRowId++;
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $startRowId, 'Детализация комплектации указана в Приложении №1 к данному технико-коммерческому предложению (ТКП)');
-            $objPHPExcel->getActiveSheet()->mergeCells('A'.$startRowId.':G'.$startRowId);
+            $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':G' . $startRowId);
 
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $startRowId++, 'Ваш персональный менеджер:');
@@ -289,8 +297,8 @@ class Helper extends Base
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $startRowId, 'Ф.И.О');
             $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('B' . $startRowId, $userData["NAME"].' '.$userData["LAST_NAME"]);
-            if(!empty($userData["PERSONAL_PHONE"])) {
+                ->setCellValue('B' . $startRowId, $userData["NAME"] . ' ' . $userData["LAST_NAME"]);
+            if (!empty($userData["PERSONAL_PHONE"])) {
                 $startRowId++;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $startRowId, 'Телефон');
@@ -308,46 +316,52 @@ class Helper extends Base
             $startRowId = $startRowId + 5;
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $startRowId, 'Приложение1');
-            $objPHPExcel->getActiveSheet()->mergeCells('A'.$startRowId.':G'.$startRowId);
+            $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':G' . $startRowId);
 
-            $startRowId = $startRowId + 4;
-            foreach ($basket as $item) {
-                $arProduct = Builder::getProduct('',$item->getField("PRODUCT_XML_ID"))[0];
-                $startRowId++;
+            $startRowId = $startRowId + 2;
+            foreach ($arBasketItems as $item) {
+                $startRowId = $startRowId + 4;
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $startRowId, $arProduct['NAME']);
-                if(!empty($arProduct["DETAIL_PICTURE"])){
+                    ->setCellValue('A' . $startRowId, $item['NAME']);
+                if (!empty($arProduct["DETAIL_PICTURE"])) {
                     $startRowId++;
-                    $objPHPExcel->getActiveSheet()->mergeCells('A'.$startRowId.':G'.$startRowId);
-                    $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot() . $arProduct["DETAIL_PICTURE"]);
+                    $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':G' . $startRowId);
+                    $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot() . $item["DETAIL_PICTURE"]);
                     $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
                     $objDrawing->setDescription('barcode');
                     $objDrawing->setImageResource($imgBarcode);
                     $objDrawing->setHeight(100);
-                    $objDrawing->setCoordinates('A'.$startRowId);
+                    $objDrawing->setCoordinates('A' . $startRowId);
+                }
+
+                if (!empty($item["DETAIL_TEXT"])) {
+                    $startRowId++;
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $startRowId, "Описание");
+                    $startRowId++;
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $startRowId, strip_tags($item['DETAIL_TEXT']));
+                    $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':B' . $startRowId);
+                    $objPHPExcel->setActiveSheetIndex(0)->getStyle('A' . $startRowId . ':B' . $startRowId)->getAlignment()->setWrapText(true);
+                    $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(100);
+                }
+
+                foreach ($item['PROPS'] as $prop) {
+                    $startRowId = $startRowId + 3;
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $startRowId, $prop['NAME']);
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('B' . $startRowId, $prop['VALUE']);
                 }
 
             }
 
-            if(!empty($arProduct["DETAIL_TEXT"])){
-                $startRowId++;
-                $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $startRowId, strip_tags($arProduct['DETAIL_TEXT']));
-            }
-
-            foreach ($arProduct['TABS']['props'] as $prop) {
-                $startRowId = $startRowId + 3;
-                $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $startRowId, $prop['NAME']);
-                $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('B' . $startRowId, $prop['VALUE']);
-            }
-
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="01simple.xls"');
             header('Cache-Control: max-age=0');
             header('Cache-Control: max-age=1');
-
             header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
             header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
             header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
