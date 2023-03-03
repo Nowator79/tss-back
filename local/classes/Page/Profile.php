@@ -175,7 +175,7 @@ class Profile
                 $arFields['PERSONAL_PHOTO'] = $arFile;
             }
 
-            $oUser->Update($params['userId'], $arFields);
+            $oUser->Update($userId, $arFields);
 
                 return [
                     'url' => \CFile::GetPath($fileId),
