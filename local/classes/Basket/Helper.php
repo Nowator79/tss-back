@@ -63,7 +63,10 @@ class Helper extends Base
 //            $item_el['origin_price'] +=$arPrice['PRICE']['PRICE'];
 
             while ($property = $basketPropRes->fetch()) {
-                $property_buf = $property;
+                if ($property['NAME'] == 'ID_ORIGINAL' && $property['VALUE']) {
+                    $item_el['id'] = $property['VALUE'];
+                }
+
                 if ($property['NAME'] == 'OPTION' && $property['VALUE']) {
                     $item_el['options'] = [];
                     $arSelect = array("ID", "NAME", "XML_ID");
@@ -98,11 +101,10 @@ class Helper extends Base
                     }
 
                 }
-                if ($property['NAME'] == 'COMMENT') {
-                    $item_el['comment'] = $property['VALUE'];
-                }
+                $prop[] = $property;
+
                 if ($property['NAME'] == 'PROPS') {
-                    $item_el['comment'] = json_decode($property['VALUE']);
+                    $item_el['comment'] = $property['VALUE'];
                 }
             }
 

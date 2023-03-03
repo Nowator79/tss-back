@@ -158,11 +158,18 @@ class AddProduct extends Base
                     'VALUE' => $item['comment'],
                     'SORT' => 100
                 );
+            if($item['id_original'])
+                $properties['ID_ORIGINAL']= array(
+                    'NAME' => 'ID_ORIGINAL',
+                    'CODE' => 'ID_ORIGINAL',
+                    'VALUE' => intval($item['id']),
+                    'SORT' => 100
+                );
             if($item['props'])
                 $properties['PROPS']= array(
                     'NAME' => 'PROPS',
                     'CODE' => 'PROPS',
-                    'VALUE' => json_encode($item['props']),
+                    'VALUE' => $item['props'],
                     'SORT' => 100
                 );
 
