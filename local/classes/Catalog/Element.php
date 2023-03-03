@@ -904,7 +904,8 @@ class Element extends Base
         $sectionData = self::getSection(['CODE' => $params['section_code']]);
 
         if (!$sectionData) {
-            return ['error' => 'Нет раздела с таким section_code'];
+            http_response_code(404); exit;
+//            return ['error' => 'Нет раздела с таким section_code'];
         }
 
         // проверка раздела - является ли разделом первого или второго уровня
@@ -1006,7 +1007,7 @@ class Element extends Base
 			'catalog'
         );
 
-        // всего товаров
+        // всего товаров #
         $result['all_elements_count'] = self::getAllSectionElementsCount($arFilter);
 
         // номер страницы
@@ -1331,8 +1332,12 @@ class Element extends Base
                 $inBasket=1;
                 $qa=$arItems['QUANTITY'];
             }
-                // Если в корзине нет товаров
 
+            if($row['PROPERTY_DOP_KOMPLEKTATSIYA_VALUE']==NULL){
+                $option_flag  = false;
+            }else{
+                $option_flag = true;
+            }
                 // карточка товара
                 $elements[] = [
                     // id
@@ -1341,6 +1346,7 @@ class Element extends Base
                     'article'=>$row['PROPERTY_CML2_ARTICLE_VALUE'],
                     'compl'=>$row['PROPERTY_DOP_KOMPLEKTATSIYA_VALUE'],
                     // название
+                    'option_flag'=>$option_flag,
                     'name' => $row['NAME'],
                     // код
                     'code' => $row['CODE'],

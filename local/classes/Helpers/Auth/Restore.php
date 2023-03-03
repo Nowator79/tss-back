@@ -59,12 +59,19 @@ class Restore extends Base
             $arEventFields['TEL']=$params['tel'];
             $arEventFields['EMAIL']=$params['email'];
             $arEventFields['PASS']=$params['pass'];
+        }else
+        if($params['subject']=='Обратная связь'){
+            $arEventFields['NAME']=$params['name'];
+            $arEventFields['EMAIL']=$params['email'];
+            $arEventFields['COMMENT']=$params['comment'];
+            $eventTempl = 'SEND_MES_BACK_CALL';
         }else{
             $arEventFields['MESSAGE']=$params['text'];
             $eventTempl = 'SEND_MES_UD';
         }
+        $mes_send =  \CEvent::Send($eventTempl, $siteId, $arEventFields);
 
-        \CEvent::Send($eventTempl, $siteId, $arEventFields);
+        return $mes_send;
     }
     public function getBanner()
     {

@@ -94,7 +94,7 @@ class AddProduct extends Base
                 global $USER;
                 $arLoadProductArray = Array(
                     "MODIFIED_BY"    => $USER->GetID(), // элемент изменен текущим пользователем
-                    "IBLOCK_SECTION_ID" => 1060,          // элемент лежит в корне раздела
+                    "IBLOCK_SECTION_ID" => 1223,          // элемент лежит в корне раздела
                     "IBLOCK_ID"      => 5,
                     "PROPERTY_VALUES"=> $PROP,
                     "NAME"           => $prodName,
@@ -137,6 +137,8 @@ class AddProduct extends Base
                         $renewal
                     );
                     $origin_price +=$arPrice['PRICE']['PRICE'];
+                }else{
+                    $prodName = $arFields['NAME'];
                 }
             }
 
@@ -156,11 +158,18 @@ class AddProduct extends Base
                     'VALUE' => $item['comment'],
                     'SORT' => 100
                 );
+            if($item['id_original'])
+                $properties['ID_ORIGINAL']= array(
+                    'NAME' => 'ID_ORIGINAL',
+                    'CODE' => 'ID_ORIGINAL',
+                    'VALUE' => intval($item['id']),
+                    'SORT' => 100
+                );
             if($item['props'])
                 $properties['PROPS']= array(
                     'NAME' => 'PROPS',
                     'CODE' => 'PROPS',
-                    'VALUE' => json_encode($item['props']),
+                    'VALUE' => $item['props'],
                     'SORT' => 100
                 );
 
