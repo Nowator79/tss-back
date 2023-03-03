@@ -175,14 +175,13 @@ class Profile
                 $arFields['PERSONAL_PHOTO'] = $arFile;
             }
 
-            $result = $oUser->Update($params['userId'], $arFields);
+            $oUser->Update($params['userId'], $arFields);
 
-            if ($result) {
                 return [
                     'url' => \CFile::GetPath($fileId),
                     'success' => 'Логотип загружен!'
                 ];
-            }
+
         }
     }
 }
