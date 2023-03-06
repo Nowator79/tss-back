@@ -180,8 +180,12 @@ class AddProduct extends Base
                     'SORT' => 100
                 );
 
+            if($item['xmlId']){
+                $xmlId = $item['xmlId'];
+            }else{
+                $xmlId = 'bx_'.rand(1000000000000,9999999999999);
+            }
 
-            $xml_id = 'bx_'.rand(1000000000000,9999999999999);
             $item = $basket->createItem('catalog', $productId);
 
             $item->setFields(array(
@@ -191,16 +195,15 @@ class AddProduct extends Base
                 'LID' => \Bitrix\Main\Context::getCurrent()->getSite(),
                 'PRODUCT_PROVIDER_CLASS' => 'CCatalogProductProviderCustom',
                 'PRICE' => $origin_price,
-                'PRODUCT_XML_ID' => $item['xmlId'],
                 'CUSTOM_PRICE' => 'Y',
-                'XML_ID'=>$xml_id
+                'XML_ID'=>$xmlId,
             ));
             if(isset($properties)) {
                 $basketPropertyCollection = $item->getPropertyCollection();
                 $basketPropertyCollection->setProperty($properties);
             }
 
-            $params[$key]['basket_id'] = $xml_id;
+            $params[$key]['basket_id'] = $xmlId;
 
         }
         $basket->save();
