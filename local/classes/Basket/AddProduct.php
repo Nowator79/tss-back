@@ -165,6 +165,13 @@ class AddProduct extends Base
                     'VALUE' => intval($item['id']),
                     'SORT' => 100
                 );
+            if($item['xmlId'])
+                $properties['PRODUCT_XML_ID']= array(
+                    'NAME' => 'PRODUCT_XML_ID',
+                    'CODE' => 'PRODUCT_XML_ID',
+                    'VALUE' => $item['xmlId'],
+                    'SORT' => 100
+                );
             if($item['props'])
                 $properties['PROPS']= array(
                     'NAME' => 'PROPS',
@@ -184,6 +191,7 @@ class AddProduct extends Base
                 'LID' => \Bitrix\Main\Context::getCurrent()->getSite(),
                 'PRODUCT_PROVIDER_CLASS' => 'CCatalogProductProviderCustom',
                 'PRICE' => $origin_price,
+                'PRODUCT_XML_ID' => $item['xmlId'],
                 'CUSTOM_PRICE' => 'Y',
                 'XML_ID'=>$xml_id
             ));

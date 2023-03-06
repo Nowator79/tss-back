@@ -66,6 +66,9 @@ class Helper extends Base
                 if ($property['NAME'] == 'ID_ORIGINAL' && $property['VALUE']) {
                     $item_el['id'] = $property['VALUE'];
                 }
+                if ($property['NAME'] == 'PRODUCT_XML_ID' && $property['VALUE']) {
+                    $item_el['xmlId'] = $property['VALUE'];
+                }
 
                 if ($property['NAME'] == 'OPTION' && $property['VALUE']) {
                     $item_el['options'] = [];
