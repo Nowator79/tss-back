@@ -211,7 +211,7 @@ class AddProduct extends Base
                 $properties['PROPS']= array(
                     'NAME' => 'PROPS',
                     'CODE' => 'PROPS',
-                    'VALUE' => $item['props'],
+                    'VALUE' => json_encode($item['props']),
                     'SORT' => 100
                 );
 //
