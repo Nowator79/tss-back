@@ -162,26 +162,26 @@ class Profile
     public function changeLogo()
     {
         $params = Misc::getPostDataFromJson();
+        $userId = $params['userId'] ?? $_POST["userId"];
 
-        if (empty($params['userId'])) {
+        if ($userId) {
             \CModule::IncludeModule("main");
             $oUser = new \CUser;
 
             if (!empty($_FILES["logo"]['name'])) {
-                $fileId = \CFile::SaveFile($_FILES["logo"], 'avatar');
+                $fileId = \CFile::SaveFile($_FILES["logo"], 'logo');
                 $arFile = \CFile::MakeFileArray($fileId);
                 $arFile['del'] = "Y";
                 $arFields['PERSONAL_PHOTO'] = $arFile;
             }
 
-            $result = $oUser->Update($params['userId'], $arFields);
+            $oUser->Update($userId, $arFields);
 
-            if ($result) {
                 return [
                     'url' => \CFile::GetPath($fileId),
                     'success' => 'Логотип загружен!'
                 ];
-            }
+
         }
     }
 }

@@ -3,12 +3,15 @@
 namespace Godra\Api\Basket;
 
 use Godra\Api\Helpers\Utility\Misc;
+use Godra\Api\SetsBuilder\Builder;
 
 /**
  * Класс для обращений к публичным функциям абстрактного класса корзины Godra\Api\Basket\Base
  */
 class Helper extends Base
 {
+    const BORDER_THIN = 'thin';
+
     public function getBasketItems_new()
     {
         $mas_item = [];
@@ -42,13 +45,12 @@ class Helper extends Base
             $db_res = \CPrice::GetList(
                 array(),
                 array(
-                    "PRODUCT_ID" =>  $item['PRODUCT_ID'],
+                    "PRODUCT_ID" => $item['PRODUCT_ID'],
                     "CATALOG_GROUP_ID" => 496
                 )
             );
-            if ($ar_res = $db_res->Fetch())
-            {
-                $item_el['price']+=$ar_res["PRICE"];
+            if ($ar_res = $db_res->Fetch()) {
+                $item_el['price'] += $ar_res["PRICE"];
             }
 //            global $USER;
 //            $quantity = 1;
@@ -73,9 +75,9 @@ class Helper extends Base
                     $item_el['options'] = [];
                     $arSelect = array("ID", "NAME", "XML_ID");
                     $buf_option_id = explode(';', $property['VALUE']);
-                    foreach ($buf_option_id as $key=>$value){
+                    foreach ($buf_option_id as $key => $value) {
                         $buf_val = explode('|', $value);
-                        $buf_option_id[$key]=$buf_val[0];
+                        $buf_option_id[$key] = $buf_val[0];
                     }
                     $arFilter = array("IBLOCK_ID" => 5, 'XML_ID' => $buf_option_id, "ACTIVE" => "Y");
                     $res = \CIBlockElement::GetList(array(), $arFilter, false, array(), $arSelect);
@@ -127,19 +129,7 @@ class Helper extends Base
                     $item_el['props'] = $property['VALUE'];
                 }
             }
-//
-//            if (!isset($item_el['options'])) {
-//                $db_res = \CPrice::GetList(
-//                    array(),
-//                    array(
-//                        "PRODUCT_ID" => $item_el['id'],
-//                        "CATALOG_GROUP_ID" => 496
-//                    )
-//                );
-//                if ($ar_res = $db_res->Fetch()) {
-//                    $item_el['origin_price'] = $ar_res["PRICE"];
-//                }
-//            }
+
             $mas_item[] = $item_el;
         }
         return $mas_item;
@@ -150,7 +140,7 @@ class Helper extends Base
         $compl_section_id = 1223;
         $mas_el_id = [];
         $dbRes = \Bitrix\Sale\Basket::getList([
-            'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
+            'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'QUANTITY', 'XML_ID'],
             'filter' => [
                 '=FUSER_ID' => \Bitrix\Sale\Fuser::getId(),
                 '=ORDER_ID' => null,
@@ -159,18 +149,17 @@ class Helper extends Base
 
             ]
         ]);
-        while ($item = $dbRes->fetch())
-        {
+        while ($item = $dbRes->fetch()) {
             $mas_el_id[] = $item['PRODUCT_ID'];
         }
-        if($mas_el_id){
-            $filter =[
-                'ID'=>$mas_el_id,
-                'IBLOCK_ID'=>5,
-                'SECTION_ID'=>$compl_section_id
+        if ($mas_el_id) {
+            $filter = [
+                'ID' => $mas_el_id,
+                'IBLOCK_ID' => 5,
+                'SECTION_ID' => $compl_section_id
             ];
-            $res = \CIBlockElement::GetList(Array(),$filter, false, Array(), Array('*'));
-            while($ob = $res->GetNextElement()){
+            $res = \CIBlockElement::GetList(array(), $filter, false, array(), array('*'));
+            while ($ob = $res->GetNextElement()) {
                 $arFields = $ob->GetFields();
                 \CIBlockElement::Delete($arFields['ID']);
             }
@@ -186,60 +175,226 @@ class Helper extends Base
      */
     public function getInvoice()
     {
-        global $USER;
-        $useId = ($USER->GetID() == 0) ? 1 : $USER->GetID();
-        $basket = \Bitrix\Sale\Basket::loadItemsForFUser($useId, \Bitrix\Main\Context::getCurrent()->getSite());
+        $params = Misc::getPostDataFromJson();
+        if (!$params["userId"]) {
+            return ['error' => 'Пользователь не найден!'];
+        }
+
+        //данные по персональному мененджеру
+        $arFUser = \CSaleUser::GetList(array('USER_ID' => $params['userId']));
+        $userData = \CUser::GetByID($params["userId"])->Fetch();
+        //
+
+        if (!empty($params['orderId'])) {
+            $order = \Bitrix\Sale\Order::load($params['orderId']);
+            $basket = $order->getBasket();
+        } else {
+            $basket = \Bitrix\Sale\Basket::loadItemsForFUser($arFUser['ID'], \Bitrix\Main\Context::getCurrent()->getSite());
+        }
 
         if (count($basket->getQuantityList())) {
+            //подготовка данных товаров в корзине
+            $arBasketItems = [];
+            foreach ($basket as $item) {
+                $itemData = [];
+                $arProduct = Builder::getProduct('', $item->getField("PRODUCT_XML_ID"))[0];
+                $itemId = $item->getProductId();
+                $itemData = [
+                    "ID" => $itemId,
+                    "NAME" => $item->getField("NAME") ?? $arProduct["NAME"],
+                    "DETAIL_TEXT" => $arProduct["DETAIL_TEXT"],
+                    "DETAIL_PICTURE" => $arProduct["DETAIL_PICTURE"],
+                    "QUANTITY" => $item->getQuantity(),
+                    "MEASURE_NAME" => $item->getField("MEASURE_NAME"),
+                    "PRICE" => $item->getPrice(),
+                    "FPRICE" => $item->getFinalPrice(),
+                    "PROPS" => $arProduct['TABS']['props']
+                ];
+                $arBasketItems[] = $itemData;
+            }
+            //
+
             $fileExt = 'xls';
             $fileName = "invoice_{$basket->getFUserId()}.{$fileExt}";
             $tempDir = $_SESSION['REPORT_EXPORT_TEMP_DIR'] = \CTempFile::GetDirectoryName(1, array('invoice', uniqid('basket_invoice_')));
             \CheckDirPath($tempDir);
             $filePath = "{$tempDir}{$fileName}";
+            require_once $_SERVER["DOCUMENT_ROOT"] . '/local/classes/Helpers/PHPExcel/Classes/PHPExcel.php';
+            $objPHPExcel = new \PHPExcel();
+            $objPHPExcel->getProperties()->setCreator("TSS")
+                ->setLastModifiedBy("TSS")
+                ->setTitle("invoice_{$basket->getFUserId()}")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("invoice_{$basket->getFUserId()}")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("invoice");
 
-            $fileType = 'application/vnd.ms-excel';
-            $fileHeader = '<?
-                    Header("Content-Type: application/force-download");
-                    Header("Content-Type: application/octet-stream");
-                    Header("Content-Type: application/download");
-                    Header("Content-Disposition: attachment;filename={$fileName}");
-                    Header("Content-Transfer-Encoding: binary");
-                    ?>
-                    <html>
-                    <head>
-                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                    </head>
-                    <body>
+            //рендеринг
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
+            $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot() . '/local/tmp/logo.754be02.jpg');
+            $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
+            $objDrawing->setDescription('barcode');
+            $objDrawing->setImageResource($imgBarcode);
+            $objDrawing->setHeight(80);
+            $objDrawing->setCoordinates('A3');
 
-                    <table border="1">
-                        <tr>
-                            <td>N</td>
-                            <td>Наименование товара</td>
-                            <td>Кол-во</td>
-                            <td>Ед.</td>
-                            <td>Цена руб.</td>
-                            <td>Сумма руб.</td>
-                        </tr>';
-            file_put_contents($filePath, $fileHeader, FILE_APPEND);
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E3', $params["company"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('E3:G3');
 
-            // рендерим таблицу
-            foreach ($basket as $item) {
-                $row = '<tr><td>' . $item->getProductId() . '</td>
-                                    <td>' . $item->getField("NAME") . '</td>
-                                    <td>' . $item->getQuantity() . '</td>
-                                    <td>шт</td>
-                                    <td>' . $item->getPrice() . '</td>
-                                    <td>' . $item->getFinalPrice() . '</td>
-                                </tr>';
-                file_put_contents($filePath, $row, FILE_APPEND);
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E4', $params["name"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('E4:G4');
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E5', $params["phone"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('E5:G5');
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E6', $params["email"]);
+            $objPHPExcel->getActiveSheet()->mergeCells('E6:G6');
+
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A8', 'На ваш запрос предлагаем вам следующее решение под вашу индивидуальную потребность:');
+            $objPHPExcel->getActiveSheet()->mergeCells('A8:G8');
+
+            //хедер таблицы
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A11', 'N');
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('B11', 'Наименование');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('C11', 'Кол-во');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('D11', 'Ед. изм.');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('E11', 'Цена руб.');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('F11', 'Сумма');
+
+            //табличная часть корзины
+            $startRowId = 12;
+            foreach ($arBasketItems as $item) {
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $startRowId, $item["ID"]);
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('B' . $startRowId, $item["NAME"]);
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('C' . $startRowId, $item["QUANTITY"]);
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('D' . $startRowId, $item["MEASURE_NAME"]);
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('E' . $startRowId, $item["PRICE"]);
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('F' . $startRowId, $item["FPRICE"]);
+                $startRowId++;
             }
             //
-            file_put_contents($filePath, '</table></body></html>', FILE_APPEND);
 
-            return str_replace(\Bitrix\Main\Application::getDocumentRoot(
-            ), '', $filePath);
+            $styleArray = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN
+                    )
+                )
+            );
+
+            $objPHPExcel->getActiveSheet()->getStyle('A11:F' . $startRowId)->applyFromArray($styleArray);
+            unset($styleArray);
+            $startRowId = $startRowId + 5;
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId, 'Детализация комплектации указана в Приложении №1 к данному технико-коммерческому предложению (ТКП)');
+            $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':G' . $startRowId);
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId++, 'Ваш персональный менеджер:');
+
+            $startRowId++;
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId, 'Ф.И.О');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('B' . $startRowId, $userData["NAME"] . ' ' . $userData["LAST_NAME"]);
+            if (!empty($userData["PERSONAL_PHONE"])) {
+                $startRowId++;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $startRowId, 'Телефон');
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('B' . $startRowId, $userData["PERSONAL_PHONE"]);
+            }
+
+            $startRowId++;
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId, 'Email');
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('B' . $startRowId, $userData["EMAIL"]);
+
+            //карточки товаров
+            $startRowId = $startRowId + 5;
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $startRowId, 'Приложение1');
+            $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':G' . $startRowId);
+
+            $startRowId = $startRowId + 2;
+            foreach ($arBasketItems as $item) {
+                $startRowId = $startRowId + 4;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $startRowId, $item['NAME']);
+                if (!empty($arProduct["DETAIL_PICTURE"])) {
+                    $startRowId++;
+                    $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':G' . $startRowId);
+                    $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot() . $item["DETAIL_PICTURE"]);
+                    $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
+                    $objDrawing->setDescription('barcode');
+                    $objDrawing->setImageResource($imgBarcode);
+                    $objDrawing->setHeight(100);
+                    $objDrawing->setCoordinates('A' . $startRowId);
+                }
+
+                if (!empty($item["DETAIL_TEXT"])) {
+                    $startRowId++;
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $startRowId, "Описание");
+                    $startRowId++;
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $startRowId, strip_tags($item['DETAIL_TEXT']));
+                    $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':B' . $startRowId);
+                    $objPHPExcel->setActiveSheetIndex(0)->getStyle('A' . $startRowId . ':B' . $startRowId)->getAlignment()->setWrapText(true);
+                    $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(100);
+                }
+
+                foreach ($item['PROPS'] as $prop) {
+                    $startRowId = $startRowId + 3;
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $startRowId, $prop['NAME']);
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('B' . $startRowId, $prop['VALUE']);
+                }
+
+            }
+
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="01simple.xls"');
+            header('Cache-Control: max-age=0');
+            header('Cache-Control: max-age=1');
+            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+            header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header('Pragma: public'); // HTTP/1.0
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save($filePath);
+            return str_replace(\Bitrix\Main\Application::getDocumentRoot(), '', $filePath);
         }
+
+        return ['error' => 'Корзина пуста!'];
     }
 }
-
 ?>

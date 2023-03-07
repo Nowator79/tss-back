@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'edd621a05bd96c4d22ccb1c82c28a06151535c83',
+        'reference' => '731210ed7d640a407788b4af9861256088b38ebd',
         'name' => 'godra/api',
         'dev' => true,
     ),
@@ -20,12 +20,12 @@
             'dev_requirement' => false,
         ),
         'godra/api' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'edd621a05bd96c4d22ccb1c82c28a06151535c83',
+            'reference' => '731210ed7d640a407788b4af9861256088b38ebd',
             'dev_requirement' => false,
         ),
         'guzzlehttp/guzzle' => array(
@@ -77,6 +77,15 @@
             'install_path' => __DIR__ . '/../ralouphie/getallheaders',
             'aliases' => array(),
             'reference' => '120b605dfeb996808c31b6477290a714d356e822',
+            'dev_requirement' => false,
+        ),
+        'shuchkin/simplexlsx' => array(
+            'pretty_version' => '1.0.19',
+            'version' => '1.0.19.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../shuchkin/simplexlsx',
+            'aliases' => array(),
+            'reference' => '978e4bc2c377d4f1e83ad681705d0327a3725ef4',
             'dev_requirement' => false,
         ),
         'symfony/polyfill-intl-idn' => array(

@@ -45,3 +45,5 @@ ehthumbs.db
 /bitrix/
 /.nuxt/
 /.env
+/catalog
+/personal

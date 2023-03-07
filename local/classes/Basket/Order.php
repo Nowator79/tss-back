@@ -1,5 +1,4 @@
 <?
-
 namespace Godra\Api\Basket;
 
 use Godra\Api\Helpers\Utility\Misc;
@@ -139,9 +138,10 @@ class Order
             $BITRIX_DATETIME_FORMAT = 'd.m.Y H:i:s';
             $dateBegin = new \DateTime(sprintf($params['date_begin'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
             $dateEnd = new \DateTime(sprintf($params['date_end'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
-            $dateBegin->modify('+1 day -1 second');
-            $filter['<=DATE_INSERT'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
-            $filter['>=DATE_INSERT'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
+            $dateEnd->modify('+1 day -1 second');
+            $filter['>=DATE_INSERT'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
+            $filter['<=DATE_INSERT'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
+
         }
 
         $listOrders = array();
@@ -382,6 +382,10 @@ class Order
             $basket['DATE_INSERT'] = $basket['DATE_INSERT']->toString();
             $basket['DATE_UPDATE'] = $basket['DATE_UPDATE']->toString();
 
+            $resEl = \CIBlockElement::GetByID($basket['PRODUCT_ID']);
+            if($ar_res = $resEl->GetNext())
+                $basket['PREVIEW_PICTURE'] = \CFile::GetPath($ar_res['DETAIL_PICTURE']);
+
             $listOrderBasket[$basket['ORDER_ID']][$basket['ID']] = $basket;
             //
             $dbProp = \CSaleBasket::GetPropsList(
@@ -395,7 +399,6 @@ class Order
         }
 
         $trackingManager = \Bitrix\Sale\Delivery\Tracking\Manager::getInstance();
-
         $deliveryStatusClassName = $registry->getDeliveryStatusClassName();
         $deliveryStatuses = $deliveryStatusClassName::getAllStatusesNames(LANGUAGE_ID);
 
