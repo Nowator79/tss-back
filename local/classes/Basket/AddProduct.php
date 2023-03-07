@@ -214,7 +214,7 @@ class AddProduct extends Base
                     'VALUE' => $item['props'],
                     'SORT' => 100
                 );
-
+//
             if($item['xmlId']){
                 $xmlId = $item['xmlId'];
             }else{

@@ -127,7 +127,7 @@ class Helper extends Base
                     $item_el['props'] = $property['VALUE'];
                 }
             }
-
+//
 //            if (!isset($item_el['options'])) {
 //                $db_res = \CPrice::GetList(
 //                    array(),
