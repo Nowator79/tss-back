@@ -13,7 +13,7 @@ class Helper extends Base
     {
         $mas_item = [];
         $dbRes = \Bitrix\Sale\Basket::getList([
-            'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'QUANTITY', 'XML_ID'],
+            'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'QUANTITY', 'XML_ID','NOTES'],
             'filter' => [
                 '=FUSER_ID' => \Bitrix\Sale\Fuser::getId(),
                 '=ORDER_ID' => null,
@@ -29,6 +29,7 @@ class Helper extends Base
                 'quantity' => $item['QUANTITY'],
                 'origin_price' => $item['PRICE'],
                 'basket_id' => $item['ID'],
+                'props'=>$item['NOTES'],
             ];
 
             $item_el['price'] = 0;
@@ -105,7 +106,25 @@ class Helper extends Base
                 $prop[] = $property;
 
                 if ($property['NAME'] == 'PROPS') {
+                    $item_el['props'] = $property['VALUE'];
+                }
+                if ($property['NAME'] == 'CUSTOM_NAME') {
+                    $item_el['customName'] = $property['VALUE'];
+                }
+                if ($property['NAME'] == 'ADDITIONAL_SLOT_IDS') {
+                    $item_el['additionalSlotIds'] = json_decode($property['VALUE']);
+                }
+                if ($property['NAME'] == 'CATALOG_SLOT_IDS') {
+                    $item_el['catalogSlotIds'] = json_decode($property['VALUE']);
+                }
+                if ($property['NAME'] == 'MAIN_SLOT_IDS') {
+                    $item_el['mainSlotIds'] = json_decode($property['VALUE']);
+                }
+                if ($property['NAME'] == 'COMMENT') {
                     $item_el['comment'] = $property['VALUE'];
+                }
+                if ($property['NAME'] == 'PROPS') {
+                    $item_el['props'] = $property['VALUE'];
                 }
             }
 
