@@ -1,13 +1,16 @@
 <?
-
 namespace Godra\Api\Helpers;
 
 use Godra\Api\Helpers\Utility\Misc;
 use Godra\Api\SetsBuilder\Builder;
 use Bitrix\Main\Loader;
+use Shuchkin\SimpleXLSX;
+use Bitrix\Highloadblock as HL,
+	Bitrix\Main\Entity;
 
 class Nomenclature
 {
+    public static $customName = "Дизельный генератор";
     public static $arXls = [
         "0" => [
             "XML_ID" => "26032d02-4d89-11ea-80dd-a672da4d5bad",
@@ -57,6 +60,49 @@ class Nomenclature
         ]
     ];
 
+    public static function importFromXls($path) {
+        if ( $xlsx = SimpleXLSX::parse($path) ) {
+            Loader::includeModule("highloadblock");
+
+            $hlblock = HL\HighloadBlockTable::getById(HIGHLOAD_PRODUCT_CODE_ID)->fetch();
+            $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+            $entity_data_class = $entity->getDataClass();
+
+            $arRows = $xlsx->rows();
+            foreach ($arRows as $row => $r ) {
+                if ($row === 0 || empty($r[3])) {
+                    continue;
+                }
+
+                $data = [
+                    "UF_XML_ID" => "",
+                    "UF_NAME" => $r[3],
+                    "UF_CUSTOM_NAME" => self::$customName,
+                    "UF_NAMENCLATURE" => $r[3],
+                    "UF_CODE1" => $r[8],
+                    "UF_CODE2" => $r[9],
+                    "UF_CODE3" => $r[10],
+                    "UF_CODE4" => $r[11],
+                    "UF_CODE5" => $r[12],
+                    "UF_CODE6" => $r[13],
+                    "UF_CODE7" => $r[14],
+                    "UF_CODE8" => $r[15],
+                    "UF_CODE9" => $r[16],
+                    "UF_CODE10" => $r[17],
+                    "UF_CODE11" => $r[18],
+                    "UF_CODE12" => $r[19],
+                    "UF_NOCODE" => $r[20],
+                    "UF_NAME_V" => $r[21],
+                    "UF_NAME_W" => $r[22],
+                    "UF_NAME_X" => $r[23],
+                    "UF_NAME_Y" => $r[24]
+                ];
+
+                $entity_data_class::add($data);
+            }
+            return $xlsx;
+        }
+    }
 
     /**
      * получить товар из справочника шифра
@@ -65,8 +111,19 @@ class Nomenclature
      * @return void
      */
     public function getProductFromHL($xmlId) {
-        $key = array_search($xmlId, array_column(self::$arXls, 'XML_ID'));
-        return self::$arXls[$key];
+        Loader::includeModule("highloadblock");
+
+        $hlblock = HL\HighloadBlockTable::getById(HIGHLOAD_PRODUCT_CODE_ID)->fetch();
+        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+
+        $rsData = $entity_data_class::getList(array(
+            "select" => array("*"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array("UF_XML_ID" => $xmlId)  // Задаем параметры фильтра выборки
+        ));
+
+        return $rsData->Fetch();
     }
 
     /**
@@ -101,15 +158,15 @@ class Nomenclature
         $name = $hlProduct['CUSTOM_NAME'];
 
         if (!empty($hlProduct["NAME_V"])) {
-            $name = $name . ' ' . $hlProduct["NAME_V"];
+            $name = $name . '-' . $hlProduct["NAME_V"];
         }
 
         if (!empty($hlProduct["NAME_W"])) {
-            $name = $name . ' ' . $hlProduct["NAME_W"];
+            $name = $name . '-' . $hlProduct["NAME_W"];
         }
 
         if (!empty($hlProduct["NAME_X"])) {
-            $name = $name . ' ' . $hlProduct["NAME_X"];
+            $name = $name . '-' . $hlProduct["NAME_X"];
         }
 
         return $name;
@@ -140,35 +197,35 @@ class Nomenclature
      */
     public static function getGostProductName($product, $hlProduct, $arOptionsParams)
     {
-        $name = $hlProduct['CUSTOM_NAME'];
+        $name = $hlProduct['CUSTOM_NAME'] ?? $product['NAME'];
 
         $is_complex = false;
 
         if (!empty($hlProduct["CODE1"])) {
-            $name = $name . ' ' . $hlProduct["CODE1"];
+            $name = $name . '-' . $hlProduct["CODE1"];
         }
 
         if (!empty($hlProduct["CODE2"])) {
             if(in_array("прицеп",$arOptionsParams["VID"]) || in_array("прицеп для контейнера",$arOptionsParams["VID"])) {
                 $hlProduct["CODE2"] = "ЭД";
             }
-            $name = $name . ' ' . $hlProduct["CODE2"];
+            $name = $name . '-' . $hlProduct["CODE2"];
         }
 
         if (!empty($hlProduct["CODE3"])) {
-            $name = $name . ' ' . $hlProduct["CODE3"];
+            $name = $name . '-' . $hlProduct["CODE3"];
         }
 
         if (!empty($hlProduct["CODE4"])) {
-            $name = $name . ' ' . $hlProduct["CODE4"];
+            $name = $name . '-' . $hlProduct["CODE4"];
         }
 
         if (!empty($hlProduct["CODE5"])) {
-            $name = $name . ' ' . $hlProduct["CODE5"];
+            $name = $name . '-' . $hlProduct["CODE5"];
         }
 
         if (!empty($hlProduct["CODE6"])) {
-            $name = $name . ' ' . $hlProduct["CODE6"];
+            $name = $name . '-' . $hlProduct["CODE6"];
         }
 
         if (!empty($hlProduct["CODE7"])) {
@@ -179,11 +236,11 @@ class Nomenclature
                 $hlProduct["CODE7"] = 3;
             }
 
-            $name = $name . ' ' . $hlProduct["CODE7"];
+            $name = $name . '-' . $hlProduct["CODE7"];
         }
 
         if (!empty($hlProduct["CODE8"])) {
-            $name = $name . ' ' . $hlProduct["CODE8"];
+            $name = $name . '-' . $hlProduct["CODE8"];
         }
 
         if (!empty($hlProduct["CODE9"])) {
@@ -196,15 +253,15 @@ class Nomenclature
             if(in_array("кожух",$arOptionsParams["VID"])) {
                 $hlProduct["CODE9"] = "К";
             }
-            $name = $name . ' ' . $hlProduct["CODE9"];
+            $name = $name . '-' . $hlProduct["CODE9"];
         }
 
         if (!empty($hlProduct["CODE10"])) {
-            $name = $name . ' ' . $hlProduct["CODE10"];
+            $name = $name . '-' . $hlProduct["CODE10"];
         }
 
         if (!empty($hlProduct["CODE11"])) {
-            $name = $name . ' ' . $hlProduct["CODE11"];
+            $name = $name . '-' . $hlProduct["CODE11"];
         }
 
         if (!empty($hlProduct["CODE12"])) {
@@ -218,7 +275,7 @@ class Nomenclature
                }
             }
 
-            $name = $name . ' ' . $hlProduct["CODE12"];
+            $name = $name . '-' . $hlProduct["CODE12"];
         }
 
         return $name;
@@ -232,7 +289,6 @@ class Nomenclature
     public static function getCustomNames()
     {
         $params = Misc::getPostDataFromJson();
-
         if (empty($params['XML_ID'])) return ['error' => 'Не передан XML_ID'];
 
         //получаем товар

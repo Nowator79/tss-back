@@ -46,3 +46,7 @@ test git
 test git
 test local git
 33333
+test fix
+test fix1234--
+fix 1234 --final
+fix 12345 --final

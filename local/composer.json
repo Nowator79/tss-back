@@ -17,7 +17,8 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "6.5.5",
-        "firebase/php-jwt": "^6.3"
+        "firebase/php-jwt": "^6.3",
+        "shuchkin/simplexlsx": "^1.0"
     },
     "config": {
         "platform": {
