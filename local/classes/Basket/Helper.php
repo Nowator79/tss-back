@@ -124,7 +124,7 @@ class Helper extends Base
                     $item_el['comment'] = $property['VALUE'];
                 }
                 if ($property['NAME'] == 'PROPS') {
-                    $item_el['props'] = $property['VALUE'];
+                    $item_el['props'] = json_decode($property['VALUE']);
                 }
             }
 //
