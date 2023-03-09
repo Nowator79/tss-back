@@ -216,15 +216,15 @@ class Nomenclature
         }
 
         if (!empty($hlProduct["UF_CODE2"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE2"];
+            $name = $name . ' ' . $hlProduct["UF_CODE2"];
         }
 
         if (!empty($hlProduct["UF_CODE3"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE3"];
+            $name = $name . ' ' . $hlProduct["UF_CODE3"];
         }
 
         if (!empty($hlProduct["UF_CODE4"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE4"];
+            $name = $name . ' ' . $hlProduct["UF_CODE4"];
         }
 
         if (!empty($hlProduct["UF_CODE5"])) {
@@ -232,7 +232,7 @@ class Nomenclature
         }
 
         if (!empty($hlProduct["UF_CODE6"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE6"];
+            $name = $name . '' . $hlProduct["UF_CODE6"];
         }
 
 
@@ -250,7 +250,7 @@ class Nomenclature
         }
 
         if (!empty($hlProduct["UF_CODE8"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE8"];
+            $name = $name . ' ' . $hlProduct["UF_CODE8"];
         }
 
         //9
@@ -268,15 +268,15 @@ class Nomenclature
         }
 
         if (!empty($hlProduct["UF_CODE9"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE9"];
+            $name = $name . ' ' . $hlProduct["UF_CODE9"];
         }
 
         if (!empty($hlProduct["UF_CODE10"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE10"];
+            $name = $name . ' ' . $hlProduct["UF_CODE10"];
         }
 
         if (!empty($hlProduct["UF_CODE11"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE11"];
+            $name = $name . ' ' . $hlProduct["UF_CODE11"];
         }
 
         //12
