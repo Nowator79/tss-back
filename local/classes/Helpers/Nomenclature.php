@@ -208,7 +208,7 @@ class Nomenclature
         $is_complex = false;
 
         if (!empty($hlProduct["UF_CODE1"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE1"];
+            $name = $name . ' ' . $hlProduct["UF_CODE1"];
         }
 
         if (in_array("прицеп", $arOptionsParams["VID"]) || in_array("прицеп для контейнера", $arOptionsParams["VID"])) {
