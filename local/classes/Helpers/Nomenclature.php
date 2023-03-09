@@ -162,15 +162,15 @@ class Nomenclature
         $name = $hlProduct['UF_CUSTOM_NAME'];
 
         if (!empty($hlProduct["UF_NAME_V"])) {
-            $name = $name . '-' . $hlProduct["UF_NAME_V"];
+            $name = $name . ' ' . $hlProduct["UF_NAME_V"];
         }
 
         if (!empty($hlProduct["UF_NAME_W"])) {
-            $name = $name . '-' . $hlProduct["UF_NAME_W"];
+            $name = $name . ' ' . $hlProduct["UF_NAME_W"];
         }
 
         if (!empty($hlProduct["UF_NAME_X"])) {
-            $name = $name . '-' . $hlProduct["UF_NAME_X"];
+            $name = $name . ' ' . $hlProduct["UF_NAME_X"];
         }
 
         return $name;
