@@ -184,9 +184,9 @@ class Nomenclature
     public static function getOptionsParams($selectedOptions)
     {
         $options = [];
-        $arOptionsIds = Builder::makeOptionsArray($selectedOptions);
+//        $arOptionsIds = Builder::makeOptionsArray($selectedOptions);
 
-        foreach ($arOptionsIds as $vidOpcii => $optionID) {
+        foreach ($selectedOptions as $vidOpcii => $optionID) {
             $arProduct = Builder::getElement(false, ['ID' => $optionID])[0];
 
             $options["VID"][] = $arProduct["TABS"]["props"]["VID_OPTSII"]["VALUE"];
@@ -314,7 +314,7 @@ class Nomenclature
         if (trim($product["TABS"]["props"]["VID_OPTSII"]["VALUE"]) == "Базовый агрегат" && trim($hlProduct["UF_NOCODE"]) == "Нет") {
             $arOptionsParams = [];
             if (!empty($params['SELECTED_OPTIONS'])) {
-                $arOptionsParams = self::getOptionsParams(implode(';', $params['SELECTED_OPTIONS']));
+                $arOptionsParams = self::getOptionsParams($params['SELECTED_OPTIONS']);
             }
 
             $gostName = self::getGostProductName($product, $hlProduct, $arOptionsParams);
