@@ -281,7 +281,7 @@ class Nomenclature
 
         //12
         if (in_array("ПОЖ", $arOptionsParams["VID"])) {
-            $hlProduct["UF_CODE12"] = "ПЖД";
+            $hlProduct["UF_CODE12"] = "ПОЖ";
         }
 
         if (in_array("ПЖД", $arOptionsParams["VID"])) {
