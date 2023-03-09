@@ -37,7 +37,7 @@ class Builder
             $arArticles = $arArticles[0];
         }
 
-        $sql = "SELECT IBLOCK_ELEMENT_ID FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." and VALUE IN(" . $arArticles . ")";
+        $sql = "SELECT IBLOCK_ELEMENT_ID, VALUE FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." AND VALUE IN (". $arArticles .")";
         $dbRes = $DB->Query($sql);
         while ($res = $dbRes->Fetch()) {
             $results[] = $res["IBLOCK_ELEMENT_ID"];
@@ -55,7 +55,10 @@ class Builder
     public static function makeOptionsArray($optionsString) : array
     {
         $arArticles = explode(';', $optionsString);
-        $arArticles = implode(',', $arArticles);
+        foreach ($arArticles as $article) {
+            $arComaArticle[] = "'".$article."'";
+        }
+        $arArticles = implode(',', $arComaArticle);
 
         $arOptionsIds = self::GetByArticle($arArticles);
 
