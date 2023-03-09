@@ -232,7 +232,7 @@ class Nomenclature
         }
 
         if (!empty($hlProduct["UF_CODE6"])) {
-            $name = $name . '' . $hlProduct["UF_CODE6"];
+            $name = $name . ' ' . $hlProduct["UF_CODE6"];
         }
 
 
