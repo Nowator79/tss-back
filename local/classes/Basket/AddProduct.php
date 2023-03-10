@@ -165,16 +165,62 @@ class AddProduct extends Base
                     'VALUE' => intval($item['id']),
                     'SORT' => 100
                 );
+            if($item['customName'])
+                $properties['CUSTOM_NAME']= array(
+                    'NAME' => 'CUSTOM_NAME',
+                    'CODE' => 'CUSTOM_NAME',
+                    'VALUE' => $item['customName'],
+                    'SORT' => 100
+                );
+            if($item['additionalSlotIds'])
+                $properties['ADDITIONAL_SLOT_IDS']= array(
+                    'NAME' => 'ADDITIONAL_SLOT_IDS',
+                    'CODE' => 'ADDITIONAL_SLOT_IDS',
+                    'VALUE' => json_encode($item['additionalSlotIds']),
+                    'SORT' => 100
+                );
+            if($item['catalogSlotIds'])
+                $properties['CATALOG_SLOT_IDS']= array(
+                    'NAME' => 'CATALOG_SLOT_IDS',
+                    'CODE' => 'CATALOG_SLOT_IDS',
+                    'VALUE' => json_encode($item['catalogSlotIds']),
+                    'SORT' => 100
+                );
+            if($item['mainSlotIds'])
+                $properties['MAIN_SLOT_IDS']= array(
+                    'NAME' => 'MAIN_SLOT_IDS',
+                    'CODE' => 'MAIN_SLOT_IDS',
+                    'VALUE' => json_encode($item['mainSlotIds']),
+                    'SORT' => 100
+                );
+            if($item['comment'])
+                $properties['COMMENT']= array(
+                    'NAME' => 'COMMENT',
+                    'CODE' => 'COMMENT',
+                    'VALUE' => $item['comment'],
+                    'SORT' => 100
+                );
+            if($item['xmlId'])
+                $properties['PRODUCT_XML_ID']= array(
+                    'NAME' => 'PRODUCT_XML_ID',
+                    'CODE' => 'PRODUCT_XML_ID',
+                    'VALUE' => $item['xmlId'],
+                    'SORT' => 100
+                );
             if($item['props'])
                 $properties['PROPS']= array(
                     'NAME' => 'PROPS',
                     'CODE' => 'PROPS',
-                    'VALUE' => $item['props'],
+                    'VALUE' => json_encode($item['props']),
                     'SORT' => 100
                 );
+//
+            if($item['xmlId']){
+                $xmlId = $item['xmlId'];
+            }else{
+                $xmlId = 'bx_'.rand(1000000000000,9999999999999);
+            }
 
-
-            $xml_id = 'bx_'.rand(1000000000000,9999999999999);
             $item = $basket->createItem('catalog', $productId);
 
             $item->setFields(array(
@@ -185,14 +231,14 @@ class AddProduct extends Base
                 'PRODUCT_PROVIDER_CLASS' => 'CCatalogProductProviderCustom',
                 'PRICE' => $origin_price,
                 'CUSTOM_PRICE' => 'Y',
-                'XML_ID'=>$xml_id
+                'XML_ID'=>$xmlId,
             ));
             if(isset($properties)) {
                 $basketPropertyCollection = $item->getPropertyCollection();
                 $basketPropertyCollection->setProperty($properties);
             }
 
-            $params[$key]['basket_id'] = $xml_id;
+            $params[$key]['basket_id'] = $xmlId;
 
         }
         $basket->save();

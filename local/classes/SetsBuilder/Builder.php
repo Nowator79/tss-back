@@ -32,7 +32,12 @@ class Builder
     {
         global $DB;
         $results = [];
-        $sql = "SELECT IBLOCK_ELEMENT_ID FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." and VALUE IN(" . $arArticles . ")";
+
+        if (is_array($arArticles)) {
+            $arArticles = $arArticles[0];
+        }
+
+        $sql = "SELECT IBLOCK_ELEMENT_ID, VALUE FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." AND VALUE IN (". $arArticles .")";
         $dbRes = $DB->Query($sql);
         while ($res = $dbRes->Fetch()) {
             $results[] = $res["IBLOCK_ELEMENT_ID"];
@@ -50,7 +55,14 @@ class Builder
     public static function makeOptionsArray($optionsString) : array
     {
         $arArticles = explode(';', $optionsString);
-        $arOptionsIds = self::GetByArticle(implode(',', $arArticles));
+        foreach ($arArticles as $article) {
+            $arComaArticle[] = "'".$article."'";
+        }
+        $arArticles = implode(',', $arComaArticle);
+
+        $arOptionsIds = self::GetByArticle($arArticles);
+
+        if (empty($arOptionsIds)) return [];
 
         $arFilter = [
             'IBLOCK_ID' => IBLOCK_CATALOG,
@@ -140,6 +152,12 @@ class Builder
         while ($ar_res = $dbProduct->GetNextElement()) {
             $ar_fields = $ar_res->GetFields();
             $ar_props = $ar_res->GetProperties([],['ACTIVE' => 'Y', 'EMPTY' => 'N']);
+            unset($ar_props["CML2_TRAITS"]);
+            unset($ar_props["CML2_TAXES"]);
+            unset($ar_props["FILES"]);
+            unset($ar_props["YAVLYAETSYA_DGU"]);
+
+            $all_props = $ar_props;
             $ignore_prop = Element::getIgnoreElementProps();
 
             foreach ($ar_props as $k => $prop) {
@@ -152,22 +170,23 @@ class Builder
             if (!empty($ar_fields['PREVIEW_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['PREVIEW_PICTURE'])->Fetch()['SRC'];
             if (!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['DETAIL_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];
 
-            if (isset($ar_props['MORE_PHOTO'])) {
-                foreach ($ar_props['MORE_PHOTO']['VALUE'] as $photo) {
+            if (isset($all_props['MORE_PHOTO'])) {
+                foreach ($all_props['MORE_PHOTO']['VALUE'] as $photo) {
                     $arPhoto[] = \CFile::GetByID($photo)->Fetch()['SRC'];
                 }
-                $ar_props['MORE_PHOTO'] = $arPhoto;
+                $all_props['MORE_PHOTO'] = $arPhoto;
             }
 
             if ($withOptions) {
-                if (isset($ar_props['DOP_KOMPLEKTATSIYA']['VALUE'])) {
-                    $ar_fields['OPTIONS_LIST'] = self::makeOptionsArray($ar_props['DOP_KOMPLEKTATSIYA']['VALUE']);
+                if (isset($all_props['DOP_KOMPLEKTATSIYA']['VALUE'])) {
+                    $ar_fields['OPTIONS_LIST'] = self::makeOptionsArray($all_props['DOP_KOMPLEKTATSIYA']['VALUE']);
                 }
             }
 
             // Формируем выходной массив
             $ar_fields['TABS']['description'] = !empty($product['PREVIEW_TEXT']) ? $product['PREVIEW_TEXT'] : '';
-            $ar_fields['TABS']['props'] = $ar_props;
+            $ar_fields['TABS']['props'] = $all_props;
+            $ar_fields['TABS']['filtered_props'] = $ar_props;
             $ar_fields['TABS']['delivery'] = 'Доставка осуществляется курьером или возможен самовывоз';
             $ar_fields['TABS']['stocks'] = Element::getProductStocks($ar_fields['ID']);
 
