@@ -254,7 +254,7 @@ class Nomenclature
         }
 
         //9
-        if (in_array("контейнер", $arOptionsParams["VID"])) {
+        if (in_array("Контейнер", $arOptionsParams["VID"])) {
             $hlProduct["UF_CODE9"] = "Н";
         }
 
