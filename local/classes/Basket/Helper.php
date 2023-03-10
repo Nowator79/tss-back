@@ -197,7 +197,7 @@ class Helper extends Base
             $arBasketItems = [];
             foreach ($basket as $item) {
                 $itemData = [];
-                $arProduct = Builder::getProduct('', $item->getField("PRODUCT_XML_ID"))[0];
+                $arProduct = Builder::getProduct('', $item->getField("XML_ID"))[0];
                 $itemId = $item->getProductId();
                 $itemData = [
                     "ID" => $itemId,
