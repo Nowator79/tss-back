@@ -77,27 +77,27 @@ class Nomenclature
                 }
 
                 $data = [
-                    "UF_XML_ID" => "",
-                    "UF_NAME" => $r[3],
+                    "UF_XML_ID" => $r[5],
+                    "UF_NAME" => $r[4],
                     "UF_CUSTOM_NAME" => self::$customName,
-                    "UF_NAMENCLATURE" => $r[3],
-                    "UF_CODE1" => $r[8],
-                    "UF_CODE2" => $r[9],
-                    "UF_CODE3" => $r[10],
-                    "UF_CODE4" => $r[11],
-                    "UF_CODE5" => $r[12],
-                    "UF_CODE6" => $r[13],
-                    "UF_CODE7" => $r[14],
-                    "UF_CODE8" => $r[15],
-                    "UF_CODE9" => $r[16],
-                    "UF_CODE10" => $r[17],
-                    "UF_CODE11" => $r[18],
-                    "UF_CODE12" => $r[19],
-                    "UF_NOCODE" => $r[20],
-                    "UF_NAME_V" => $r[21],
-                    "UF_NAME_W" => $r[22],
-                    "UF_NAME_X" => $r[23],
-                    "UF_NAME_Y" => $r[24]
+                    "UF_NAMENCLATURE" => $r[4],
+                    "UF_CODE1" => $r[10],
+                    "UF_CODE2" => $r[11],
+                    "UF_CODE3" => $r[12],
+                    "UF_CODE4" => $r[13],
+                    "UF_CODE5" => $r[14],
+                    "UF_CODE6" => $r[15],
+                    "UF_CODE7" => $r[16],
+                    "UF_CODE8" => $r[17],
+                    "UF_CODE9" => $r[18],
+                    "UF_CODE10" => $r[19],
+                    "UF_CODE11" => $r[20],
+                    "UF_CODE12" => $r[21],
+                    "UF_NOCODE" => $r[22],
+                    "UF_NAME_V" => $r[23],
+                    "UF_NAME_W" => $r[24],
+                    "UF_NAME_X" => $r[25],
+                    "UF_NAME_Y" => $r[26]
                 ];
 
                 $entity_data_class::add($data);
