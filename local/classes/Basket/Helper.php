@@ -233,7 +233,7 @@ class Helper extends Base
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
             $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
-            $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot() . '/local/tmp/logo.754be02.jpg');
+            $imgBarcode = imagecreatefromjpeg($_SERVER["DOCUMENT_ROOT"].\CFile::GetPath($userData["PERSONAL_PHOTO"]));
             $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
             $objDrawing->setDescription('barcode');
             $objDrawing->setImageResource($imgBarcode);
