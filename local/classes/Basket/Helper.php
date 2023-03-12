@@ -233,7 +233,17 @@ class Helper extends Base
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
             $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
-            $imgBarcode = imagecreatefromjpeg($_SERVER["DOCUMENT_ROOT"].\CFile::GetPath($userData["PERSONAL_PHOTO"]));
+            $path = $_SERVER["DOCUMENT_ROOT"].\CFile::GetPath($userData["PERSONAL_PHOTO"]);
+            $info = getimagesize($path);
+            $extension = image_type_to_extension($info[2]);
+            if ($extension == '.jpeg') {
+                $imgBarcode = imagecreatefromjpeg($path);
+            } elseif ($extension == '.png') {
+                $imgBarcode = imagecreatefrompng($path);
+            } else {
+                return ['error' => 'Автар имеет не верный формат! Допустим PNG или JPEG.'];
+            }
+            $imgBarcode = imagecreatefromjpeg($path);
             $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
             $objDrawing->setDescription('barcode');
             $objDrawing->setImageResource($imgBarcode);
