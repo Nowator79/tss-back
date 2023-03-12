@@ -16,7 +16,7 @@ class Helper extends Base
     {
         $mas_item = [];
         $dbRes = \Bitrix\Sale\Basket::getList([
-            'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'QUANTITY', 'XML_ID','NOTES'],
+            'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'QUANTITY', 'XML_ID', 'NOTES'],
             'filter' => [
                 '=FUSER_ID' => \Bitrix\Sale\Fuser::getId(),
                 '=ORDER_ID' => null,
@@ -32,7 +32,7 @@ class Helper extends Base
                 'quantity' => $item['QUANTITY'],
                 'origin_price' => $item['PRICE'],
                 'basket_id' => $item['ID'],
-                'props'=>$item['NOTES'],
+                'props' => $item['NOTES'],
             ];
 
             $item_el['price'] = 0;
@@ -233,7 +233,7 @@ class Helper extends Base
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
             $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
-            $path = $_SERVER["DOCUMENT_ROOT"].\CFile::GetPath($userData["PERSONAL_PHOTO"]);
+            $path = $_SERVER["DOCUMENT_ROOT"] . \CFile::GetPath($userData["PERSONAL_PHOTO"]);
             $info = getimagesize($path);
             $extension = image_type_to_extension($info[2]);
             if ($extension == '.jpeg') {
@@ -407,4 +407,5 @@ class Helper extends Base
         return ['error' => 'Корзина пуста!'];
     }
 }
+
 ?>
