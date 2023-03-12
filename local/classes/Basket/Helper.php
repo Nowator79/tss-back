@@ -4,6 +4,7 @@ namespace Godra\Api\Basket;
 
 use Godra\Api\Helpers\Utility\Misc;
 use Godra\Api\SetsBuilder\Builder;
+use Godra\Api\Catalog\Element;
 
 /**
  * Класс для обращений к публичным функциям абстрактного класса корзины Godra\Api\Basket\Base
@@ -197,7 +198,8 @@ class Helper extends Base
             $arBasketItems = [];
             foreach ($basket as $item) {
                 $itemData = [];
-                $arProduct = Builder::getProduct('', $item->getField("XML_ID"))[0];
+                //$arProduct = Builder::getProduct('', $item->getField("XML_ID"))[0];
+                $arProduct = Builder::getProduct('', $item->getField("PRODUCT_XML_ID"))[0];
                 $itemId = $item->getProductId();
                 $itemData = [
                     "ID" => $itemId,
@@ -243,7 +245,7 @@ class Helper extends Base
             } else {
                 return ['error' => 'Автар имеет не верный формат! Допустим PNG или JPEG.'];
             }
-            $imgBarcode = imagecreatefromjpeg($path);
+            //$imgBarcode = imagecreatefromjpeg($path);
             $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
             $objDrawing->setDescription('barcode');
             $objDrawing->setImageResource($imgBarcode);
@@ -357,13 +359,28 @@ class Helper extends Base
                     ->setCellValue('A' . $startRowId, $item['NAME']);
                 if (!empty($arProduct["DETAIL_PICTURE"])) {
                     $startRowId++;
-                    $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':G' . $startRowId);
-                    $imgBarcode = imagecreatefromjpeg(\Bitrix\Main\Application::getDocumentRoot() . $item["DETAIL_PICTURE"]);
+                    $pathImg = \Bitrix\Main\Application::getDocumentRoot() . $item["DETAIL_PICTURE"];
+                    $infoImg = getimagesize($pathImg);
+                    $extensionImg = image_type_to_extension($infoImg[2]);
+                    if ($extensionImg == '.jpeg') {
+                        $imgBarcodeImg = imagecreatefromjpeg($pathImg);
+                    } elseif ($extensionImg == '.png') {
+                        $imgBarcodeImg = imagecreatefrompng($pathImg);
+                    } else {
+                        return [
+                            'extension' => $extensionImg,
+                            'error' => 'DETAIL_PICTURE имеет не верный формат (ID товара ' . $item['ID'] . ' ! Допустим PNG или JPEG.'
+                        ];
+                    }
                     $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
-                    $objDrawing->setDescription('barcode');
-                    $objDrawing->setImageResource($imgBarcode);
+                    $objDrawing->setDescription('barcode' . $item['ID']);
+                    $objDrawing->setName('img ' . $item['ID']);
+                    $objDrawing->setImageResource($imgBarcodeImg);
+                    $objDrawing->setResizeProportional(true);
                     $objDrawing->setHeight(100);
                     $objDrawing->setCoordinates('A' . $startRowId);
+                    $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+                    $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(100);
                 }
 
                 if (!empty($item["DETAIL_TEXT"])) {
@@ -378,6 +395,14 @@ class Helper extends Base
                     $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(100);
                 }
 
+                $ignore_prop = Element::getIgnoreElementProps();
+
+                foreach ($item['PROPS'] as $k => $prop) {
+                    if ($prop['CODE'] == 'CML2_ARTICLE' || empty($prop['VALUE']) || in_array($prop['CODE'], $ignore_prop)) {
+                        unset($item['PROPS'][$prop['CODE']]);
+                    }
+                }
+
                 foreach ($item['PROPS'] as $prop) {
                     $startRowId = $startRowId + 3;
                     $objPHPExcel->setActiveSheetIndex(0)
@@ -385,7 +410,6 @@ class Helper extends Base
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('B' . $startRowId, $prop['VALUE']);
                 }
-
             }
 
             $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
