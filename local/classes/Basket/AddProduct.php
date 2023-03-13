@@ -64,7 +64,7 @@ class AddProduct extends Base
         $quantity = 1;
         $renewal = 'N';
 
-        $basket->setUserId($USER->GetID());
+//        $basket->setUserId($USER->GetID());
 
         foreach ($params as $key=>$item){
             $productId = intval($item['id']);
