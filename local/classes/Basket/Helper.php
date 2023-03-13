@@ -384,7 +384,6 @@ class Helper extends Base
                     $objDrawing->setName('img ' . $item['ID']);
                     $objDrawing->setImageResource($imgBarcodeImg);
                     $objDrawing->setResizeProportional(true);
-                    $objDrawing->setHeight(100);
                     $objDrawing->setCoordinates('A' . $startRowId);
                     $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
                     $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(100);
