@@ -182,7 +182,6 @@ class Helper extends Base
         }
 
         //данные по персональному мененджеру
-            //$arFUser = \CSaleUser::GetList(array('USER_ID' => $params['userId']));
             $arFUser = \CSaleUser::GetList(['USER_ID' => $params['userId']]);
             $userData = \CUser::GetByID($params["userId"])->Fetch();
         //
@@ -199,7 +198,9 @@ class Helper extends Base
                 $arBasketItems = [];
                 foreach ($basket as $item) {
                     $itemData = [];
-                    $arProduct = Builder::getProduct('', $item->getField("XML_ID"))[0];
+
+                    $arProduct = Builder::getProduct('', '297d6631-5358-11e2-be13-00155d032b00')[0];
+//                    $arProduct = Builder::getProduct('', $item->getField("XML_ID"))[0];
                     $itemId = $item->getProductId();
                     $itemData = [
                         "ID" => $itemId,
@@ -365,7 +366,15 @@ class Helper extends Base
 
                 if (!empty($arProduct["DETAIL_PICTURE"])) {
                     $startRowId++;
-                    $pathImg = \Bitrix\Main\Application::getDocumentRoot() . $item["DETAIL_PICTURE"];
+                    $pathImg = \Bitrix\Main\Application::getDocumentRoot() . $arProduct["DETAIL_PICTURE"];
+                    //resize
+                        $percent = 0.5;
+                        // Get new sizes
+                        list($width, $height) = getimagesize($pathImg);
+                        $newwidth = $width * $percent;
+                        $newheight = $height;
+                    //
+                    $thumb = imagecreatetruecolor($newwidth, $newheight);
                     $infoImg = getimagesize($pathImg);
                     $extensionImg = image_type_to_extension($infoImg[2]);
 
@@ -383,11 +392,12 @@ class Helper extends Base
                     $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
                     $objDrawing->setDescription('barcode' . $item['ID']);
                     $objDrawing->setName('img ' . $item['ID']);
-                    $objDrawing->setImageResource($imgBarcodeImg);
                     $objDrawing->setResizeProportional(true);
-                    $objDrawing->setCoordinates('A' . $startRowId);
+                    $objDrawing->setImageResource($imgBarcodeImg);
+                    $objDrawing->setCoordinates('C' . $startRowId);
                     $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
-                    $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(100);
+                    $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(-1);
+                    $startRowId = $startRowId + 11;
                 }
 
                 if (!empty($item["DETAIL_TEXT"])) {
@@ -399,7 +409,7 @@ class Helper extends Base
                         ->setCellValue('A' . $startRowId, strip_tags($item['DETAIL_TEXT']));
                     $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':B' . $startRowId);
                     $objPHPExcel->setActiveSheetIndex(0)->getStyle('A' . $startRowId . ':B' . $startRowId)->getAlignment()->setWrapText(true);
-                    $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(100);
+                   // $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(100);
                 }
 
                 $ignore_prop = Element::getIgnoreElementProps();
@@ -411,14 +421,14 @@ class Helper extends Base
                 }
 
                 foreach ($item['PROPS'] as $prop) {
-                    $startRowId = $startRowId + 3;
+                    $startRowId = $startRowId++;
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $startRowId, $prop['NAME']);
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('B' . $startRowId, $prop['VALUE']);
                 }
             }
-
+           // $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
             header('Content-Type: application/vnd.ms-excel');
