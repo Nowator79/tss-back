@@ -28,7 +28,7 @@ class Builder
      * @param $arArticles
      * @return array
      */
-    public static function GetByArticle($arArticles) : array
+    public static function GetByArticle($arArticles): array
     {
         global $DB;
         $results = [];
@@ -37,7 +37,7 @@ class Builder
             $arArticles = $arArticles[0];
         }
 
-        $sql = "SELECT IBLOCK_ELEMENT_ID, VALUE FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = ".ARTICLE_PROP_ID." AND VALUE IN (". $arArticles .")";
+        $sql = "SELECT IBLOCK_ELEMENT_ID, VALUE FROM b_iblock_element_property WHERE IBLOCK_PROPERTY_ID = " . ARTICLE_PROP_ID . " AND VALUE IN (" . $arArticles . ")";
         $dbRes = $DB->Query($sql);
         while ($res = $dbRes->Fetch()) {
             $results[] = $res["IBLOCK_ELEMENT_ID"];
@@ -52,11 +52,11 @@ class Builder
      * @param $optionsString
      * @return array
      */
-    public static function makeOptionsArray($optionsString) : array
+    public static function makeOptionsArray($optionsString): array
     {
         $arArticles = explode(';', $optionsString);
         foreach ($arArticles as $article) {
-            $arComaArticle[] = "'".$article."'";
+            $arComaArticle[] = "'" . $article . "'";
         }
         $arArticles = implode(',', $arComaArticle);
 
@@ -95,7 +95,7 @@ class Builder
      * @param $productId
      * @return array
      */
-    public static function getPrices($productId) : array
+    public static function getPrices($productId): array
     {
         $allProductPrices = \Bitrix\Catalog\PriceTable::getList([
             "select" => ["CATALOG_GROUP_ID", "PRICE", "CURRENCY"],
@@ -115,10 +115,10 @@ class Builder
             $USER->GetUserGroupArray(),
             $renewal
         );
-        $allProductPrices[]=[
-            "CATALOG_GROUP_ID"=> "496",
-            "PRICE"=> $arPrice['PRICE']['PRICE'],
-            "CURRENCY"=> "RUB"
+        $allProductPrices[] = [
+            "CATALOG_GROUP_ID" => "496",
+            "PRICE" => $arPrice['PRICE']['PRICE'],
+            "CURRENCY" => "RUB"
         ];
 
         return $allProductPrices;
@@ -135,7 +135,7 @@ class Builder
         $select = false,
         $filter = false,
         $withOptions = true
-    ) : array
+    ): array
     {
         global $USER;
         $arProducts = [];
@@ -151,7 +151,7 @@ class Builder
 
         while ($ar_res = $dbProduct->GetNextElement()) {
             $ar_fields = $ar_res->GetFields();
-            $ar_props = $ar_res->GetProperties([],['ACTIVE' => 'Y', 'EMPTY' => 'N']);
+            $ar_props = $ar_res->GetProperties([], ['ACTIVE' => 'Y', 'EMPTY' => 'N']);
             unset($ar_props["CML2_TRAITS"]);
             unset($ar_props["CML2_TAXES"]);
             unset($ar_props["FILES"]);
@@ -161,8 +161,7 @@ class Builder
             $ignore_prop = Element::getIgnoreElementProps();
 
             foreach ($ar_props as $k => $prop) {
-                if ($prop['CODE'] == 'CML2_ARTICLE' || empty($prop['VALUE']) || in_array($prop['CODE'], $ignore_prop))
-                {
+                if ($prop['CODE'] == 'CML2_ARTICLE' || empty($prop['VALUE']) || in_array($prop['CODE'], $ignore_prop)) {
                     unset($ar_props[$prop['CODE']]);
                 }
             }
@@ -216,7 +215,7 @@ class Builder
             'INCLUDE_SUBSECTIONS' => 'Y',
         ];
 
-        if(!empty($xmlId)){
+        if (!empty($xmlId)) {
             $filter['XML_ID'] = $xmlId;
         } else {
 
@@ -256,7 +255,7 @@ class Builder
     {
         $params = Misc::getPostDataFromJson();
 
-        if (!empty($arOptionsIds)){
+        if (!empty($arOptionsIds)) {
             $params['ids'] = $arOptionsIds;
         }
 
