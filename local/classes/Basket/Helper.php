@@ -251,9 +251,10 @@ class Helper extends Base
             $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
             $objDrawing->setDescription('barcode');
             $objDrawing->setImageResource($imgBarcode);
-            $objDrawing->setHeight(80);
+            $objDrawing->setHeight(50);
+            $objDrawing->setWidth(50);
             $objDrawing->setCoordinates('A3');
-
+            $objPHPExcel->getActiveSheet()->getColumnDimension('A3')->setAutoSize(true);
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('E3', $params["company"]);
             $objPHPExcel->getActiveSheet()->mergeCells('E3:G3');
