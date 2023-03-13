@@ -182,7 +182,8 @@ class Helper extends Base
         }
 
         //данные по персональному мененджеру
-            $arFUser = \CSaleUser::GetList(array('USER_ID' => $params['userId']));
+            //$arFUser = \CSaleUser::GetList(array('USER_ID' => $params['userId']));
+            $arFUser = \CSaleUser::GetList(['USER_ID' => $params['userId']])['ID'];
             $userData = \CUser::GetByID($params["userId"])->Fetch();
         //
 
