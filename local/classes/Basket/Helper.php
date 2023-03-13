@@ -182,8 +182,8 @@ class Helper extends Base
         }
 
         //данные по персональному мененджеру
-        $arFUser = \CSaleUser::GetList(array('USER_ID' => $params['userId']));
-        $userData = \CUser::GetByID($params["userId"])->Fetch();
+            $arFUser = \CSaleUser::GetList(array('USER_ID' => $params['userId']));
+            $userData = \CUser::GetByID($params["userId"])->Fetch();
         //
 
         if (!empty($params['orderId'])) {
@@ -195,24 +195,24 @@ class Helper extends Base
 
         if (count($basket->getQuantityList())) {
             //подготовка данных товаров в корзине
-            $arBasketItems = [];
-            foreach ($basket as $item) {
-                $itemData = [];
-                $arProduct = Builder::getProduct('', $item->getField("XML_ID"))[0];
-                $itemId = $item->getProductId();
-                $itemData = [
-                    "ID" => $itemId,
-                    "NAME" => $item->getField("NAME") ?? $arProduct["NAME"],
-                    "DETAIL_TEXT" => $arProduct["DETAIL_TEXT"],
-                    "DETAIL_PICTURE" => $arProduct["DETAIL_PICTURE"],
-                    "QUANTITY" => $item->getQuantity(),
-                    "MEASURE_NAME" => $item->getField("MEASURE_NAME"),
-                    "PRICE" => $item->getPrice(),
-                    "FPRICE" => $item->getFinalPrice(),
-                    "PROPS" => $arProduct['TABS']['props']
-                ];
-                $arBasketItems[] = $itemData;
-            }
+                $arBasketItems = [];
+                foreach ($basket as $item) {
+                    $itemData = [];
+                    $arProduct = Builder::getProduct('', $item->getField("XML_ID"))[0];
+                    $itemId = $item->getProductId();
+                    $itemData = [
+                        "ID" => $itemId,
+                        "NAME" => $item->getField("NAME") ?? $arProduct["NAME"],
+                        "DETAIL_TEXT" => $arProduct["DETAIL_TEXT"],
+                        "DETAIL_PICTURE" => $arProduct["DETAIL_PICTURE"],
+                        "QUANTITY" => $item->getQuantity(),
+                        "MEASURE_NAME" => $item->getField("MEASURE_NAME"),
+                        "PRICE" => $item->getPrice(),
+                        "FPRICE" => $item->getFinalPrice(),
+                        "PROPS" => $arProduct['TABS']['props']
+                    ];
+                    $arBasketItems[] = $itemData;
+                }
             //
 
             $fileExt = 'xls';
@@ -221,6 +221,7 @@ class Helper extends Base
             \CheckDirPath($tempDir);
             $filePath = "{$tempDir}{$fileName}";
             require_once $_SERVER["DOCUMENT_ROOT"] . '/local/classes/Helpers/PHPExcel/Classes/PHPExcel.php';
+
             $objPHPExcel = new \PHPExcel();
             $objPHPExcel->getProperties()->setCreator("TSS")
                 ->setLastModifiedBy("TSS")
@@ -234,8 +235,10 @@ class Helper extends Base
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
             $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
+
             $path = $_SERVER["DOCUMENT_ROOT"] . \CFile::GetPath($userData["PERSONAL_PHOTO"]);
             $info = getimagesize($path);
+
             $extension = image_type_to_extension($info[2]);
             if ($extension == '.jpeg') {
                 $imgBarcode = imagecreatefromjpeg($path);
@@ -244,7 +247,7 @@ class Helper extends Base
             } else {
                 return ['error' => 'Автар имеет не верный формат! Допустим PNG или JPEG.'];
             }
-            //$imgBarcode = imagecreatefromjpeg($path);
+
             $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
             $objDrawing->setDescription('barcode');
             $objDrawing->setImageResource($imgBarcode);
@@ -331,6 +334,7 @@ class Helper extends Base
                 ->setCellValue('A' . $startRowId, 'Ф.И.О');
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('B' . $startRowId, $userData["NAME"] . ' ' . $userData["LAST_NAME"]);
+
             if (!empty($userData["PERSONAL_PHONE"])) {
                 $startRowId++;
                 $objPHPExcel->setActiveSheetIndex(0)
@@ -356,11 +360,13 @@ class Helper extends Base
                 $startRowId = $startRowId + 4;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $startRowId, $item['NAME']);
+
                 if (!empty($arProduct["DETAIL_PICTURE"])) {
                     $startRowId++;
                     $pathImg = \Bitrix\Main\Application::getDocumentRoot() . $item["DETAIL_PICTURE"];
                     $infoImg = getimagesize($pathImg);
                     $extensionImg = image_type_to_extension($infoImg[2]);
+
                     if ($extensionImg == '.jpeg') {
                         $imgBarcodeImg = imagecreatefromjpeg($pathImg);
                     } elseif ($extensionImg == '.png') {
@@ -371,6 +377,7 @@ class Helper extends Base
                             'error' => 'DETAIL_PICTURE имеет не верный формат (ID товара ' . $item['ID'] . ' ! Допустим PNG или JPEG.'
                         ];
                     }
+
                     $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
                     $objDrawing->setDescription('barcode' . $item['ID']);
                     $objDrawing->setName('img ' . $item['ID']);
