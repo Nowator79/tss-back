@@ -144,6 +144,15 @@ class AddProduct extends Base
 
             $params[$key]['price'] = $price;
 
+            //XML_ID origin
+            $res = \CIBlockElement::GetByID(intval($item['id']));
+            if($ar_res = $res->GetNext()){
+
+                if($ar_res['XML_ID']){
+                    $item['xmlId'] = $ar_res['XML_ID'];
+                }
+            }
+
             if($item['options'])
                 $properties['OPTION'] = array(
                     'NAME' => 'OPTION',
@@ -214,7 +223,7 @@ class AddProduct extends Base
                     'VALUE' => json_encode($item['props']),
                     'SORT' => 100
                 );
-//
+
             if($item['xmlId']){
                 $xmlId = $item['xmlId'];
             }else{
