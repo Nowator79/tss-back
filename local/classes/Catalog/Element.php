@@ -951,6 +951,20 @@ class Element extends Base
                         break;
                 }
                 break;
+            case 'power':
+                switch ($params['sort']['direction']){
+                    case 'asc':
+                        $arOrder = [
+                            'PROPERTY_MOSHCHNOST_NOMINALNAYA_KVT' => 'ASC'
+                        ];
+                        break;
+                    case 'desc':
+                        $arOrder = [
+                            'PROPERTY_MOSHCHNOST_NOMINALNAYA_KVT' => 'DESC'
+                        ];
+                        break;
+                }
+            break;
         }
 
         $arFilter = [];

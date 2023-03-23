@@ -185,7 +185,8 @@ class Helper extends Base
             $arFUser = \CSaleUser::GetList(['USER_ID' => $params['userId']]);
             $userData = \CUser::GetByID($params["userId"])->Fetch();
         //
-        $arFUser['ID'] = \Bitrix\Sale\Fuser::getId();
+
+
         if (!empty($params['orderId'])) {
             $order = \Bitrix\Sale\Order::load($params['orderId']);
             $basket = $order->getBasket();
@@ -199,7 +200,6 @@ class Helper extends Base
                 foreach ($basket as $item) {
                     $itemData = [];
 
-//                    $arProduct = Builder::getProduct('', '297d6631-5358-11e2-be13-00155d032b00')[0];
                     $arProduct = Builder::getProduct('', $item->getField("XML_ID"))[0];
                     $itemId = $item->getProductId();
 

@@ -60,7 +60,7 @@ class Filter extends Base
         $SECTION_ID = $this->SECTION_ID;
         $mas_prop = [];
         $mas_type_prop = ['N'=>'DIAPASON','S'=>'BUTTON','L'=>'LIST'];
-
+//        $params['code'] = 'dizelnye_elektrostantsii';
         if($params['code']){
             $res = \CIBlockSection::GetList(array(), array('IBLOCK_ID' => $IBLOCK_ID, 'CODE' => $params['code']));
             if($section = $res->Fetch())$SECTION_ID=$section["ID"];
@@ -68,6 +68,7 @@ class Filter extends Base
         $mas_prop['PRICE']=[
             'NAME'=>'Цена',
             'CODE'=>'PRICE',
+            'SORT'=>'0',
             'PROPERTY_TYPE'=>'DIAPASON',
         ];
         foreach (\CIBlockSectionPropertyLink::GetArray($IBLOCK_ID, $SECTION_ID) as $PID => $arLink) {
@@ -78,12 +79,18 @@ class Filter extends Base
             $arProperty = $rsProperty->Fetch();
 
             if ($arProperty){
-                $mas_prop[$arProperty['CODE']]['NAME'] = $arProperty['NAME'];
-                $mas_prop[$arProperty['CODE']]['CODE'] = $arProperty['CODE'];
-                $mas_prop[$arProperty['CODE']]['PROPERTY_TYPE'] = $mas_type_prop[$arProperty['PROPERTY_TYPE']];
+                $mas_prop_buf[$arProperty['CODE']]['NAME'] = $arProperty['NAME'];
+                $mas_prop_buf[$arProperty['CODE']]['CODE'] = $arProperty['CODE'];
+                $mas_prop_buf[$arProperty['CODE']]['SORT'] = $arProperty['SORT'];
+                $mas_prop_buf[$arProperty['CODE']]['PROPERTY_TYPE'] = $mas_type_prop[$arProperty['PROPERTY_TYPE']];
             }
         }
-
+        usort($mas_prop_buf, function($a, $b){
+            return ($a['SORT'] - $b['SORT']);
+        });
+        foreach ($mas_prop_buf as $value){
+            $mas_prop[$value['CODE']] = $value;
+        }
 
         foreach (array_keys($mas_prop) as $value){
             $prop[] = $value;
