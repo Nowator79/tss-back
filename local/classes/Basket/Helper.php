@@ -195,6 +195,7 @@ class Helper extends Base
         }
 
         if (count($basket->getQuantityList())) {
+
             //подготовка данных товаров в корзине
                 $arBasketItems = [];
                 foreach ($basket as $item) {
@@ -210,10 +211,38 @@ class Helper extends Base
                         "DETAIL_PICTURE" => $arProduct["DETAIL_PICTURE"],
                         "QUANTITY" => $item->getQuantity(),
                         "MEASURE_NAME" => $item->getField("MEASURE_NAME"),
+                        "OPTION" => [],
                         "PRICE" => $item->getPrice(),
                         "FPRICE" => $item->getFinalPrice(),
                         "PROPS" => $arProduct['TABS']['props']
                     ];
+                    $basketPropRes = \Bitrix\Sale\Internals\BasketPropertyTable::getList(array(
+                        'filter' => array(
+                            "BASKET_ID" => $item->getId(),
+                        ),
+                    ));
+                    while ($property = $basketPropRes->fetch()) {
+                        if ($property['NAME'] == 'OPTION' && $property['VALUE']) {
+                            $arSelect = array("ID", "NAME","DETAIL_TEXT","DETAIL_PICTURE", "XML_ID");
+                            $buf_option_id = explode(';', $property['VALUE']);
+                            foreach ($buf_option_id as $key => $value) {
+                                $buf_val = explode('|', $value);
+                                $buf_option_id[$key] = $buf_val[0];
+                            }
+                            $arFilter = array("IBLOCK_ID" => 5, 'XML_ID' => $buf_option_id, "ACTIVE" => "Y");
+                            $res = \CIBlockElement::GetList(array(), $arFilter, false, array(), $arSelect);
+                            while ($ob = $res->GetNextElement()) {
+                                $arFields = $ob->GetFields();
+                                $itemData['OPTION'][] = [
+                                    "ID" => $arFields['ID'],
+                                    "NAME" => $arFields['NAME'],
+                                    "DETAIL_TEXT" => $arFields["DETAIL_TEXT"],
+                                    "DETAIL_PICTURE" => $arFields["DETAIL_PICTURE"],
+                                ];
+                            }
+
+                        }
+                    }
                     $arBasketItems[] = $itemData;
                 }
             //
@@ -431,6 +460,43 @@ class Helper extends Base
                         ->setCellValue('A' . $startRowId, $prop['NAME']);
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('B' . $startRowId, $prop['VALUE']);
+                }
+                $startRowId++;
+                if(count($item['OPTION'])>0){
+                    $startRowId++;
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $startRowId, "Опции:");
+                    $startRowId++;
+                }
+                foreach ($item['OPTION'] as $option) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $startRowId, $option['NAME']);
+                    $startRowId++;
+                    if($option["DETAIL_PICTURE"]){
+                        $pathImg = \Bitrix\Main\Application::getDocumentRoot() . \CFile::GetPath($option["DETAIL_PICTURE"]);
+                        $mas_path = pathinfo($pathImg);
+                        $origImgPath = $pathImg;
+                        $tempFile = $mas_path['dirname'].'/'.$mas_path['filename'].'_small.'.$mas_path['extension'];
+                        \CFile::ResizeImageFile(
+                            $origImgPath,
+                            $tempFile,
+                            array('width'=>200,'height'=>150),
+                            BX_RESIZE_IMAGE_PROPORTIONAL,
+                            array(),
+                            false,
+                            false
+                        );
+
+                        $objDrawing = new \PHPExcel_Worksheet_Drawing();
+                        $objDrawing->setPath($tempFile);
+                        $objDrawing->setName('img ' . $option['ID']);
+                        $objDrawing->setDescription('barcode' . $option['ID']);
+                        $objDrawing->setCoordinates('A' . $startRowId);
+                        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+                        $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(-1);
+                        $startRowId = $startRowId + 7;
+                    }
+
                 }
             }
 //            $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
