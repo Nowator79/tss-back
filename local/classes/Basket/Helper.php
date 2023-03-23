@@ -185,7 +185,8 @@ class Helper extends Base
             $arFUser = \CSaleUser::GetList(['USER_ID' => $params['userId']]);
             $userData = \CUser::GetByID($params["userId"])->Fetch();
         //
-        $arFUser['ID'] = \Bitrix\Sale\Fuser::getId();
+
+
         if (!empty($params['orderId'])) {
             $order = \Bitrix\Sale\Order::load($params['orderId']);
             $basket = $order->getBasket();
@@ -199,11 +200,9 @@ class Helper extends Base
                 foreach ($basket as $item) {
                     $itemData = [];
 
-//                    $arProduct = Builder::getProduct('', '297d6631-5358-11e2-be13-00155d032b00')[0];
                     $arProduct = Builder::getProduct('', $item->getField("XML_ID"))[0];
                     $itemId = $item->getProductId();
 
-                   return $arProduct; end;
                     $itemData = [
                         "ID" => $itemId,
                         "NAME" => $item->getField("NAME") ?? $arProduct["NAME"],
@@ -252,13 +251,13 @@ class Helper extends Base
                 return ['error' => 'Автар имеет не верный формат! Допустим PNG или JPEG.'];
             }
 
-            $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objDrawing->setPath($path);
             $objDrawing->setDescription('barcode');
-            $objDrawing->setImageResource($imgBarcode);
-            $objDrawing->setHeight(50);
             $objDrawing->setWidth(50);
+            $objDrawing->setResizeProportional(true);
             $objDrawing->setCoordinates('A3');
-            $objPHPExcel->getActiveSheet()->getColumnDimension('A3')->setAutoSize(true);
+//            $objPHPExcel->getActiveSheet()->getColumnDimension('A3')->setAutoSize(true);
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('E3', $params["company"]);
             $objPHPExcel->getActiveSheet()->mergeCells('E3:G3');
@@ -361,22 +360,15 @@ class Helper extends Base
             $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':G' . $startRowId);
 
             $startRowId = $startRowId + 2;
-            foreach ($arBasketItems as $item) {
+               foreach ($arBasketItems as $item) {
                 $startRowId = $startRowId + 4;
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $startRowId, $item['NAME']);
 
-                if (!empty($arProduct["DETAIL_PICTURE"])) {
+                if (!empty($item["DETAIL_PICTURE"])) {
                     $startRowId++;
-                    $pathImg = \Bitrix\Main\Application::getDocumentRoot() . $arProduct["DETAIL_PICTURE"];
-                    //resize
-                        $percent = 0.5;
-                        // Get new sizes
-                        list($width, $height) = getimagesize($pathImg);
-                        $newwidth = $width * $percent;
-                        $newheight = $height;
-                    //
-                    $thumb = imagecreatetruecolor($newwidth, $newheight);
+                    $pathImg = \Bitrix\Main\Application::getDocumentRoot() . $item["DETAIL_PICTURE"];
+
                     $infoImg = getimagesize($pathImg);
                     $extensionImg = image_type_to_extension($infoImg[2]);
 
@@ -390,13 +382,24 @@ class Helper extends Base
                             'error' => 'DETAIL_PICTURE имеет не верный формат (ID товара ' . $item['ID'] . ' ! Допустим PNG или JPEG.'
                         ];
                     }
+                    $mas_path = pathinfo($pathImg);
+                    $origImgPath = $pathImg;
+                    $tempFile = $mas_path['dirname'].'/'.$mas_path['filename'].'_small.'.$mas_path['extension'];
+                    \CFile::ResizeImageFile(
+                        $origImgPath,
+                        $tempFile,
+                        array('width'=>200,'height'=>150),
+                        BX_RESIZE_IMAGE_PROPORTIONAL,
+                        array(),
+                        false,
+                        false
+                    );
 
-                    $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
-                    $objDrawing->setDescription('barcode' . $item['ID']);
+                    $objDrawing = new \PHPExcel_Worksheet_Drawing();
+                    $objDrawing->setPath($tempFile);
                     $objDrawing->setName('img ' . $item['ID']);
-                    $objDrawing->setResizeProportional(true);
-                    $objDrawing->setImageResource($imgBarcodeImg);
-                    $objDrawing->setCoordinates('C' . $startRowId);
+                    $objDrawing->setDescription('barcode' . $item['ID']);
+                    $objDrawing->setCoordinates('A' . $startRowId);
                     $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
                     $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($startRowId)->setRowHeight(-1);
                     $startRowId = $startRowId + 11;
@@ -423,15 +426,17 @@ class Helper extends Base
                 }
 
                 foreach ($item['PROPS'] as $prop) {
-                    $startRowId = $startRowId++;
+                    $startRowId++;
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $startRowId, $prop['NAME']);
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('B' . $startRowId, $prop['VALUE']);
                 }
             }
-           // $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+//            $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(32);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(40);
+//            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="01simple.xls"');
