@@ -211,8 +211,14 @@ class Nomenclature
             $name = $name . ' ' . $hlProduct["UF_CODE1"];
         }
 
-        if (in_array("прицеп", $arOptionsParams["VID"]) || in_array("прицеп для контейнера", $arOptionsParams["VID"])) {
-            $hlProduct["UF_CODE2"] = "ЭД";
+//        if (in_array("прицеп", $arOptionsParams["VID"]) || in_array("прицеп для контейнера", $arOptionsParams["VID"])) {
+//            $hlProduct["UF_CODE2"] = "ЭД";
+//        }
+
+        foreach ($arOptionsParams["VID"] as $value){
+            if(stripos($value, 'Прицеп')!==false){
+                $hlProduct["UF_CODE2"] = "ЭД";
+            }
         }
 
         if (!empty($hlProduct["UF_CODE2"])) {
@@ -223,7 +229,7 @@ class Nomenclature
             $name = $name . '' . $hlProduct["UF_CODE3"];
         }
 
-        if (!empty($hlProduct["UF_CODE4"])) {
+        if (!empty($hlProduct["UF_CODE4"])&&$hlProduct["UF_CODE2"]!="ЭД") {
             $name = $name . '' . $hlProduct["UF_CODE4"];
         }
 
