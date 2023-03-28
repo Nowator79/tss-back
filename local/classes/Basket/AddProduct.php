@@ -128,7 +128,7 @@ class AddProduct extends Base
                 $arProps = $ob->GetProperties();
 
                 if($item['options']){
-                    $option[] = $arFields['XML_ID'].'|'.$arProps['VID_OPTSII']['VALUE'];
+
 //                    $ar_res =\CPrice::GetBasePrice($arFields['ID']);
 //                    $price += $ar_res['PRICE'];
 
@@ -138,6 +138,7 @@ class AddProduct extends Base
                         $USER->GetUserGroupArray(),
                         $renewal
                     );
+                    $option[] = $arFields['XML_ID'].'|'.$arProps['VID_OPTSII']['VALUE'].'|'.$arPrice['PRICE']['PRICE'];
                     $origin_price +=$arPrice['PRICE']['PRICE'];
                 }else{
                     $prodName = $arFields['NAME'];

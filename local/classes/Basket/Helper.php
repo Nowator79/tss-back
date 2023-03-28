@@ -389,10 +389,10 @@ class Helper extends Base
             $objPHPExcel->getActiveSheet()->mergeCells('A' . $startRowId . ':G' . $startRowId);
 
             $startRowId = $startRowId + 2;
-               foreach ($arBasketItems as $item) {
+               foreach ($arBasketItems as $item_key=>$item) {
                 $startRowId = $startRowId + 4;
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $startRowId, $item['NAME']);
+                    ->setCellValue('A' . $startRowId, ''.($item_key+1).'. '.$item['NAME']);
 
                 if (!empty($item["DETAIL_PICTURE"])) {
                     $startRowId++;
@@ -469,6 +469,7 @@ class Helper extends Base
                     $startRowId++;
                 }
                 foreach ($item['OPTION'] as $option) {
+
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $startRowId, $option['NAME']);
                     $startRowId++;
