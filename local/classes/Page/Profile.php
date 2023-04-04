@@ -146,7 +146,7 @@ class Profile
             $entityDataClass = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlblock)->getDataClass();
 
             $filter = [
-                'UF_USER' => $contragentID
+                'UF_KONTRAGENTSSYLKA' => $contragentID
             ];
 
             $rsData = $entityDataClass::getList(array(
@@ -154,8 +154,22 @@ class Profile
                 "order" => ["ID" => "ASC"],
                 "filter" => $filter
             ));
-
-            return $rsData->FetchAll();
+            $buf_mas = $rsData->FetchAll();
+            if($buf_mas===false){
+                $result_mas = false;
+            }else{
+                $result_mas = [
+                    'ID' => $buf_mas['ID'],
+                    'UF_DISCOUNT' => $buf_mas['UF_SKIDKA'],
+                    'UF_ID' => $buf_mas['ID'],
+                    'UF_INN' => $buf_mas['UF_INN'],
+                    'UF_KPP' => $buf_mas['UF_KPP'],
+                    'UF_NAME' => $buf_mas['UF_NAME'],
+                    'UF_OGRN' => $buf_mas['UF_OGRN'],
+                    'UF_USER' => $buf_mas['UF_KONTRAGENTSSYLKA'],
+                ];
+            }
+            return $result_mas;
         }
     }
 

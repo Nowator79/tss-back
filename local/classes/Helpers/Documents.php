@@ -18,6 +18,7 @@ class Documents
     
     public function getList($page, $dates, $type, $contragentCode)
     {
+        //OLD
         // ИД            // UF_XML_ID        // f065888e-7924-11df-b33a-0011955cba6b
         // ТипДокумента  // UF_TIPDOCUMENTA  // Счёт/Товарная-Накладная/Сфёт-Фактура/УПД/Акт-сверки
         // Название      // UF_NAME          // Акт Сверки №1024
@@ -37,7 +38,7 @@ class Documents
         }
         
         $utils = new Utility\Misc();
-        
+
         if ($contragentCode)
         {
             $filter = ['=UF_IDKONTRAGENTA' => $contragentCode];
