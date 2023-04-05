@@ -82,7 +82,7 @@ define('HIGHLOAD_DISTRIBUTION_CENTER_ID', 9);
 define('HIGHLOAD_ASSORTIMENT_CENTER_ID', 12);
 
 # Идентификатор highload-блока "План продаж"
-define('HIGHLOAD_SALES_PLAN_ID', 59);
+define('HIGHLOAD_SALES_PLAN_ID', 66);
 
 # Идентификатор highload-блока "Шифр товара"
 define('HIGHLOAD_PRODUCT_CODE_ID', 61);
