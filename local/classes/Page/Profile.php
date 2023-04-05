@@ -96,7 +96,7 @@ class Profile
         $userId = ($USER->GetID() == 0) ? 1 : $USER->GetID();
 
         $filter = [
-            'UF_USER_XML_ID' => Get::getParentUserXmlIdEx($userId)
+            'UF_KONTRAGENT' => Get::getParentUserXmlIdEx($userId)
         ];
 
         if (!empty($params['date_begin']) && !empty($params['date_end'])) {
@@ -104,8 +104,8 @@ class Profile
             $dateBegin = new \DateTime(sprintf($params['date_begin'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
             $dateEnd = new \DateTime(sprintf($params['date_end'], date('Y'), date('m'), date('d')), new \DateTimeZone('UTC'));
             $dateBegin->modify('+1 day -1 second');
-            $filter['<=UF_DATE'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
-            $filter['>=UF_DATE'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
+            $filter['<=UF_PERIOD'] = $dateEnd->format($BITRIX_DATETIME_FORMAT);
+            $filter['>=UF_PERIOD'] = $dateBegin->format($BITRIX_DATETIME_FORMAT);
         }
 
         $rsData = $entity_data_class::getList(array(
@@ -116,8 +116,17 @@ class Profile
 
         $res = [];
         while($arData = $rsData->Fetch()){
-            $arData['UF_DATE'] = $arData['UF_DATE']->toString();
-            $res[] = $arData;
+            $date = $arData['UF_PERIOD']->toString();
+            $date = strtotime($date);
+            $date = date('d.m.Y', $date);
+            $arData['UF_PERIOD'] = $date;
+            $res[] = [
+                'ID' => $arData['ID'],
+                'UF_DATE' => $arData['UF_PERIOD'],
+                'UF_PLAN' => $arData['UF_SUMMAPLAN'],
+                'UF_FACT' => $arData['UF_SUMMAFAKT'],
+                'UF_USER_XML_ID' => $arData['UF_KONTRAGENT'],
+            ];
         }
 
         return $res;
@@ -146,7 +155,7 @@ class Profile
             $entityDataClass = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlblock)->getDataClass();
 
             $filter = [
-                'UF_USER' => $contragentID
+                'UF_KONTRAGENTSSYLKA' => $contragentID
             ];
 
             $rsData = $entityDataClass::getList(array(
@@ -154,8 +163,22 @@ class Profile
                 "order" => ["ID" => "ASC"],
                 "filter" => $filter
             ));
-
-            return $rsData->FetchAll();
+            $buf_mas = $rsData->FetchAll();
+            if($buf_mas===false){
+                $result_mas = false;
+            }else{
+                $result_mas = [
+                    'ID' => $buf_mas['ID'],
+                    'UF_DISCOUNT' => $buf_mas['UF_SKIDKA'],
+                    'UF_ID' => $buf_mas['ID'],
+                    'UF_INN' => $buf_mas['UF_INN'],
+                    'UF_KPP' => $buf_mas['UF_KPP'],
+                    'UF_NAME' => $buf_mas['UF_NAME'],
+                    'UF_OGRN' => $buf_mas['UF_OGRN'],
+                    'UF_USER' => $buf_mas['UF_KONTRAGENTSSYLKA'],
+                ];
+            }
+            return $result_mas;
         }
     }
 

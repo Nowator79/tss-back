@@ -18,6 +18,7 @@ class Documents
     
     public function getList($page, $dates, $type, $contragentCode)
     {
+        //OLD
         // ИД            // UF_XML_ID        // f065888e-7924-11df-b33a-0011955cba6b
         // ТипДокумента  // UF_TIPDOCUMENTA  // Счёт/Товарная-Накладная/Сфёт-Фактура/УПД/Акт-сверки
         // Название      // UF_NAME          // Акт Сверки №1024
@@ -37,10 +38,10 @@ class Documents
         }
         
         $utils = new Utility\Misc();
-        
+
         if ($contragentCode)
         {
-            $filter = ['=UF_IDKONTRAGENTA' => $contragentCode];
+            $filter = ['=UF_KONTRAGENT' => $contragentCode];
         }
 
         if ($dates)
@@ -50,14 +51,14 @@ class Documents
             
             if ($datesArr[0] && $datesArr[1])
             {
-                $filter['>=UF_DATE'] = date('d.m.Y', strtotime($datesArr[0]));
-                $filter['<UF_DATE'] = date('d.m.Y', strtotime('+1 day', strtotime($datesArr[1])));
+                $filter['>=UF_DATADOKUMENTA'] = date('d.m.Y H:i:s', strtotime($datesArr[0]));
+                $filter['<UF_DATADOKUMENTA'] = date('d.m.Y H:i:s', strtotime('+1 day', strtotime($datesArr[1])));
             }
         }
         
         if ($type)
         {
-            $filter = ['=UF_TIPDOCUMENTA' => $type];
+            $filter = ['=UF_VIDDOKUMENTA' => $type];
         }
         
         $offset = 0;
@@ -67,7 +68,7 @@ class Documents
             $offset = $this->perPage * ($page - 1);
         }
         
-        $items = $utils->getHLData(HIGHLOAD_BLOCK_DOCUMENTS, $filter, ['UF_DATE' => 'DESC'], false, $offset, $this->perPage, true);
+        $items = $utils->getHLData(HIGHLOAD_BLOCK_DOCUMENTS, $filter, ['UF_DATADOKUMENTA' => 'DESC'], false, $offset, $this->perPage, true);
         
         $result['items'] = [];
         
@@ -81,7 +82,7 @@ class Documents
                 [
                     'id'    => (int)$item['ID'],
                     'name'  => $item['UF_NAME'],
-                    //'date'  => $item['UF_DATE']->toString(),
+                    //'date'  => $item['UF_DATADOKUMENTA']->toString(),
                 ];
             }
         }
@@ -101,7 +102,7 @@ class Documents
         {
             $utils = new Utility\Misc();
             
-            $items = $utils->getHLData(HIGHLOAD_BLOCK_DOCUMENTS, ['=UF_IDKONTRAGENTA' => $contragentCode, '=ID' => $id]);
+            $items = $utils->getHLData(HIGHLOAD_BLOCK_DOCUMENTS, ['=UF_KONTRAGENT' => $contragentCode, '=ID' => $id]);
             
             if ($items['records'])
             {
@@ -162,15 +163,15 @@ class Documents
         {
             $utils = new Utility\Misc();
             
-            $items = $utils->getHLData(HIGHLOAD_BLOCK_DOCUMENTS, ['=UF_IDKONTRAGENTA' => $contragentCode]);
+            $items = $utils->getHLData(HIGHLOAD_BLOCK_DOCUMENTS, ['=UF_KONTRAGENT' => $contragentCode]);
             
             if ($items['records'])
             {
                  foreach ($items['records'] as $item)
                  {
-                     if ($item['UF_TIPDOCUMENTA'])
+                     if ($item['UF_VIDDOKUMENTA'])
                      {
-                        $result[] = $item['UF_TIPDOCUMENTA'];
+                        $result[] = $item['UF_VIDDOKUMENTA'];
                      }
                  }
             }
@@ -184,16 +185,18 @@ class Documents
     public function DocumentsOnAfterAddHandler(\Bitrix\Main\Entity\Event $event)
     {
 		$entityFields = $event->getParameter('fields');
-
+        $date = $entityFields['UF_DATADOKUMENTA']->toString();
+        $date = strtotime($date);
+        $date = date('d.m.Y', $date);
 		// справочники поменяются, поэтому все имена полей оставим только в этом файле, "один файл - один класс - один справочник - изменения в одном месте"
 		$fields = 
 		[
 			'XML_ID'     => $entityFields['UF_XML_ID'],
 			'NAME'       => $entityFields['UF_NAME'],
-			'TYPE'       => $entityFields['UF_TIPDOCUMENTA'],
-			'CONTRAGENT' => $entityFields['UF_IDKONTRAGENTA'],
-			'FILE'       => $entityFields['UF_FILE'],
-			'DATE'       => $entityFields['UF_DATE']->toString(),
+			'TYPE'       => $entityFields['UF_VIDDOKUMENTA'],
+			'CONTRAGENT' => $entityFields['UF_KONTRAGENT'],
+			'FILE'       => $entityFields['UF_SSYLKANADOKUMENT'],
+			'DATE'       => $date,
 		];
 		
         (new Notify\Sender)->send(['id' => $event->getParameter('id'), 'fields' => $fields], new Notify\DocumentReceiveSender());

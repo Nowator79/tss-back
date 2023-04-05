@@ -24,10 +24,10 @@ define('HIGHLOAD_BLOCK_CONTRAGENT', 'kontragent'); //fake
 define('HIGHLOAD_BLOCK_CONTRACT', 'dogovora'); //fake
 
 # Имя таблицы highload-блока документов
-define('HIGHLOAD_BLOCK_DOCUMENTS', 'documents'); //fake
+define('HIGHLOAD_BLOCK_DOCUMENTS', 'b_lkddokumentykontragentov'); //fake
 
 # Имя сущности highload-блока документов
-define('HIGHLOAD_BLOCK_DOCUMENTS_ENTITY', 'Documents'); //fake
+define('HIGHLOAD_BLOCK_DOCUMENTS_ENTITY', 'LKDDokumentyKontragentov'); //fake
 
 # Имя таблицы highload-блока документов
 define('HIGHLOAD_BLOCK_NOMENCLATURE', 'assortiment'); //fake
