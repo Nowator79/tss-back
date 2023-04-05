@@ -106,10 +106,12 @@ class Restore extends Base
             global $USER;
             $user_id = $USER->GetID();
         }
+        $rsUser = CUser::GetByID($user_id);
+        $arUser = $rsUser->Fetch();
 
         Loader::includeModule("highloadblock");
 
-        $hlbl = 14; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlbl = 65; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
@@ -118,12 +120,15 @@ class Restore extends Base
         $rsData = $entity_data_class::getList(array(
             "select" => array("*"),
             "order" => array("ID" => "ASC"),
-            "filter" => array("UF_USER"=>$user_id),  // Задаем параметры фильтра выборки
+            "filter" => array("UF_KONTRAGENT"=>$arUser['XML_ID']),  // Задаем параметры фильтра выборки
         ));
 
         while($arData = $rsData->Fetch()){
-            $arData['UF_FILE'] =  \CFile::GetPath($arData["UF_FILE"]);
-            $arData['UF_DATE'] = $arData['UF_DATE']->toString();
+            $date = $arData['UF_DATADOKUMENTA']->toString();
+            $date = strtotime($date);
+            $date = date('d.m.Y', $date);
+            $arData['UF_FILE'] = $arData["UF_SSYLKANADOKUMENT"];
+            $arData['UF_DATE'] = $date;
             $mas_doc[] = $arData;
         }
         return $mas_doc;
