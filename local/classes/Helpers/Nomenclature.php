@@ -172,7 +172,7 @@ class Nomenclature
 //        if (!empty($hlProduct["UF_NAME_X"])) {
 //            $name = $name . ' ' . $hlProduct["UF_NAME_X"];
 //        }
-        $name = $hlProduct['UF_CUSTOM_NAME'] ?? $product['NAME'];
+        $name = $hlProduct['UF_CUSTOM_NAME'] ?? "Дизельный генератор";
         if(!empty($hlProduct["UF_NAIMENOVANIEFIRME"]))$name.= $hlProduct["UF_NAIMENOVANIEFIRME"];
         if(!empty($hlProduct["UF_FIRMENNOENAIMENOV"]))$name.= ' '.$hlProduct["UF_FIRMENNOENAIMENOV"];
         return $name;
@@ -205,7 +205,7 @@ class Nomenclature
      */
     public static function getGostProductName($product, $hlProduct, $arOptionsParams)
     {
-        $name = $hlProduct['UF_CUSTOM_NAME'] ?? $product['NAME'];
+        $name = $hlProduct['UF_CUSTOM_NAME'] ?? "Дизельный генератор";
 
         $is_complex = false;
 
