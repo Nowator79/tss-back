@@ -34,7 +34,7 @@ $eventManager->addEventHandler('catalog', 'OnGetOptimalPriceResult', function(&$
     $rsData = $entity_data_class::getList(array(
         "select" => array("*"),
         "order" => array("ID" => "ASC"),
-        "filter" => array("UF_USER"=>$arUser['XML_ID']),  // Задаем параметры фильтра выборки
+        "filter" => array("UF_KONTRAGENTSSYLKA"=>$arUser['XML_ID']),  // Задаем параметры фильтра выборки
     ));
 
     while($arData = $rsData->Fetch()){
