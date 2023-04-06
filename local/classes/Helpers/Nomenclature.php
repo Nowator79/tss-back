@@ -159,20 +159,22 @@ class Nomenclature
      */
     public static function getBrandedProductName($product, $hlProduct, $arOptionsParams)
     {
-        $name = $hlProduct['UF_CUSTOM_NAME'];
-
-        if (!empty($hlProduct["UF_NAME_V"])) {
-            $name = $name . ' ' . $hlProduct["UF_NAME_V"];
-        }
-
-        if (!empty($hlProduct["UF_NAME_W"])) {
-            $name = $name . ' ' . $hlProduct["UF_NAME_W"];
-        }
-
-        if (!empty($hlProduct["UF_NAME_X"])) {
-            $name = $name . ' ' . $hlProduct["UF_NAME_X"];
-        }
-
+//        $name = $hlProduct['UF_CUSTOM_NAME'];
+//
+//        if (!empty($hlProduct["UF_NAME_V"])) {
+//            $name = $name . ' ' . $hlProduct["UF_NAME_V"];
+//        }
+//
+//        if (!empty($hlProduct["UF_NAME_W"])) {
+//            $name = $name . ' ' . $hlProduct["UF_NAME_W"];
+//        }
+//
+//        if (!empty($hlProduct["UF_NAME_X"])) {
+//            $name = $name . ' ' . $hlProduct["UF_NAME_X"];
+//        }
+        $name = $hlProduct['UF_CUSTOM_NAME'] ?? $product['NAME'];
+        if(!empty($hlProduct["UF_NAIMENOVANIEFIRME"]))$name.= $hlProduct["UF_NAIMENOVANIEFIRME"];
+        if(!empty($hlProduct["UF_FIRMENNOENAIMENOV"]))$name.= ' '.$hlProduct["UF_FIRMENNOENAIMENOV"];
         return $name;
     }
 
@@ -207,93 +209,93 @@ class Nomenclature
 
         $is_complex = false;
 
-        if (!empty($hlProduct["UF_CODE1"])) {
-            $name = $name . ' ' . $hlProduct["UF_CODE1"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD1"])) {
+            $name = $name . ' ' . $hlProduct["UF_NAZVANIEKOD1"];
         }
 
         if (in_array("прицеп", $arOptionsParams["VID"]) || in_array("прицеп для контейнера", $arOptionsParams["VID"])) {
-            $hlProduct["UF_CODE2"] = "ЭД";
+            $hlProduct["UF_NAZVANIEKOD2"] = "ЭД";
         }
 
-        if (!empty($hlProduct["UF_CODE2"])) {
-            $name = $name . ' ' . $hlProduct["UF_CODE2"].'-';
+        if (!empty($hlProduct["UF_NAZVANIEKOD2"])) {
+            $name = $name . ' ' . $hlProduct["UF_NAZVANIEKOD2"].'-';
         }
 
-        if (!empty($hlProduct["UF_CODE3"])) {
-            $name = $name . '' . $hlProduct["UF_CODE3"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD3"])) {
+            $name = $name . '' . $hlProduct["UF_NAZVANIEKOD3"];
         }
 
-        if (!empty($hlProduct["UF_CODE4"])) {
-            $name = $name . '' . $hlProduct["UF_CODE4"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD4"])) {
+            $name = $name . '' . $hlProduct["UF_NAZVANIEKOD4"];
         }
 
-        if (!empty($hlProduct["UF_CODE5"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE5"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD5"])) {
+            $name = $name . '-' . $hlProduct["UF_NAZVANIEKOD5"];
         }
 
-        if (!empty($hlProduct["UF_CODE6"])) {
-            $name = $name . '' . $hlProduct["UF_CODE6"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD6"])) {
+            $name = $name . '' . $hlProduct["UF_NAZVANIEKOD6"];
         }
 
 
         if (in_array("Блок АВР", $arOptionsParams["VID"])) {
-            $hlProduct["UF_CODE7"] = 2;
+            $hlProduct["UF_NAZVANIEKOD7"] = 2;
         }
 
 
         if (in_array("231020", $arOptionsParams["ART"])) {
-            $hlProduct["UF_CODE7"] = 3;
+            $hlProduct["UF_NAZVANIEKOD7"] = 3;
         }
 
-        if (!empty($hlProduct["UF_CODE7"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE7"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD7"])) {
+            $name = $name . '-' . $hlProduct["UF_NAZVANIEKOD7"];
         }
 
-        if (!empty($hlProduct["UF_CODE8"])) {
-            $name = $name . '' . $hlProduct["UF_CODE8"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD8"])) {
+            $name = $name . '' . $hlProduct["UF_NAZVANIEKOD8"];
         }
 
         //9
         if (in_array("Контейнер", $arOptionsParams["VID"])) {
-            $hlProduct["UF_CODE9"] = "Н";
+            $hlProduct["UF_NAZVANIEKOD9"] = "Н";
         }
 
 
         if (in_array("капот", $arOptionsParams["VID"])) {
-            $hlProduct["UF_CODE9"] = "П";
+            $hlProduct["UF_NAZVANIEKOD9"] = "П";
         }
 
         if (in_array("кожух", $arOptionsParams["VID"])) {
-            $hlProduct["UF_CODE9"] = "К";
+            $hlProduct["UF_NAZVANIEKOD9"] = "К";
         }
 
-        if (!empty($hlProduct["UF_CODE9"])) {
-            $name = $name . '' . $hlProduct["UF_CODE9"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD9"])) {
+            $name = $name . '' . $hlProduct["UF_NAZVANIEKOD9"];
         }
 
-        if (!empty($hlProduct["UF_CODE10"])) {
-            $name = $name . '' . $hlProduct["UF_CODE10"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD10"])) {
+            $name = $name . '' . $hlProduct["UF_NAZVANIEKOD10"];
         }
 
-        if (!empty($hlProduct["UF_CODE11"])) {
-            $name = $name . '' . $hlProduct["UF_CODE11"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD11"])) {
+            $name = $name . '' . $hlProduct["UF_NAZVANIEKOD11"];
         }
 
         //12
         if (in_array("ПЖД", $arOptionsParams["VID"])) {
-            $hlProduct["UF_CODE12"] = "ПЖД";
+            $hlProduct["UF_NAZVANIEKOD12"] = "ПЖД";
         }
 
         if (in_array("ПОЖ", $arOptionsParams["VID"])) {
             if (in_array("2", $arOptionsParams["STA"]) || in_array("Блок АВР", $arOptionsParams["VID"])) {
-                $hlProduct["UF_CODE12"] = ($hlProduct["UF_CODE12"] == "ПЖД") ? "ПЖД" : "";
+                $hlProduct["UF_NAZVANIEKOD12"] = ($hlProduct["UF_NAZVANIEKOD12"] == "ПЖД") ? "ПЖД" : "";
             } else {
                 $hlProduct["UF_CODE12"] = "ПОЖ";
             }
         }
 
-        if (!empty($hlProduct["UF_CODE12"])) {
-            $name = $name . '-' . $hlProduct["UF_CODE12"];
+        if (!empty($hlProduct["UF_NAZVANIEKOD12"])) {
+            $name = $name . '-' . $hlProduct["UF_NAZVANIEKOD12"];
         }
 
         return $name;
@@ -313,7 +315,7 @@ class Nomenclature
         $product = self::getProductByCode($params['XML_ID'])[0];
         $hlProduct = self::getProductFromHL($product['XML_ID']);
 
-        if (trim($product["TABS"]["props"]["VID_OPTSII"]["VALUE"]) == "Базовый агрегат" && trim($hlProduct["UF_NOCODE"]) == "Нет") {
+        if (trim($product["TABS"]["props"]["VID_OPTSII"]["VALUE"]) == "Базовый агрегат" && trim($hlProduct["UF_BEZSHIFRA"]) == "Нет") {
             $arOptionsParams = [];
             if (!empty($params['SELECTED_OPTIONS'])) {
                 $arOptionsParams = self::getOptionsParams($params['SELECTED_OPTIONS']);
