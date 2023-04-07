@@ -123,7 +123,7 @@ class Nomenclature
         $rsData = $entity_data_class::getList(array(
             "select" => array("*"),
             "order" => array("ID" => "ASC"),
-            "filter" => array("UF_XML_ID" => $xmlId)  // Задаем параметры фильтра выборки
+            "filter" => array("UF_NOMENKLATURA" => $xmlId)  // Задаем параметры фильтра выборки
         ));
 
         return $rsData->Fetch();
@@ -212,11 +212,11 @@ class Nomenclature
         if (!empty($hlProduct["UF_NAZVANIEKOD1"])) {
             $name = $name . ' ' . $hlProduct["UF_NAZVANIEKOD1"];
         }
-
-        if (in_array("прицеп", $arOptionsParams["VID"]) || in_array("прицеп для контейнера", $arOptionsParams["VID"])) {
-            $hlProduct["UF_NAZVANIEKOD2"] = "ЭД";
+        foreach ($arOptionsParams["VID"] as $value){
+            if(stripos($value, 'Прицеп')!==false){
+                $hlProduct["UF_NAZVANIEKOD2"] = "ЭД";
+            }
         }
-
         if (!empty($hlProduct["UF_NAZVANIEKOD2"])) {
             $name = $name . ' ' . $hlProduct["UF_NAZVANIEKOD2"].'-';
         }
@@ -225,10 +225,9 @@ class Nomenclature
             $name = $name . '' . $hlProduct["UF_NAZVANIEKOD3"];
         }
 
-        if (!empty($hlProduct["UF_NAZVANIEKOD4"])) {
+        if (!empty($hlProduct["UF_NAZVANIEKOD4"])&&$hlProduct["UF_NAZVANIEKOD2"]!="ЭД") {
             $name = $name . '' . $hlProduct["UF_NAZVANIEKOD4"];
         }
-
         if (!empty($hlProduct["UF_NAZVANIEKOD5"])) {
             $name = $name . '-' . $hlProduct["UF_NAZVANIEKOD5"];
         }
@@ -315,7 +314,7 @@ class Nomenclature
         $product = self::getProductByCode($params['XML_ID'])[0];
         $hlProduct = self::getProductFromHL($product['XML_ID']);
 
-        if (trim($product["TABS"]["props"]["VID_OPTSII"]["VALUE"]) == "Базовый агрегат" && trim($hlProduct["UF_BEZSHIFRA"]) == "Нет") {
+        if (trim($product["TABS"]["props"]["VID_OPTSII"]["VALUE"]) == "Базовый агрегат" && $hlProduct["UF_BEZSHIFRA"] == 0) {
             $arOptionsParams = [];
             if (!empty($params['SELECTED_OPTIONS'])) {
                 $arOptionsParams = self::getOptionsParams($params['SELECTED_OPTIONS']);
