@@ -167,16 +167,19 @@ class Profile
             if($buf_mas===false){
                 $result_mas = false;
             }else{
-                $result_mas = [
-                    'ID' => $buf_mas['ID'],
-                    'UF_DISCOUNT' => $buf_mas['UF_SKIDKA'],
-                    'UF_ID' => $buf_mas['ID'],
-                    'UF_INN' => $buf_mas['UF_INN'],
-                    'UF_KPP' => $buf_mas['UF_KPP'],
-                    'UF_NAME' => $buf_mas['UF_NAME'],
-                    'UF_OGRN' => $buf_mas['UF_OGRN'],
-                    'UF_USER' => $buf_mas['UF_KONTRAGENTSSYLKA'],
-                ];
+                foreach ($buf_mas as $mas) {
+                    if($mas['UF_SKIDKA']==NULL)$mas['UF_SKIDKA']=0;
+                    $result_mas[] = [
+                        'ID' => $mas['ID'],
+                        'UF_DISCOUNT' => $mas['UF_SKIDKA'],
+                        'UF_ID' => $mas['ID'],
+                        'UF_INN' => $mas['UF_INN'],
+                        'UF_KPP' => $mas['UF_KPP'],
+                        'UF_NAME' => $mas['UF_NAME'],
+                        'UF_OGRN' => $mas['UF_OGRN'],
+                        'UF_USER' => $mas['UF_KONTRAGENTSSYLKA'],
+                    ];
+                }
             }
             return $result_mas;
         }

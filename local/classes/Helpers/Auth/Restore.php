@@ -106,7 +106,7 @@ class Restore extends Base
             global $USER;
             $user_id = $USER->GetID();
         }
-        $rsUser = CUser::GetByID($user_id);
+        $rsUser = \CUser::GetByID($user_id);
         $arUser = $rsUser->Fetch();
 
         Loader::includeModule("highloadblock");
@@ -129,7 +129,17 @@ class Restore extends Base
             $date = date('d.m.Y', $date);
             $arData['UF_FILE'] = $arData["UF_SSYLKANADOKUMENT"];
             $arData['UF_DATE'] = $date;
-            $mas_doc[] = $arData;
+            if(!$arData['UF_NAME'])$arData['UF_NAME']=$arData['UF_VIDDOKUMENTA'];
+            $mas_doc[] =[
+                'ID'=>$arData['ID'],
+                'UF_NAME'=>$arData['UF_NAME'],
+                'UF_XML_ID'=>$arData['UF_XML_ID'],
+                'UF_TIPDOCUMENTA'=>$arData['UF_VIDDOKUMENTA'],
+                'UF_IDKONTRAGENTA'=>$arData['UF_KONTRAGENT'],
+                'UF_DATE'=>$arData['UF_DATE'],
+                'UF_USER'=>$user_id,
+                'UF_FILE'=>$arData['UF_FILE'],
+            ];
         }
         return $mas_doc;
     }
