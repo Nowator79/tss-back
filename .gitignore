@@ -33,6 +33,18 @@
 Thumbs.db
 ehthumbs.db
 
+# Исключаем папки, файлы lk.tss.ru -> wcshop
+.htaccess
+.htaccess.restore
+.htaccess_old
+.htsecure
+index.html
+500.html
+mysql_debug.sql
+/local/classes/Helpers/PHPExcel/
+/images/
+
+
 # однако храним robots.txt — он нужен
 !/robots.txt
 
