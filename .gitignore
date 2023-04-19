@@ -49,10 +49,6 @@ ehthumbs.db
 /personal
 
 # Исключаем папки, файлы lk.tss.ru -> wcshop
-/.htaccess
-.htaccess
-.htaccess.restore
-.htaccess_old
 .htsecure
 index.html
 500.html
