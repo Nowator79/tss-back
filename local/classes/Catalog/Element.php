@@ -1003,10 +1003,11 @@ class Element extends Base
                     $arFilter['>=PROPERTY_'.$key] = $value['VALUE_MIN'];
                     $arFilter['<=PROPERTY_'.$key] = $value['VALUE_MAX'];
                 }else{
-                    $arFilter['>=PROPERTY_'.$key] = $value;
+                    $arFilter['PROPERTY_'.$key] = $value;
                 }
             }
         }
+if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$priceType] = false;
 //        return $arFilter;
         // получение всех элементов раздела
         $sectionElements = self::getElements(
@@ -1454,7 +1455,8 @@ class Element extends Base
     public static function getDefaultFilter() {
         return [
             'IBLOCK_ID' => IBLOCK_CATALOG,
-            'ACTIVE' => 'Y'
+            'ACTIVE' => 'Y',
+
         ];
     }
 
