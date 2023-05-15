@@ -1002,6 +1002,8 @@ class Element extends Base
                 if(array_key_exists('VALUE_MIN', $value)){
                     $arFilter['>=PROPERTY_'.$key] = $value['VALUE_MIN'];
                     $arFilter['<=PROPERTY_'.$key] = $value['VALUE_MAX'];
+                }else if($value['PROPERTY_TYPE']=='LIST'){
+                    $arFilter['PROPERTY_'.$key.'_VALUE'] = $value['VALUE'];
                 }else{
                     $arFilter['PROPERTY_'.$key] = $value;
                 }
