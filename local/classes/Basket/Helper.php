@@ -268,7 +268,11 @@ class Helper extends Base
                 ->setCellValue('A1', 'Коммерческое предложение от ' . $params["contragent"]);
             $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
 
-            $path = $_SERVER["DOCUMENT_ROOT"] . \CFile::GetPath($userData["PERSONAL_PHOTO"]);
+            if($userData["PERSONAL_PHOTO"]){
+                $path = $_SERVER["DOCUMENT_ROOT"] . \CFile::GetPath($userData["PERSONAL_PHOTO"]);
+            }else{
+                $path = $_SERVER["DOCUMENT_ROOT"] . '/upload/avatar/no_logo.png';
+            }
             $info = getimagesize($path);
 
             $extension = image_type_to_extension($info[2]);

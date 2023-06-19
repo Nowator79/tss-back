@@ -74,7 +74,11 @@ class Authorisation extends Base
             ]);
 
             $arUser = \CUser::GetByID($userId)->Fetch();
-            $arUser['PERSONAL_PHOTO'] = \CFile::GetPath($arUser['PERSONAL_PHOTO']);
+            if($arUser["PERSONAL_PHOTO"]){
+                $arUser['PERSONAL_PHOTO'] = \CFile::GetPath($arUser['PERSONAL_PHOTO']);
+            }else{
+                $arUser['PERSONAL_PHOTO'] =  $_SERVER["DOCUMENT_ROOT"] . '/upload/avatar/no_logo.png';
+            }
             return [
                 'TOKEN' => $token,
                 'USER' => $arUser
