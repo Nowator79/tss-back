@@ -1,0 +1,606 @@
+Host: dev.wcshop.fvds.ru
+Date: 2023-07-17 15:44:00
+array (
+  'ID' => 
+  Bitrix\Main\ORM\Fields\IntegerField::__set_state(array(
+     'is_primary' => true,
+     'is_unique' => false,
+     'is_required' => false,
+     'is_autocomplete' => true,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'ID',
+     'default_value' => NULL,
+     'name' => 'ID',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'primary' => true,
+      'autocomplete' => true,
+      'title' => 'Идентификатор записи о количестве товара на складе',
+    ),
+     'title' => 'Идентификатор записи о количестве товара на складе',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'STORE_ID' => 
+  Bitrix\Main\ORM\Fields\IntegerField::__set_state(array(
+     'is_primary' => false,
+     'is_unique' => false,
+     'is_required' => true,
+     'is_autocomplete' => false,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'STORE_ID',
+     'default_value' => NULL,
+     'name' => 'STORE_ID',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'required' => true,
+      'title' => 'Идентификатор склада',
+    ),
+     'title' => 'Идентификатор склада',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'PRODUCT_ID' => 
+  Bitrix\Main\ORM\Fields\IntegerField::__set_state(array(
+     'is_primary' => false,
+     'is_unique' => false,
+     'is_required' => true,
+     'is_autocomplete' => false,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'PRODUCT_ID',
+     'default_value' => NULL,
+     'name' => 'PRODUCT_ID',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'required' => true,
+      'title' => 'Идентификатор товара',
+    ),
+     'title' => 'Идентификатор товара',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'AMOUNT' => 
+  Bitrix\Main\ORM\Fields\FloatField::__set_state(array(
+     'precision' => NULL,
+     'is_primary' => false,
+     'is_unique' => false,
+     'is_required' => false,
+     'is_autocomplete' => false,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'AMOUNT',
+     'default_value' => NULL,
+     'name' => 'AMOUNT',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'title' => 'Количество',
+    ),
+     'title' => 'Количество',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'QUANTITY_RESERVED' => 
+  Bitrix\Main\ORM\Fields\FloatField::__set_state(array(
+     'precision' => NULL,
+     'is_primary' => false,
+     'is_unique' => false,
+     'is_required' => false,
+     'is_autocomplete' => false,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'QUANTITY_RESERVED',
+     'default_value' => NULL,
+     'name' => 'QUANTITY_RESERVED',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'title' => 'Зарезервированное количество на складе',
+    ),
+     'title' => 'Зарезервированное количество на складе',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'STORE' => 
+  Bitrix\Main\ORM\Fields\Relations\Reference::__set_state(array(
+     'reference' => 
+    Bitrix\Main\ORM\Query\Filter\ConditionTree::__set_state(array(
+       'chains' => NULL,
+       'conditions' => 
+      array (
+        0 => 
+        Bitrix\Main\ORM\Query\Filter\Condition::__set_state(array(
+           'column' => 'this.STORE_ID',
+           'operator' => '=',
+           'value' => 
+          Bitrix\Main\ORM\Query\Filter\Expressions\ColumnExpression::__set_state(array(
+             'definition' => 'ref.ID',
+          )),
+        )),
+      ),
+       'logic' => 'and',
+       'isNegative' => false,
+    )),
+     'joinType' => 'LEFT',
+     'cascadeSavePolicy' => 1,
+     'cascadeDeletePolicy' => 1,
+     'refEntityName' => '\\Bitrix\\Catalog\\Store',
+     'refEntity' => NULL,
+     'name' => 'STORE',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+    ),
+     'title' => NULL,
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'PRODUCT' => 
+  Bitrix\Main\ORM\Fields\Relations\Reference::__set_state(array(
+     'reference' => 
+    Bitrix\Main\ORM\Query\Filter\ConditionTree::__set_state(array(
+       'chains' => NULL,
+       'conditions' => 
+      array (
+        0 => 
+        Bitrix\Main\ORM\Query\Filter\Condition::__set_state(array(
+           'column' => 'this.PRODUCT_ID',
+           'operator' => '=',
+           'value' => 
+          Bitrix\Main\ORM\Query\Filter\Expressions\ColumnExpression::__set_state(array(
+             'definition' => 'ref.ID',
+          )),
+        )),
+      ),
+       'logic' => 'and',
+       'isNegative' => false,
+    )),
+     'joinType' => 'LEFT',
+     'cascadeSavePolicy' => 1,
+     'cascadeDeletePolicy' => 1,
+     'refEntityName' => '\\Bitrix\\Catalog\\Product',
+     'refEntity' => NULL,
+     'name' => 'PRODUCT',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+    ),
+     'title' => NULL,
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+)
+#0: Godra\Api\Catalog\Element::getElement
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Catalog/Element.php:150
+#1: Godra\Api\Catalog\Element::getProduct
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#2: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#3: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#4: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-07-17 15:48:12
+array (
+  'ID' => 
+  Bitrix\Main\ORM\Fields\IntegerField::__set_state(array(
+     'is_primary' => true,
+     'is_unique' => false,
+     'is_required' => false,
+     'is_autocomplete' => true,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'ID',
+     'default_value' => NULL,
+     'name' => 'ID',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'primary' => true,
+      'autocomplete' => true,
+      'title' => 'Идентификатор записи о количестве товара на складе',
+    ),
+     'title' => 'Идентификатор записи о количестве товара на складе',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'STORE_ID' => 
+  Bitrix\Main\ORM\Fields\IntegerField::__set_state(array(
+     'is_primary' => false,
+     'is_unique' => false,
+     'is_required' => true,
+     'is_autocomplete' => false,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'STORE_ID',
+     'default_value' => NULL,
+     'name' => 'STORE_ID',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'required' => true,
+      'title' => 'Идентификатор склада',
+    ),
+     'title' => 'Идентификатор склада',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'PRODUCT_ID' => 
+  Bitrix\Main\ORM\Fields\IntegerField::__set_state(array(
+     'is_primary' => false,
+     'is_unique' => false,
+     'is_required' => true,
+     'is_autocomplete' => false,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'PRODUCT_ID',
+     'default_value' => NULL,
+     'name' => 'PRODUCT_ID',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'required' => true,
+      'title' => 'Идентификатор товара',
+    ),
+     'title' => 'Идентификатор товара',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'AMOUNT' => 
+  Bitrix\Main\ORM\Fields\FloatField::__set_state(array(
+     'precision' => NULL,
+     'is_primary' => false,
+     'is_unique' => false,
+     'is_required' => false,
+     'is_autocomplete' => false,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'AMOUNT',
+     'default_value' => NULL,
+     'name' => 'AMOUNT',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'title' => 'Количество',
+    ),
+     'title' => 'Количество',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'QUANTITY_RESERVED' => 
+  Bitrix\Main\ORM\Fields\FloatField::__set_state(array(
+     'precision' => NULL,
+     'is_primary' => false,
+     'is_unique' => false,
+     'is_required' => false,
+     'is_autocomplete' => false,
+     'is_private' => false,
+     'is_nullable' => false,
+     'column_name' => 'QUANTITY_RESERVED',
+     'default_value' => NULL,
+     'name' => 'QUANTITY_RESERVED',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+      'title' => 'Зарезервированное количество на складе',
+    ),
+     'title' => 'Зарезервированное количество на складе',
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'STORE' => 
+  Bitrix\Main\ORM\Fields\Relations\Reference::__set_state(array(
+     'reference' => 
+    Bitrix\Main\ORM\Query\Filter\ConditionTree::__set_state(array(
+       'chains' => NULL,
+       'conditions' => 
+      array (
+        0 => 
+        Bitrix\Main\ORM\Query\Filter\Condition::__set_state(array(
+           'column' => 'this.STORE_ID',
+           'operator' => '=',
+           'value' => 
+          Bitrix\Main\ORM\Query\Filter\Expressions\ColumnExpression::__set_state(array(
+             'definition' => 'ref.ID',
+          )),
+        )),
+      ),
+       'logic' => 'and',
+       'isNegative' => false,
+    )),
+     'joinType' => 'LEFT',
+     'cascadeSavePolicy' => 1,
+     'cascadeDeletePolicy' => 1,
+     'refEntityName' => '\\Bitrix\\Catalog\\Store',
+     'refEntity' => NULL,
+     'name' => 'STORE',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+    ),
+     'title' => NULL,
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+  'PRODUCT' => 
+  Bitrix\Main\ORM\Fields\Relations\Reference::__set_state(array(
+     'reference' => 
+    Bitrix\Main\ORM\Query\Filter\ConditionTree::__set_state(array(
+       'chains' => NULL,
+       'conditions' => 
+      array (
+        0 => 
+        Bitrix\Main\ORM\Query\Filter\Condition::__set_state(array(
+           'column' => 'this.PRODUCT_ID',
+           'operator' => '=',
+           'value' => 
+          Bitrix\Main\ORM\Query\Filter\Expressions\ColumnExpression::__set_state(array(
+             'definition' => 'ref.ID',
+          )),
+        )),
+      ),
+       'logic' => 'and',
+       'isNegative' => false,
+    )),
+     'joinType' => 'LEFT',
+     'cascadeSavePolicy' => 1,
+     'cascadeDeletePolicy' => 1,
+     'refEntityName' => '\\Bitrix\\Catalog\\Product',
+     'refEntity' => NULL,
+     'name' => 'PRODUCT',
+     'dataType' => NULL,
+     'initialParameters' => 
+    array (
+    ),
+     'title' => NULL,
+     'validation' => NULL,
+     'validators' => NULL,
+     'additionalValidators' => 
+    array (
+    ),
+     'fetchDataModification' => NULL,
+     'fetchDataModifiers' => NULL,
+     'additionalFetchDataModifiers' => 
+    array (
+    ),
+     'saveDataModification' => NULL,
+     'saveDataModifiers' => NULL,
+     'additionalSaveDataModifiers' => 
+    array (
+    ),
+     'isSerialized' => false,
+     'parentField' => NULL,
+     'entity' => NULL,
+  )),
+)
+#0: Godra\Api\Catalog\Element::getElement
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Catalog/Element.php:150
+#1: Godra\Api\Catalog\Element::getProduct
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#2: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#3: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#4: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+----------

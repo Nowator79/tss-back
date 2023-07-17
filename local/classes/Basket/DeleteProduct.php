@@ -2,7 +2,11 @@
 namespace Godra\Api\Basket;
 
 use Godra\Api\Helpers\Utility\Misc;
+use \Bitrix\Main\Loader;
+use Bitrix\Highloadblock as HL;
+use Bitrix\Main\Entity;
 
+Loader::includeModule("highloadblock");
 class DeleteProduct extends Base
 {
     /**
@@ -43,6 +47,7 @@ class DeleteProduct extends Base
 
         $el_id = $basketItem->getProductId();
         if($el_id){
+            $this->deleteFromHL($el_id);
             $filter =[
                 'ID'=>$el_id,
                 'IBLOCK_ID'=>5,
@@ -62,6 +67,30 @@ class DeleteProduct extends Base
                 return [];
             }else{
                 return [];
+            }
+        }
+    }
+
+    public function deleteFromHL($id){
+        $hlbl = 68; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+        global $USER;
+        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+
+        $rsData = $entity_data_class::getList(array(
+            "select" => array("ID"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array("UF_ITEM_ID"=>$id, "UF_USER_ID" => $USER->GetID())  // Задаем параметры фильтра выборки
+        ));
+        $rows = [];
+        while($arData = $rsData->Fetch()){
+            $rows[] = $arData['ID'];
+        }
+
+        if (!empty($rows)){
+            foreach ($rows as $row){
+                $entity_data_class::Delete($row);
             }
         }
     }

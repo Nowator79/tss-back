@@ -5,6 +5,8 @@ use Bitrix\Main\Application,
 use Bitrix\Main\Loader;
 use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Entity;
+
+
        
 // автолоад классов с composer
 require_once(Application::getDocumentRoot() . '/local/vendor/autoload.php');
@@ -44,6 +46,117 @@ $eventManager->addEventHandler('catalog', 'OnGetOptimalPriceResult', function(&$
         $result['PRICE']['PRICE'] -= $result['PRICE']['PRICE'] * $cont_discount / 100;
     }
 });
+
+//пример использования события OnSaleOrderSaved
+
+    ////в обработчике получаем сумму, с которой планируются некоторые действия в дальнейшем:
+    //function myFunction(Main\Event $event)
+    //{
+//        $order = \Bitrix\Sale\Order::load(146);
+//        $order->setField("USER_DESCRIPTION", "Доставить к подъезду");
+//        $shipmentCollection = $order->getShipmentCollection();
+//        /** \Bitrix\Sale\Shipment $shipment */
+//        foreach ($shipmentCollection as $shipment)
+//        {
+////           if (!$shipment->isSystem()){
+//                $shipment->setStoreId(154);
+//            }
+//            AddMessage2Log($shipment->getStoreId());
+//
+//        }
+//        $order->save();
+    //}
+
+use Bitrix\Main\DB\Connection;
+function setStore2Shipment($data){
+    global $DB;
+    $DB->PrepareFields("b_sale_store_barcode");
+
+    $arFields = $data;
+    $DB->StartTransaction();
+    $ID = $DB->Insert("b_sale_store_barcode", $arFields, $err_mess.__LINE__);
+    $ID = intval($ID);
+
+    $DB->Commit();
+    return $ID;
+// Получение экземпляра подключения к базе данных
+//    $connection = Application::getConnection();
+//
+//// Выполнение вставки
+//    $tableName = 'b_sale_store_barcode '; // Замените на имя вашей таблицы
+//    $affectedRowsCount = $connection->insert($tableName, $data);
+//    return $affectedRowsCount;
+}
+
+function getStoreInfo($orderId){
+    Bitrix\Main\Loader::includeModule("sale");
+    Bitrix\Main\Loader::includeModule("catalog");
+
+    $order = \Bitrix\Sale\Order::load($orderId);
+    $shipmentCollection = $order->getShipmentCollection();
+    /** \Bitrix\Sale\Shipment $shipment */
+
+
+    $data = [];
+    foreach ($shipmentCollection as $shipment)
+    {
+
+        $shipmentItemCollection = $shipment->getShipmentItemCollection();
+
+        foreach ($shipmentItemCollection as $shipmentItem)
+        {
+
+            $shipmentItemStoreCollection = $shipmentItem->getShipmentItemStoreCollection();
+
+            $basketItem = $shipmentItem->getBasketItem();
+            $quantity = $basketItem->getQuantity();
+
+            $shipmentItemStore = $shipmentItemStoreCollection->createItem($basketItem);
+            $orderDeliveryBasketId = $shipmentItemStore->getField('ORDER_DELIVERY_BASKET_ID');
+            $basketId = $shipmentItemStore->getField('BASKET_ID');
+            $productId = $basketItem->getField('PRODUCT_ID');
+            $storeId = getStoreIdFromHL($productId);
+
+            if ($storeId){
+                $data = [
+                    'QUANTITY' => $quantity,
+                    'ORDER_DELIVERY_BASKET_ID' => $orderDeliveryBasketId,
+                    'BASKET_ID' => $basketId,
+                    'STORE_ID' => $storeId,
+                ];
+                setStore2Shipment($data);
+            }
+        }
+    }
+}
+
+ function getStoreIdFromHL($id){
+     $hlbl = 68; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+     $resultId = false;
+     global $USER;
+     $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+     $entity_data_class = $entity->getDataClass();
+
+     $rsData = $entity_data_class::getList(array(
+         "select" => array("ID", "UF_STORE_ID"),
+         "order" => array("ID" => "ASC"),
+         "filter" => array("UF_ITEM_ID"=>$id,"UF_USER_ID"=>$USER->GetID())  // Задаем параметры фильтра выборки
+     ));
+
+     while($arData = $rsData->Fetch()){
+         if (!empty($arData['UF_STORE_ID']))
+         $resultId = $arData['UF_STORE_ID'];
+     }
+
+    return $resultId;
+}
+
+AddEventHandler("sale", "OnOrderSave", "OnOrderSaveHandler");
+function OnOrderSaveHandler($orderId) {
+
+    getStoreInfo($orderId);
+}
 
 // после добавление элемента в highload-блок Договоры
 $eventManager->addEventHandler('', 'DogovoraOnAfterAdd', 'OnAfterAdd');

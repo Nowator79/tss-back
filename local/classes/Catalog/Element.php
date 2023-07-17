@@ -270,13 +270,18 @@ class Element extends Base
         $store_mas = [];
         $rsStoreProduct = \Bitrix\Catalog\StoreProductTable::getList(array(
             'filter' => array('=PRODUCT_ID'=>$product['ID'], '!STORE.ADDRESS'=>false, 'ACTIVE'>='Y'),
-            'select' => array('AMOUNT','STORE_ADDRESS'=>'STORE.ADDRESS', 'STORE_TITLE' => 'STORE.TITLE', 'PRODUCT_NAME' => 'PRODUCT.IBLOCK_ELEMENT.NAME'),
+            'select' => array('STORE_ID','AMOUNT','STORE_ADDRESS'=>'STORE.ADDRESS', 'STORE_TITLE' => 'STORE.TITLE','SORT_STORE' => 'STORE.SORT', 'PRODUCT_NAME' => 'PRODUCT.IBLOCK_ELEMENT.NAME'),
+            'order' => array('SORT_STORE' => 'ASC'),
         ));
+
         while($arStoreProduct=$rsStoreProduct->fetch())
         {
-            if($store_mas[$arStoreProduct['STORE_ADDRESS']]==NULL)$store_mas[$arStoreProduct['STORE_ADDRESS']]=0;
-            $store_mas[$arStoreProduct['STORE_ADDRESS']] += $arStoreProduct['AMOUNT'];
+            $store_mas[$arStoreProduct['STORE_ID']] = ['id' => $arStoreProduct['STORE_ID'], 'name' => $arStoreProduct['STORE_ADDRESS'], 'amount' => $arStoreProduct['AMOUNT']];
+
+//            if($store_mas[$arStoreProduct['STORE_ADDRESS']]==NULL)$store_mas[$arStoreProduct['STORE_ADDRESS']]=0;
+//            $store_mas[$arStoreProduct['STORE_ADDRESS']] += $arStoreProduct['AMOUNT'];
         }
+        $store_mas = array_values($store_mas);
         // множественное свойство "Картинки галереи"
         $pictures = self::getPropertyFiles($product['ID'], 'MORE_PHOTO');
 

@@ -8,6 +8,15 @@ use Godra\Api\Helpers\Utility\Misc;
 use Godra\Api\User\Get;
 use CIBlockElement;
 
+use \Bitrix\Main\Loader;
+use \Bitrix\Sale\Basket;
+use \Bitrix\Sale\Fuser;
+
+use Bitrix\Highloadblock as HL;
+use Bitrix\Main\Entity;
+
+Loader::includeModule("highloadblock");
+
 class AddProduct extends Base
 {
     /**
@@ -232,7 +241,7 @@ class AddProduct extends Base
             }else{
                 $xmlId = 'bx_'.rand(1000000000000,9999999999999);
             }
-
+            $this->addStore2HL($item['id'],$params[0]['store_id']);
             $item = $basket->createItem('catalog', $productId);
 
             $item->setFields(array(
@@ -254,6 +263,7 @@ class AddProduct extends Base
 
         }
         $basket->save();
+
         
         $dbRes = \Bitrix\Sale\Basket::getList([
             'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
@@ -273,6 +283,25 @@ class AddProduct extends Base
             }
         }
         return $params;
+    }
+    public function addStore2HL($itemId, $storeId){
+        $hlbl = 68; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+        global $USER;
+        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+
+        // Массив полей для добавления
+        $data = array(
+            "UF_STORE_ID"=>$storeId,
+            "UF_ITEM_ID"=>$itemId,
+            "UF_USER_ID"=>$USER->GetID(),
+        );
+
+        $result = $entity_data_class::add($data);
+        if ($result)   {
+            return true;
+        }
     }
     public function byId()
     {

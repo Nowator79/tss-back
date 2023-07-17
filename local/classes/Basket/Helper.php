@@ -6,6 +6,13 @@ use Godra\Api\Helpers\Utility\Misc;
 use Godra\Api\SetsBuilder\Builder;
 use Godra\Api\Catalog\Element;
 
+use \Bitrix\Main\Loader;
+use Bitrix\Highloadblock as HL;
+use Bitrix\Main\Entity;
+
+Loader::includeModule("highloadblock");
+
+
 /**
  * Класс для обращений к публичным функциям абстрактного класса корзины Godra\Api\Basket\Base
  */
@@ -153,7 +160,10 @@ class Helper extends Base
         while ($item = $dbRes->fetch()) {
             $mas_el_id[] = $item['PRODUCT_ID'];
         }
+
         if ($mas_el_id) {
+            $this->deleteFromHL($mas_el_id);
+
             $filter = [
                 'ID' => $mas_el_id,
                 'IBLOCK_ID' => 5,
@@ -167,6 +177,33 @@ class Helper extends Base
         }
 
         \CSaleBasket::DeleteAll(\Bitrix\Sale\Fuser::getId());
+    }
+
+    public function deleteFromHL($ids){
+        foreach ($ids as $id){
+            $hlbl = 68; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+            $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+            global $USER;
+            $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+            $entity_data_class = $entity->getDataClass();
+
+            $rsData = $entity_data_class::getList(array(
+                "select" => array("ID"),
+                "order" => array("ID" => "ASC"),
+                "filter" => array("UF_ITEM_ID"=>$id, "UF_USER_ID" => $USER->GetID())  // Задаем параметры фильтра выборки
+            ));
+            $rows = [];
+            while($arData = $rsData->Fetch()){
+                $rows[] = $arData['ID'];
+            }
+
+            if (!empty($rows)){
+                foreach ($rows as $row){
+                    $entity_data_class::Delete($row);
+                }
+            }
+
+        }
     }
 
     /**

@@ -68,7 +68,6 @@ class Order
             ]);
 
             $shipmentItemCollection = $shipment->getShipmentItemCollection();
-
             foreach ($order->getBasket() as $item) {
                 $shipmentItem = $shipmentItemCollection->createItem($item);
                 $shipmentItem->setQuantity($item->getQuantity());
