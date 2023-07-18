@@ -203,6 +203,9 @@ class Route
             # получить контрагентов
             '/api/user/getContragents' => [Api\Page\Profile::class, 'getContragents'],
 
+            # получить PRICE LIST
+            '/api/user/getPriceList' => [Api\Information\PriceList::class, 'getPriceList'],
+
             # загрузить логоти
             '/api/user/changeLogo' => [Api\Page\Profile::class, 'changeLogo'],
 
