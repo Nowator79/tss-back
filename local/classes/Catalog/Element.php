@@ -920,6 +920,18 @@ class Element extends Base
 
         Loader::includeModule('iblock');
 
+        $rsStore = \Bitrix\Catalog\StoreTable::getList(array(
+            'filter' => array('ACTIVE'>='Y', '!ADDRESS'=>false),
+            'select' => array('ID', 'ADDRESS', 'TITLE', 'PHONE'),
+            'order' => array('SORT' => 'asc'),
+        ));
+        $storeList = [];
+        while($arStore=$rsStore->fetch()){
+            $storeList[] = $arStore;
+        }
+
+        //Все склады
+        $result['storeList'] = $storeList;
         // id раздела
         $result['section_id'] = (int) $sectionData['ID'];
         // код раздела
@@ -1360,6 +1372,23 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
             }else{
                 $option_flag = true;
             }
+
+            $store_mas = [];
+            $rsStoreProduct = \Bitrix\Catalog\StoreProductTable::getList(array(
+                'filter' => array('=PRODUCT_ID'=>$row['ID'], '!STORE.ADDRESS'=>false, 'ACTIVE'>='Y'),
+                'select' => array('STORE_ID','AMOUNT','STORE_ADDRESS'=>'STORE.ADDRESS', 'STORE_TITLE' => 'STORE.TITLE','SORT_STORE' => 'STORE.SORT', 'PRODUCT_NAME' => 'PRODUCT.IBLOCK_ELEMENT.NAME'),
+                'order' => array('SORT_STORE' => 'ASC'),
+            ));
+
+            while($arStoreProduct=$rsStoreProduct->fetch())
+            {
+                $store_mas[$arStoreProduct['STORE_ID']] = ['id' => $arStoreProduct['STORE_ID'], 'name' => $arStoreProduct['STORE_ADDRESS'], 'amount' => $arStoreProduct['AMOUNT']];
+
+//            if($store_mas[$arStoreProduct['STORE_ADDRESS']]==NULL)$store_mas[$arStoreProduct['STORE_ADDRESS']]=0;
+//            $store_mas[$arStoreProduct['STORE_ADDRESS']] += $arStoreProduct['AMOUNT'];
+            }
+            $store_mas = array_values($store_mas);
+
                 // карточка товара
                 $elements[] = [
                     // id
@@ -1376,6 +1405,7 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
                     'pictures' => $pictures ?? '',
                     // цена
                     'price' => $price ?? [],
+                    'store' => $store_mas ?? [],
                     // единица измерения товара
                     //'measure_count' => $measureCount ?? '',
 					'section_code' => $section_code,
