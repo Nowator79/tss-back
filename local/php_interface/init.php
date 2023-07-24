@@ -7,7 +7,7 @@ use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Entity;
 
 
-       
+
 // автолоад классов с composer
 require_once(Application::getDocumentRoot() . '/local/vendor/autoload.php');
 
@@ -158,11 +158,181 @@ function OnOrderSaveHandler($orderId) {
     getStoreInfo($orderId);
 }
 
-// после добавление элемента в highload-блок Договоры
-$eventManager->addEventHandler('', 'DogovoraOnAfterAdd', 'OnAfterAdd');
+//// после добавление элемента в highload-блок Договоры
+//$eventManager->addEventHandler('', 'DogovoraOnAfterAdd', 'OnAfterAdd');
+//
+//function OnAfterAdd(\Bitrix\Main\Entity\Event $event) {
+//    //
+//}
+
+
+$eventManager = \Bitrix\Main\EventManager::getInstance();
+$eventManager->addEventHandler('', 'LKDDopolnitelnyeSkidkiKontragentovOnAfterAdd', 'OnAfterAdd');
 
 function OnAfterAdd(\Bitrix\Main\Entity\Event $event) {
-    //
+//id добавляемого элемента
+    $id = $event->getParameter("id");
+
+// получаем массив полей хайлоад блока
+    $arFields = $event->getParameter("fields");
+    $result = getDiscountProductId($arFields['UF_GRUPPA']);
+    if (!empty($result)) {
+        if (checkDateInRange($arFields['UF_NACHALOPERIODADEY'],$arFields['UF_OKONCHANIEPERIODA'] )) {
+            $filter = [
+                "IBLOCK_ID" => IBLOCK_CATALOG,
+                "ACTIVE" => 'Y'
+            ];
+
+            if (!empty($result[0]['UF_MOSHCHNOSTOT'])) {
+                $filter['>PROPERTY_MOSHCHNOST_NOMINALNAYA_KVA'] = $result[0]['UF_MOSHCHNOSTOT'];
+            }
+
+            if (!empty($result[0]['UF_MOSHCHNOSTDO'] && $result[0]['UF_MOSHCHNOSTDO'] !== 0)) {
+                $filter['<PROPERTY_MOSHCHNOST_NOMINALNAYA_KVA'] = $result[0]['UF_MOSHCHNOSTDO'];
+            }
+
+            if (!empty($result[0]['UF_SERIIPRODUKTSII'])) {
+                if (strpos($result['0']['UF_SERIIPRODUKTSII'], '|')) {
+                    $seria = explode('|', $result['0']['UF_SERIIPRODUKTSII']);
+                    foreach ($seria as $serKey => $serItem) {
+                        if (empty($serItem)) {
+                            unset($seria[$serKey]);
+                        }
+                    }
+                    $filter['PROPERTY_SERIYA_VALUE'] = $seria;
+                } else {
+                    $filter['PROPERTY_SERIYA_VALUE'] = $result['0']['UF_SERIIPRODUKTSII'];
+                }
+            }
+            $ids = getAssortimentDiscount($filter);
+            $data = [];
+            foreach ($ids as $id ){
+                $data[] = [
+                    'UF_PRODUCT_ID' => $id,
+                    'UF_USER_ID' => $arFields['UF_KONTRAGENT'],
+                    'UF_DATE_START' => $arFields['UF_NACHALOPERIODADEY'],
+                    'UF_DATE_END' => $arFields['UF_OKONCHANIEPERIODA'],
+                    'UF_SKIDKA' => $arFields['UF_SKIDKA'],
+                ];
+            }
+
+            foreach ($data as $datum){
+                setDiscount2HL($datum);
+            }
+        }
+    }
+
+
 }
 
+function deleteDiscountHL(){
+    Loader::includeModule("highloadblock");
+    $hlbl = 70; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+    $resultId = false;
+    global $USER;
+    $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+    $entity_data_class = $entity->getDataClass();
+
+    $rsData = $entity_data_class::getList(array(
+        "select" => array("ID", "UF_GRUPPA"),
+        "order" => array("ID" => "ASC"),// Задаем параметры фильтра выборки
+        "filter" => array("<UF_OKONCHANIEPERIODA" => date("d.m.Y H:i:s")),
+    ));
+
+    $resultGroup = [];
+    $resultId = [];
+    while($arData = $rsData->Fetch()){
+        $resultGroup[] = $arData['UF_GRUPPA'];
+        $resultId[] = $arData['ID'];
+    }
+    deleteDiscountGroupHL($resultGroup);
+    foreach ($resultId as $id){
+        $entity_data_class::Delete($id);
+    }
+
+}
+
+function deleteDiscountGroupHL($data){
+    Loader::includeModule("highloadblock");
+    $hlbl = 69; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+    $resultId = false;
+    global $USER;
+    $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+    $entity_data_class = $entity->getDataClass();
+
+    $rsData = $entity_data_class::getList(array(
+        "select" => array("ID"),
+        "order" => array("ID" => "ASC"),// Задаем параметры фильтра выборки
+        "filter" => array("UF_GRUPPA" => $data),
+    ));
+
+    $result = [];
+
+    while($arData = $rsData->Fetch()){
+        $entity_data_class::Delete($arData['ID']);
+    }
+
+}
+
+function setDiscount2HL($data){
+    $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+    $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+    $entity_data_class = $entity->getDataClass();
+
+    $result = $entity_data_class::add($data);
+
+}
+
+function getAssortimentDiscount($filter){
+    $arSelect = ['ID'];
+    $res = CIBlockElement::GetList(Array(), $filter, false, false, $arSelect);
+    $ids = [];
+    while($ob = $res->GetNextElement())
+    {
+        $arFields = $ob->GetFields();
+        $ids[] = $arFields['ID'];
+
+    }
+    return $ids;
+}
+
+
+function checkDateInRange($startDateStr, $endDateStr) {
+    // Преобразуем строки с датами в объекты DateTime
+    $startDate = DateTime::createFromFormat('d.m.Y H:i:s', $startDateStr);
+    $endDate = DateTime::createFromFormat('d.m.Y H:i:s', $endDateStr);
+
+    // Получаем текущую дату и время
+    $currentDate = new DateTime();
+
+    // Проверяем, входит ли текущая дата в промежуток между $startDate и $endDate
+    if ($startDate <= $currentDate && $currentDate <= $endDate) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function getDiscountProductId($grupId){
+    $hlbl = 69; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+    $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+    $entity_data_class = $entity->getDataClass();
+
+    $rsData = $entity_data_class::getList(array(
+        "select" => array("*"),
+        "order" => array("ID" => "ASC"),
+        "filter" => array("UF_GRUPPA"=>$grupId)  // Задаем параметры фильтра выборки
+    ));
+    $data = [];
+    while($arData = $rsData->Fetch()){
+        $data[] = $arData;
+    }
+    return $data;
+}
 ?>

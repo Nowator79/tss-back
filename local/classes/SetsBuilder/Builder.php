@@ -206,8 +206,11 @@ class Builder
     public static function getProduct($code = '', $xmlId = '')
     {
         $params = Misc::getPostDataFromJson();
-
         if (!empty($code)) $params["code"] = $code;
+
+        //harcode пока нету инфы с фронта
+//        $params['mainCode'] = 'dizelnyy_generator_tss_ad_1000s_t400_1rm9';
+
 
         $filter = [
             'IBLOCK_ID' => IBLOCK_CATALOG,
@@ -243,6 +246,36 @@ class Builder
             self::$select_rows,
             $filter
         );
+
+        $IBLOCK_SECTION_IDsAVR = [1175, 1176, 1180,1177, 1178, 1179,1181, 1182];
+        $IBLOCK_SECTION_IDsKon = [1103, 1104, 1105, 1106];
+        if (!empty($params['code']) && !empty($params['mainCode'])){
+            $filter['CODE'] = $params['mainCode'];
+            $mainProduct = self::getElement(
+                self::$select_rows,
+                $filter
+            );
+            if ($mainProduct[0]['IBLOCK_SECTION_ID'] == 1062){
+                if (in_array($products[0]['IBLOCK_SECTION_ID'], $IBLOCK_SECTION_IDsAVR)){
+                    $filter['CODE'] ='podgotovka_pod_avr';
+                    $AVR_SUB = self::getElement(
+                        self::$select_rows,
+                        $filter
+                    );
+                }
+                if (in_array($products[0]['IBLOCK_SECTION_ID'], $IBLOCK_SECTION_IDsKon)){
+                    $filter['CODE'] =['montazhnyy_komplekt_avr_1000_kvt', 'semnaya_tortsevaya_stenka_pbk'];
+                    $AVR_SUB = self::getElement(
+                        self::$select_rows,
+                        $filter
+                    );
+                }
+
+            }
+        }
+        if (!empty($AVR_SUB)){
+            $products[0]['SUB_ITEM'] = $AVR_SUB;
+        }
 
         return $products;
     }
