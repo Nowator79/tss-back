@@ -30,12 +30,14 @@ class PriceList
             $rsData = $entity_data_class::getList(array(
                 "select" => array("ID","UF_TITLE", "UF_FILE"),
                 "order" => array("ID" => "ASC"),
-                "filter" => array("UF_CONTRAGENT_ID"=>$userCon)  // Задаем параметры фильтра выборки
+                // Задаем параметры фильтра выборки
             ));
 
             while($arData = $rsData->Fetch()){
-                $result[$arData['ID']]['TITLE'] = $arData['UF_TITLE'];
-                $result[$arData['ID']]['FILE'] =  \CFile::GetPath($arData['UF_FILE']);
+                if (!empty($arData['UF_FILE'])){
+                    $result[$arData['ID']]['TITLE'] = $arData['UF_TITLE'];
+                    $result[$arData['ID']]['FILE'] =  \CFile::GetPath($arData['UF_FILE']);
+                }
             }
             $result = array_values($result);
         }
