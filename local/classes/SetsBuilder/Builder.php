@@ -5,6 +5,11 @@ namespace Godra\Api\SetsBuilder;
 use Godra\Api\Catalog\Element;
 use Godra\Api\Helpers\Utility\Misc;
 
+
+use \Bitrix\Main\Loader;
+use Bitrix\Highloadblock as HL;
+use Bitrix\Main\Entity;
+
 class Builder
 {
     protected static $select_rows = [
@@ -166,7 +171,7 @@ class Builder
                 }
             }
 
-            if (!empty($ar_fields['PREVIEW_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['PREVIEW_PICTURE'])->Fetch()['SRC'];
+            if (!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['PREVIEW_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];
             if (!empty($ar_fields['DETAIL_PICTURE'])) $ar_fields['DETAIL_PICTURE'] = \CFile::GetByID($ar_fields['DETAIL_PICTURE'])->Fetch()['SRC'];
 
             if (isset($all_props['MORE_PHOTO'])) {
@@ -191,6 +196,32 @@ class Builder
 
             // Цены
             $ar_fields['PRICES'] = self::getPrices($ar_fields['ID']);
+
+            // получение скидки
+            global $USER;
+            $rsUser = \CUser::GetByID($USER->GetID());
+            $arUser = $rsUser->Fetch();
+            Loader::includeModule("highloadblock");
+            $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+            $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+            $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+            $entity_data_class = $entity->getDataClass();
+
+            $rsData = $entity_data_class::getList(array(
+                "select" => array("ID", "UF_SKIDKA"),
+                "order" => array("ID" => "ASC"),
+                //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
+                "filter" => array("UF_PRODUCT_ID"=>$ar_fields['ID'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+            ));
+            $cont_discount1 = false;
+            while($arData = $rsData->Fetch()){
+                $cont_discount =  $arData['UF_SKIDKA'];
+            }
+
+            if($cont_discount) {
+                $ar_fields['PRICES'][1]['PRICE'] = $ar_fields['PRICES'][0]['PRICE'] - ($ar_fields['PRICES'][0]['PRICE'] * $cont_discount / 100);
+            }
 
             $arProducts[] = $ar_fields;
         }

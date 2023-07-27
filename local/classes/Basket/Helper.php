@@ -60,6 +60,35 @@ class Helper extends Base
             if ($ar_res = $db_res->Fetch()) {
                 $item_el['price'] += $ar_res["PRICE"];
             }
+
+            // получение скидки
+            global $USER;
+            $rsUser = \CUser::GetByID($USER->GetID());
+            $arUser = $rsUser->Fetch();
+            Loader::includeModule("highloadblock");
+            $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+            $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+            $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+            $entity_data_class = $entity->getDataClass();
+
+            $rsData = $entity_data_class::getList(array(
+                "select" => array("ID", "UF_SKIDKA"),
+                "order" => array("ID" => "ASC"),
+                //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
+                "filter" => array("UF_PRODUCT_ID"=>$item['PRODUCT_ID'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+            ));
+            $cont_discount1 = false;
+            while($arData = $rsData->Fetch()){
+                $cont_discount =  $arData['UF_SKIDKA'];
+            }
+
+            if($cont_discount) {
+                $item_el['price'] = $item_el['price'] - ($item_el['price'] * $cont_discount / 100);
+            }
+
+
+
 //            global $USER;
 //            $quantity = 1;
 //            $renewal = 'N';
@@ -160,10 +189,7 @@ class Helper extends Base
         while ($item = $dbRes->fetch()) {
             $mas_el_id[] = $item['PRODUCT_ID'];
         }
-
         if ($mas_el_id) {
-            $this->deleteFromHL($mas_el_id);
-
             $filter = [
                 'ID' => $mas_el_id,
                 'IBLOCK_ID' => 5,

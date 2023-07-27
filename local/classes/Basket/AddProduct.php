@@ -95,8 +95,35 @@ class AddProduct extends Base
             );
             $origin_price +=$arPrice['PRICE']['PRICE'];
 
+            // получение скидки
+            global $USER;
+            $rsUser = \CUser::GetByID($USER->GetID());
+            $arUser = $rsUser->Fetch();
+            Loader::includeModule("highloadblock");
+            $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+            $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+            $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+            $entity_data_class = $entity->getDataClass();
+
+            $rsData = $entity_data_class::getList(array(
+                "select" => array("ID", "UF_SKIDKA"),
+                "order" => array("ID" => "ASC"),
+                //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
+                "filter" => array("UF_PRODUCT_ID"=> $productId, "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+            ));
+            $cont_discount = false;
+            while($arData = $rsData->Fetch()){
+                $cont_discount =  $arData['UF_SKIDKA'];
+            }
+
+            if($cont_discount) {
+                $origin_price = $origin_price - ($origin_price * $cont_discount / 100);
+            }
+
             $arSelect = Array("ID", "NAME", "XML_ID");
             $arFilter = Array("IBLOCK_ID"=>5, "ACTIVE"=>"Y");
+
             if($item['options']){
                 $arFilter['ID']=$item['options'];
 
@@ -125,6 +152,7 @@ class AddProduct extends Base
                     ];
                     \Bitrix\Catalog\Model\Product::add($arFields);
                     \CPrice::SetBasePrice($productId,$price,$price_mas['CURRENCY']);
+
                     $params[$key]['id'] = $productId;
                 }
             }else{
@@ -148,7 +176,35 @@ class AddProduct extends Base
                         $renewal
                     );
                     $option[] = $arFields['XML_ID'].'|'.$arProps['VID_OPTSII']['VALUE'].'|'.$arPrice['PRICE']['PRICE'];
-                    $origin_price +=$arPrice['PRICE']['PRICE'];
+
+                    $optionPrice = $arPrice['PRICE']['PRICE'];
+                    // получение скидки
+                    global $USER;
+                    $rsUser = \CUser::GetByID($USER->GetID());
+                    $arUser = $rsUser->Fetch();
+                    Loader::includeModule("highloadblock");
+                    $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+                    $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+                    $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+                    $entity_data_class = $entity->getDataClass();
+
+                    $rsData = $entity_data_class::getList(array(
+                        "select" => array("ID", "UF_SKIDKA"),
+                        "order" => array("ID" => "ASC"),
+                        //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
+                        "filter" => array("UF_PRODUCT_ID"=> $arFields['ID'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+                    ));
+                    $cont_discount = false;
+                    while($arData = $rsData->Fetch()){
+                        $cont_discount =  $arData['UF_SKIDKA'];
+                    }
+
+                    if($cont_discount) {
+                        $optionPrice = $optionPrice - ($optionPrice * $cont_discount / 100);
+                    }
+
+                    $origin_price +=$optionPrice;
                 }else{
                     $prodName = $arFields['NAME'];
                 }
@@ -241,7 +297,7 @@ class AddProduct extends Base
             }else{
                 $xmlId = 'bx_'.rand(1000000000000,9999999999999);
             }
-            $this->addStore2HL($item['id'],$params[0]['store_id']);
+
             $item = $basket->createItem('catalog', $productId);
 
             $item->setFields(array(
@@ -263,7 +319,6 @@ class AddProduct extends Base
 
         }
         $basket->save();
-
         
         $dbRes = \Bitrix\Sale\Basket::getList([
             'select' => ['ID','PRODUCT_ID','PRICE','QUANTITY','XML_ID'],
@@ -283,25 +338,6 @@ class AddProduct extends Base
             }
         }
         return $params;
-    }
-    public function addStore2HL($itemId, $storeId){
-        $hlbl = 68; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
-        $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
-        global $USER;
-        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
-        $entity_data_class = $entity->getDataClass();
-
-        // Массив полей для добавления
-        $data = array(
-            "UF_STORE_ID"=>$storeId,
-            "UF_ITEM_ID"=>$itemId,
-            "UF_USER_ID"=>$USER->GetID(),
-        );
-
-        $result = $entity_data_class::add($data);
-        if ($result)   {
-            return true;
-        }
     }
     public function byId()
     {

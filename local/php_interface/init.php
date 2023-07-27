@@ -276,6 +276,7 @@ function deleteDiscountGroupHL($data){
 
 }
 
+
 function setDiscount2HL($data){
     $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
