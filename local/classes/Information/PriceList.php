@@ -36,7 +36,7 @@ class PriceList
             while($arData = $rsData->Fetch()){
                 if (!empty($arData['UF_FILE'])){
                     $result[$arData['ID']]['TITLE'] = $arData['UF_TITLE'];
-                    $result[$arData['ID']]['FILE'] =  \CFile::GetPath($arData['UF_FILE']);
+                    $result[$arData['ID']]['FILE'] =  $arData['UF_FILE'];
                 }
             }
             $result = array_values($result);

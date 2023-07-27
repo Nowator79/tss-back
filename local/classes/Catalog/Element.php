@@ -376,16 +376,35 @@ class Element extends Base
         {
             $price[]=$ar_res["PRICE"];
         }
+
+
+
+        // получение скидки
         global $USER;
-        $quantity = 1;
-        $renewal = 'N';
-        $arPrice = \CCatalogProduct::GetOptimalPrice(
-            $product['ID'],
-            $quantity,
-            $USER->GetUserGroupArray(),
-            $renewal
-        );
-        $price[]=$arPrice['PRICE']['PRICE'];
+        $rsUser = \CUser::GetByID($USER->GetID());
+        $arUser = $rsUser->Fetch();
+        Loader::includeModule("highloadblock");
+        $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+
+        $rsData = $entity_data_class::getList(array(
+            "select" => array("ID", "UF_SKIDKA"),
+            "order" => array("ID" => "ASC"),
+            //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
+            "filter" => array("UF_PRODUCT_ID"=> $product['ID'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+        ));
+        $cont_discount = false;
+        while($arData = $rsData->Fetch()){
+            $cont_discount =  $arData['UF_SKIDKA'];
+        }
+
+        if($cont_discount) {
+            $price[] = $price[0] - ($price[0] * $cont_discount / 100);
+        }
+
 
         Loader::includeModule("sale");
         $cntBasketItems = \CSaleBasket::GetList(
@@ -1276,24 +1295,8 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
 		
 		$mainFilter = $filter ? array_merge($defaultFilter, $filter) : $defaultFilter;
 
-        global $USER;
-        $rsUser = \CUser::GetByID($USER->GetID());
-        $arUser = $rsUser->Fetch();
-        Loader::includeModule("highloadblock");
-        $hlbl = 60; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
-        $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
-        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
-        $entity_data_class = $entity->getDataClass();
 
-        $rsData = $entity_data_class::getList(array(
-            "select" => array("*"),
-            "order" => array("ID" => "ASC"),
-            "filter" => array("UF_USER"=>$arUser['UF_CONTRAGENT_ID']),  // Задаем параметры фильтра выборки
-        ));
-        while($arData = $rsData->Fetch()){
-            $cont_discount =  $arData["UF_DISCOUNT"];
-        }
 
         $elementsRaw = \CIBlockElement::GetList(
             $order ? $order : [],
@@ -1302,7 +1305,10 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
             $nav ? $nav : [],
             $select ? $select : ['*']
         );
-
+        global $USER;
+        $rsUser = \CUser::GetByID($USER->GetID());
+        $arUser = $rsUser->Fetch();
+        Loader::includeModule("highloadblock");
         //while ($row = $elementsRaw->Fetch())
 		while ($row = $elementsRaw->GetNext())
 		{
@@ -1324,6 +1330,26 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
 			}
 			//
 
+
+            $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+            $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+
+            $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+            $entity_data_class = $entity->getDataClass();
+
+            $rsData = $entity_data_class::getList(array(
+                "select" => array("ID", "UF_SKIDKA"),
+                "order" => array("ID" => "ASC"),
+                //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
+                "filter" => array("UF_PRODUCT_ID"=>$row['ID'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+            ));
+            $cont_discount1 = false;
+            while($arData = $rsData->Fetch()){
+                $cont_discount =  $arData['UF_SKIDKA'];
+            }
+
+
+
             // для авторизованного
             $price = [];
             $price[]=$row["CATALOG_PRICE_496"];
@@ -1343,6 +1369,7 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
             }else{
                 $price[] = $price[0];
             }
+
 //            $price[]=$arPrice['PRICE']['PRICE'];
             Loader::includeModule("sale");
             $cntBasketItems = \CSaleBasket::GetList(
