@@ -1,0 +1,88 @@
+Host: dev.wcshop.fvds.ru
+Date: 2023-07-27 16:51:42
+array (
+  'IBLOCK_ID' => 5,
+  'ACTIVE' => 'Y',
+  0 => 
+  array (
+    'LOGIC' => 'OR',
+    0 => 
+    array (
+      '<PROPERTY_MOSHCHNOST_NOMINALNAYA_KVA' => '199',
+      'PROPERTY_SERIYA_VALUE' => 
+      array (
+        0 => 'FTP Iveco',
+        1 => 'Mitsudiesel',
+        2 => 'TSS Baudouin',
+        3 => 'TSS Cummins',
+        4 => 'TSS Doosan',
+        5 => 'TSS Mitsubishi',
+        6 => 'TSS MTU',
+        7 => 'TSS Perkins',
+        8 => 'TSS Prof',
+        9 => 'TSS Scania',
+        10 => 'TSS Standart',
+        11 => 'TSS Volvo',
+        12 => 'ТСС Проф',
+        13 => 'ТСС Стандарт',
+      ),
+    ),
+    'XML_ID' => 
+    array (
+      0 => '4675e23a-2101-11ec-80f4-b8892bda2dfb',
+      1 => '3204d666-baf9-11ec-80fa-bc8c5a150f9b',
+      2 => '6328212a-1c9b-11ed-80fa-bc8c5a150f9b',
+      3 => 'c7b74fce-5357-11e2-be13-00155d032b00',
+      4 => '6ea716e4-109c-11e8-a30a-00155d030626',
+      5 => 'c66d4bd6-c18f-11e8-a079-00155d030626',
+      6 => '129ec6bf-1c4a-11ec-80f3-96f549c268e5',
+      7 => '29a2d3ed-6b2a-11e8-a079-00155d030626',
+      8 => 'e8fd42fa-8fa7-11e6-9b90-00155d030626',
+      9 => 'bc406f45-6bb2-11e8-a079-00155d030626',
+      10 => '58c0289e-d67b-11ec-80fa-bc8c5a150f9b',
+      11 => '29f5ca78-299f-11eb-80f0-92aabd7a84a7',
+      12 => '44f09551-299d-11eb-80f0-92aabd7a84a7',
+      13 => 'fdb273bf-5357-11e2-be13-00155d032b00',
+      14 => '2ea1d90a-a52c-11ec-80fa-bc8c5a150f9b',
+      15 => '88dac7f1-0586-11e8-a30a-00155d030626',
+      16 => 'a83f3910-c226-11e8-a079-00155d030626',
+      17 => '1a724dfb-c7a9-11e8-a079-00155d030626',
+      18 => 'ce93c863-1c46-11ec-80f3-96f549c268e5',
+      19 => '91065ba2-c986-11e9-80d3-edbddba73303',
+      20 => 'f5cbdf00-6b20-11e8-a079-00155d030626',
+      21 => '80dd1a39-fb5f-11eb-80f3-96f549c268e5',
+      22 => 'a7e39f69-f866-11ec-80fa-bc8c5a150f9b',
+      23 => '9ca21057-f7aa-11ec-80fa-bc8c5a150f9b',
+      24 => '354b367c-c825-11e2-8114-00155d030626',
+      25 => 'ddc8e5b2-1092-11e8-a30a-00155d030626',
+      26 => 'ddc8e5b2-1092-11e8-a30a-00155d030626',
+      27 => '44dbd6a2-c228-11e8-a079-00155d030626',
+      28 => 'ed7cd0f5-c986-11e9-80d3-edbddba73303',
+      29 => '4fd0b772-e2ed-11ea-80ee-a5e25158fe33',
+      30 => '5ea9abc5-461b-11ec-80f5-bc1303edd37b',
+      31 => '18d32bbc-4620-11ec-80f5-bc1303edd37b',
+      32 => '297d6631-5358-11e2-be13-00155d032b00',
+      33 => '53b13548-c17b-11e8-a079-00155d030626',
+      34 => 'b18a98d8-1099-11e8-a30a-00155d030626',
+      35 => '40c1f7a1-6429-11ed-80fc-cb3fb0223450',
+      36 => 'fcc64492-6b24-11e8-a079-00155d030626',
+      37 => 'b950f2ba-da9a-11ec-80fa-bc8c5a150f9b',
+      38 => '354b3688-c825-11e2-8114-00155d030626',
+      39 => '04c657b5-0c60-11eb-80f0-92aabd7a84a7',
+      40 => '952d928d-c18f-11e8-a079-00155d030626',
+    ),
+  ),
+)
+#0: OnAfterAdd
+	
+#1: call_user_func_array
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/lib/eventmanager.php:443
+#2: Bitrix\Main\EventManager->sendToEventHandler
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/lib/eventmanager.php:379
+#3: Bitrix\Main\EventManager->send
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/lib/event.php:142
+#4: Bitrix\Main\Event->send
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/lib/orm/event.php:162
+#5: Bitrix\Main\ORM\Event->send
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/lib/orm/data/datamanager.php:1768
+----------

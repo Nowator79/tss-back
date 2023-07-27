@@ -178,10 +178,7 @@ function OnAfterAdd(\Bitrix\Main\Entity\Event $event) {
     $result = getDiscountProductId($arFields['UF_GRUPPA']);
     if (!empty($result)) {
         if (checkDateInRange($arFields['UF_NACHALOPERIODADEY'],$arFields['UF_OKONCHANIEPERIODA'] )) {
-            $filter = [
-                "IBLOCK_ID" => IBLOCK_CATALOG,
-                "ACTIVE" => 'Y'
-            ];
+
 
             if (!empty($result[0]['UF_MOSHCHNOSTOT'])) {
                 $filter['>PROPERTY_MOSHCHNOST_NOMINALNAYA_KVA'] = $result[0]['UF_MOSHCHNOSTOT'];
@@ -204,7 +201,26 @@ function OnAfterAdd(\Bitrix\Main\Entity\Event $event) {
                     $filter['PROPERTY_SERIYA_VALUE'] = $result['0']['UF_SERIIPRODUKTSII'];
                 }
             }
-            $ids = getAssortimentDiscount($filter);
+
+            if (!empty($result[0]['UF_DOPOLNENIYA'])){
+                $filter = array(0 => [
+                    'LOGIC' => 'OR',
+                    $filter,
+                    'XML_ID'=> explode('|', $result[0]['UF_DOPOLNENIYA']),
+                ]);
+            }
+
+
+            $arFilter = [
+                "IBLOCK_ID" => IBLOCK_CATALOG,
+                "ACTIVE" => 'Y'
+            ];
+            if (!empty($filter)){
+                $arFilter = array_merge($arFilter,$filter);
+            }
+
+
+            $ids = getAssortimentDiscount($arFilter);
             $data = [];
             foreach ($ids as $id ){
                 $data[] = [
@@ -273,7 +289,31 @@ function deleteDiscountGroupHL($data){
     while($arData = $rsData->Fetch()){
         $entity_data_class::Delete($arData['ID']);
     }
+    //Удаление из смежного инфоблока
+    deleteSkidkiConnectHL();
 
+}
+
+function deleteSkidkiConnectHL(){
+    Loader::includeModule("highloadblock");
+    $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+    $resultId = false;
+    global $USER;
+    $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+    $entity_data_class = $entity->getDataClass();
+
+    $rsData = $entity_data_class::getList(array(
+        "select" => array("ID"),
+        "order" => array("ID" => "ASC"),// Задаем параметры фильтра выборки
+        "filter" => array("<UF_DATE_END" => date("d.m.Y H:i:s")),
+    ));
+
+    $result = [];
+
+    while($arData = $rsData->Fetch()){
+        $entity_data_class::Delete($arData['ID']);
+    }
 }
 
 
@@ -289,13 +329,14 @@ function setDiscount2HL($data){
 }
 
 function getAssortimentDiscount($filter){
-    $arSelect = ['ID'];
+    $arSelect = ['ID', 'PROPERTY_CML2_ARTICLE'];
     $res = CIBlockElement::GetList(Array(), $filter, false, false, $arSelect);
     $ids = [];
     while($ob = $res->GetNextElement())
     {
         $arFields = $ob->GetFields();
-        $ids[] = $arFields['ID'];
+
+        $ids[] = $arFields['PROPERTY_CML2_ARTICLE_VALUE'];
 
     }
     return $ids;

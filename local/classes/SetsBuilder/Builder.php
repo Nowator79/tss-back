@@ -24,7 +24,8 @@ class Builder
         'SHOW_COUNTER',
         'PREVIEW_PICTURE',
         'DETAIL_PICTURE',
-        'DETAIL_PAGE_URL'
+        'DETAIL_PAGE_URL',
+        'PROPERTY_CML2_ARTICLE',
     ];
 
     /**
@@ -212,9 +213,9 @@ class Builder
                 "select" => array("ID", "UF_SKIDKA"),
                 "order" => array("ID" => "ASC"),
                 //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
-                "filter" => array("UF_PRODUCT_ID"=>$ar_fields['ID'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+                "filter" => array("UF_PRODUCT_ID"=>$ar_fields['PROPERTY_CML2_ARTICLE_VALUE'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
             ));
-            $cont_discount1 = false;
+            $cont_discount = false;
             while($arData = $rsData->Fetch()){
                 $cont_discount =  $arData['UF_SKIDKA'];
             }
