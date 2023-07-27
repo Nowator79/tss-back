@@ -95,6 +95,23 @@ class AddProduct extends Base
             );
             $origin_price +=$arPrice['PRICE']['PRICE'];
 
+
+            //Получение артикля товара
+            $filter = [
+                "IBLOCK_ID" => IBLOCK_CATALOG,
+                "ACTIVE" => 'Y',
+                'ID' => $productId
+            ];
+
+            $arSelect = ['ID', 'PROPERTY_CML2_ARTICLE'];
+            $res = CIBlockElement::GetList(Array(), $filter, false, false, $arSelect);
+
+            while($ob = $res->GetNextElement())
+            {
+                $arFields = $ob->GetFields();
+                $article = $arFields['PROPERTY_CML2_ARTICLE_VALUE'];
+            }
+
             // получение скидки
             global $USER;
             $rsUser = \CUser::GetByID($USER->GetID());
@@ -110,7 +127,7 @@ class AddProduct extends Base
                 "select" => array("ID", "UF_SKIDKA"),
                 "order" => array("ID" => "ASC"),
                 //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
-                "filter" => array("UF_PRODUCT_ID"=> $productId, "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+                "filter" => array("UF_PRODUCT_ID"=> $article, "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
             ));
             $cont_discount = false;
             while($arData = $rsData->Fetch()){
@@ -176,7 +193,7 @@ class AddProduct extends Base
                         $renewal
                     );
                     $option[] = $arFields['XML_ID'].'|'.$arProps['VID_OPTSII']['VALUE'].'|'.$arPrice['PRICE']['PRICE'];
-
+                    AddMessage2Log($arProps);
                     $optionPrice = $arPrice['PRICE']['PRICE'];
                     // получение скидки
                     global $USER;
@@ -193,7 +210,7 @@ class AddProduct extends Base
                         "select" => array("ID", "UF_SKIDKA"),
                         "order" => array("ID" => "ASC"),
                         //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
-                        "filter" => array("UF_PRODUCT_ID"=> $arFields['ID'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+                        "filter" => array("UF_PRODUCT_ID"=> $arProps['CML2_ARTICLE']['VALUE'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
                     ));
                     $cont_discount = false;
                     while($arData = $rsData->Fetch()){
