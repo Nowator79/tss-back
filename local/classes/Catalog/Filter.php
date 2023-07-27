@@ -66,7 +66,7 @@ class Filter extends Base
             if($section = $res->Fetch())$SECTION_ID=$section["ID"];
         }
         $mas_prop['PRICE']=[
-            'NAME'=>'Цена',
+            'NAME'=>'Цена за шт.',
             'CODE'=>'PRICE',
             'SORT'=>'0',
             'PROPERTY_TYPE'=>'DIAPASON',
