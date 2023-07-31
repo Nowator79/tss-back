@@ -296,7 +296,7 @@ function deleteDiscountGroupHL($data){
 
 function deleteSkidkiConnectHL(){
     Loader::includeModule("highloadblock");
-    $hlbl = 73; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlbl = HIGHLOAD_SKIDI_CONNECT; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
     $resultId = false;
     global $USER;
@@ -318,7 +318,7 @@ function deleteSkidkiConnectHL(){
 
 
 function setDiscount2HL($data){
-    $hlbl = 73; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlbl = HIGHLOAD_SKIDI_CONNECT; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
     $entity = HL\HighloadBlockTable::compileEntity($hlblock);
