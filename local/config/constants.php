@@ -87,6 +87,9 @@ define('HIGHLOAD_SALES_PLAN_ID', 66);
 # Идентификатор highload-блока "Шифр товара"
 define('HIGHLOAD_PRODUCT_CODE_ID', 62);
 
+# Идентификатор highload-блока "Промежуточный для скидок"
+define('HIGHLOAD_SKIDI_CONNECT', 73);
+
 # Почтовое событие отправки данных пользователя на проверку
 
 define('USER_DATA_CHANGE_EVENT', 'USER_DATA_CHANGE');

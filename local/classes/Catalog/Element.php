@@ -382,7 +382,7 @@ class Element extends Base
         $rsUser = \CUser::GetByID($USER->GetID());
         $arUser = $rsUser->Fetch();
         Loader::includeModule("highloadblock");
-        $hlbl = 73; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlbl = HIGHLOAD_SKIDI_CONNECT; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
@@ -1328,7 +1328,7 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
 			}
 			//
 
-            $hlbl = 73; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+            $hlbl = HIGHLOAD_SKIDI_CONNECT; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
             $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
             $entity = HL\HighloadBlockTable::compileEntity($hlblock);
