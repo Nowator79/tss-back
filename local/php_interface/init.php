@@ -296,7 +296,7 @@ function deleteDiscountGroupHL($data){
 
 function deleteSkidkiConnectHL(){
     Loader::includeModule("highloadblock");
-    $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlbl = 73; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
     $resultId = false;
     global $USER;
@@ -318,7 +318,7 @@ function deleteSkidkiConnectHL(){
 
 
 function setDiscount2HL($data){
-    $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlbl = 73; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
     $entity = HL\HighloadBlockTable::compileEntity($hlblock);
@@ -329,14 +329,14 @@ function setDiscount2HL($data){
 }
 
 function getAssortimentDiscount($filter){
-    $arSelect = ['ID', 'PROPERTY_CML2_ARTICLE'];
+    $arSelect = ['ID'];
     $res = CIBlockElement::GetList(Array(), $filter, false, false, $arSelect);
     $ids = [];
     while($ob = $res->GetNextElement())
     {
         $arFields = $ob->GetFields();
 
-        $ids[] = $arFields['PROPERTY_CML2_ARTICLE_VALUE'];
+        $ids[] = $arFields['ID'];
 
     }
     return $ids;

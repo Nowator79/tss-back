@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hiblock>
+	<hiblock>
+		<id>69</id>
+		<name>LKDGruppyNomenklaturyDlyaDopolnitelnykhSkidok</name>
+		<table_name>b_lkdgruppynomenklaturydlyadopolnitelnykhskidok</table_name>
+	</hiblock>
+	<langs>
+	</langs>
+	<fields>
+		<field>
+			<id>813</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_NAME</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id />
+			<sort>100</sort>
+			<multiple>N</multiple>
+			<mandatory>Y</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<base_type>string</base_type>
+		</field>
+		<field>
+			<id>814</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_XML_ID</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id />
+			<sort>200</sort>
+			<multiple>N</multiple>
+			<mandatory>Y</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>N</show_in_list>
+			<edit_in_list>N</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<base_type>string</base_type>
+		</field>
+		<field>
+			<id>815</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_VERSION</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id />
+			<sort>300</sort>
+			<multiple>N</multiple>
+			<mandatory>Y</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>N</show_in_list>
+			<edit_in_list>N</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<base_type>string</base_type>
+		</field>
+		<field>
+			<id>816</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_DESCRIPTION</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id />
+			<sort>400</sort>
+			<multiple>N</multiple>
+			<mandatory>N</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<base_type>string</base_type>
+		</field>
+		<field>
+			<id>817</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_GRUPPA</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id>Группа</xml_id>
+			<sort>500</sort>
+			<multiple>N</multiple>
+			<mandatory>N</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<edit_form_label>
+				<ru>Группа</ru>
+			</edit_form_label>
+			<list_column_label>
+				<ru />
+			</list_column_label>
+			<list_filter_label>
+				<ru />
+			</list_filter_label>
+			<error_message>
+				<ru />
+			</error_message>
+			<help_message>
+				<ru />
+			</help_message>
+			<base_type>string</base_type>
+		</field>
+		<field>
+			<id>818</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_MOSHCHNOSTOT</field_name>
+			<user_type_id>double</user_type_id>
+			<xml_id>МощностьОт</xml_id>
+			<sort>500</sort>
+			<multiple>N</multiple>
+			<mandatory>N</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<precision>0</precision>
+				<size>20</size>
+				<min_value>0</min_value>
+				<max_value>0</max_value>
+				<default_value />
+			</settings>
+			<edit_form_label>
+				<ru>Мощность от</ru>
+			</edit_form_label>
+			<list_column_label>
+				<ru />
+			</list_column_label>
+			<list_filter_label>
+				<ru />
+			</list_filter_label>
+			<error_message>
+				<ru />
+			</error_message>
+			<help_message>
+				<ru />
+			</help_message>
+			<base_type>double</base_type>
+		</field>
+		<field>
+			<id>819</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_MOSHCHNOSTDO</field_name>
+			<user_type_id>double</user_type_id>
+			<xml_id>МощностьДо</xml_id>
+			<sort>500</sort>
+			<multiple>N</multiple>
+			<mandatory>N</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<precision>0</precision>
+				<size>20</size>
+				<min_value>0</min_value>
+				<max_value>0</max_value>
+				<default_value />
+			</settings>
+			<edit_form_label>
+				<ru>Мощность до</ru>
+			</edit_form_label>
+			<list_column_label>
+				<ru />
+			</list_column_label>
+			<list_filter_label>
+				<ru />
+			</list_filter_label>
+			<error_message>
+				<ru />
+			</error_message>
+			<help_message>
+				<ru />
+			</help_message>
+			<base_type>double</base_type>
+		</field>
+		<field>
+			<id>820</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_NOMENKLATURNYEGRU</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id>НоменклатурныеГруппы</xml_id>
+			<sort>500</sort>
+			<multiple>N</multiple>
+			<mandatory>N</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<edit_form_label>
+				<ru>Номенклатурные группы</ru>
+			</edit_form_label>
+			<list_column_label>
+				<ru />
+			</list_column_label>
+			<list_filter_label>
+				<ru />
+			</list_filter_label>
+			<error_message>
+				<ru />
+			</error_message>
+			<help_message>
+				<ru />
+			</help_message>
+			<base_type>string</base_type>
+		</field>
+		<field>
+			<id>821</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_VIDYNOMENKLATURY</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id>ВидыНоменклатуры</xml_id>
+			<sort>500</sort>
+			<multiple>N</multiple>
+			<mandatory>N</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<edit_form_label>
+				<ru>Виды номенклатуры</ru>
+			</edit_form_label>
+			<list_column_label>
+				<ru />
+			</list_column_label>
+			<list_filter_label>
+				<ru />
+			</list_filter_label>
+			<error_message>
+				<ru />
+			</error_message>
+			<help_message>
+				<ru />
+			</help_message>
+			<base_type>string</base_type>
+		</field>
+		<field>
+			<id>822</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_SERIIPRODUKTSII</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id>СерииПродукции</xml_id>
+			<sort>500</sort>
+			<multiple>N</multiple>
+			<mandatory>N</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<edit_form_label>
+				<ru>Серии продукции</ru>
+			</edit_form_label>
+			<list_column_label>
+				<ru />
+			</list_column_label>
+			<list_filter_label>
+				<ru />
+			</list_filter_label>
+			<error_message>
+				<ru />
+			</error_message>
+			<help_message>
+				<ru />
+			</help_message>
+			<base_type>string</base_type>
+		</field>
+		<field>
+			<id>823</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_DOPOLNENIYA</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id>Дополнения</xml_id>
+			<sort>500</sort>
+			<multiple>N</multiple>
+			<mandatory>N</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<edit_form_label>
+				<ru>Дополнения</ru>
+			</edit_form_label>
+			<list_column_label>
+				<ru />
+			</list_column_label>
+			<list_filter_label>
+				<ru />
+			</list_filter_label>
+			<error_message>
+				<ru />
+			</error_message>
+			<help_message>
+				<ru />
+			</help_message>
+			<base_type>string</base_type>
+		</field>
+		<field>
+			<id>824</id>
+			<entity_id>HLBLOCK_69</entity_id>
+			<field_name>UF_ISKLYUCHENIYA</field_name>
+			<user_type_id>string</user_type_id>
+			<xml_id>Исключения</xml_id>
+			<sort>500</sort>
+			<multiple>N</multiple>
+			<mandatory>N</mandatory>
+			<show_filter>N</show_filter>
+			<show_in_list>Y</show_in_list>
+			<edit_in_list>Y</edit_in_list>
+			<is_searchable>N</is_searchable>
+			<settings>
+				<size>20</size>
+				<rows>1</rows>
+				<regexp />
+				<min_length>0</min_length>
+				<max_length>0</max_length>
+				<default_value />
+			</settings>
+			<edit_form_label>
+				<ru>Исключения</ru>
+			</edit_form_label>
+			<list_column_label>
+				<ru />
+			</list_column_label>
+			<list_filter_label>
+				<ru />
+			</list_filter_label>
+			<error_message>
+				<ru />
+			</error_message>
+			<help_message>
+				<ru />
+			</help_message>
+			<base_type>string</base_type>
+		</field>
+	</fields>
+	<items>
+		<item>
+			<id>1</id>
+			<uf_name />
+			<uf_xml_id>88360342-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bLM=</uf_version>
+			<uf_description />
+			<uf_gruppa>4807d19f-42ae-11ec-80f5-bc1303edd37b</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo>161</uf_moshchnostdo>
+			<uf_nomenklaturnyegru>9b70005f-e7ac-11ea-80ee-a5e25158fe33|393d1834-de37-11ea-80ee-a5e25158fe33</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii />
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>2</id>
+			<uf_name />
+			<uf_xml_id>88360343-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bLU=</uf_version>
+			<uf_description />
+			<uf_gruppa>7c179151-42b1-11ec-80f5-bc1303edd37b</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo>161</uf_moshchnostdo>
+			<uf_nomenklaturnyegru>440af14f-e7ac-11ea-80ee-a5e25158fe33|6e1c3f03-e7ac-11ea-80ee-a5e25158fe33|bbf0d783-e7ad-11ea-80ee-a5e25158fe33|5c337acf-e7ac-11ea-80ee-a5e25158fe33|5c337ace-e7ac-11ea-80ee-a5e25158fe33|efc422d6-de33-11ea-80ee-a5e25158fe33</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii />
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>3</id>
+			<uf_name />
+			<uf_xml_id>88360344-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bLc=</uf_version>
+			<uf_description />
+			<uf_gruppa>8ff76357-42b1-11ec-80f5-bc1303edd37b</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>f0457ee4-e7ad-11ea-80ee-a5e25158fe33|ffcdd523-de35-11ea-80ee-a5e25158fe33|aa62b516-52fc-11ed-80fa-bc8c5a150f9b|6c674071-5310-11ed-80fa-bc8c5a150f9b|95724ae2-5310-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция|Комплектующее</uf_vidynomenklatury>
+			<uf_seriiproduktsii>SDG|SGG||Сварочный бензиновый|Сварочный дизельный|Сварочный агрегат</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>4</id>
+			<uf_name />
+			<uf_xml_id>88360345-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bLk=</uf_version>
+			<uf_description />
+			<uf_gruppa>f3626859-42b1-11ec-80f5-bc1303edd37b</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>73e27e06-f750-11ea-80f0-92aabd7a84a7|82ea8a6f-f750-11ea-80f0-92aabd7a84a7|950a233a-f750-11ea-80f0-92aabd7a84a7|8def03c4-f750-11ea-80f0-92aabd7a84a7|9eb4e80c-f750-11ea-80f0-92aabd7a84a7|7f29de32-145f-11ec-80f3-96f549c268e5|9db37106-e834-11ea-80ee-a5e25158fe33|9eb4e810-f750-11ea-80f0-92aabd7a84a7|7c8bc540-f750-11ea-80f0-92aabd7a84a7|8def03c6-f750-11ea-80f0-92aabd7a84a7|de849000-530f-11ed-80fa-bc8c5a150f9b|be381d63-530f-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция|Расходный материал|Комплектующее</uf_vidynomenklatury>
+			<uf_seriiproduktsii>TSS Standart</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>5</id>
+			<uf_name />
+			<uf_xml_id>88360346-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bLs=</uf_version>
+			<uf_description />
+			<uf_gruppa>41b54a2d-42b2-11ec-80f5-bc1303edd37b</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>6c674070-5310-11ed-80fa-bc8c5a150f9b|a4bf7c9e-5310-11ed-80fa-bc8c5a150f9b|431bd77e-5310-11ed-80fa-bc8c5a150f9b|88bcf723-f754-11ea-80f0-92aabd7a84a7|88bcf721-f754-11ea-80f0-92aabd7a84a7|88bcf720-f754-11ea-80f0-92aabd7a84a7|eb89a4a1-5311-11ed-80fa-bc8c5a150f9b|88bcf722-f754-11ea-80f0-92aabd7a84a7|a5aa3424-f754-11ea-80f0-92aabd7a84a7|6c67406f-5310-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Комплектующее|Расходный материал</uf_vidynomenklatury>
+			<uf_seriiproduktsii>EVO|NEO|PRO|TOP|TN01|TN08|САИ|Сварочный бензиновый|Сварочный дизельный|</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>6</id>
+			<uf_name />
+			<uf_xml_id>88360347-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bL0=</uf_version>
+			<uf_description />
+			<uf_gruppa>b25770c6-42b2-11ec-80f5-bc1303edd37b</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>052bac3e-52fe-11ed-80fa-bc8c5a150f9b|c5a88cde-511e-11ed-80fa-bc8c5a150f9b|c3d2dd15-511e-11ed-80fa-bc8c5a150f9b|ce589ae6-5302-11ed-80fa-bc8c5a150f9b|891ec283-5300-11ed-80fa-bc8c5a150f9b|48bcc089-52fd-11ed-80fa-bc8c5a150f9b|5e7f85f8-dd1d-11ed-8109-e95c961bb052</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция|Комплектующее</uf_vidynomenklatury>
+			<uf_seriiproduktsii>ТСС Стандарт|ТСС Проф|SDG|TSS Standart|TSS Doosan</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>7</id>
+			<uf_name />
+			<uf_xml_id>88360348-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bL8=</uf_version>
+			<uf_description />
+			<uf_gruppa>2a0c7aa5-7846-11ec-80f9-b4ecc42ee477</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru />
+			<uf_vidynomenklatury />
+			<uf_seriiproduktsii />
+			<uf_dopolneniya>dac41f56-9385-11eb-80f1-bc1119d08ed9|3699cc52-937e-11eb-80f1-bc1119d08ed9|bdad2117-9788-11eb-80f1-bc1119d08ed9|163c3511-9789-11eb-80f1-bc1119d08ed9|fa1531b9-9381-11eb-80f1-bc1119d08ed9|3a629196-9388-11eb-80f1-bc1119d08ed9|c96a560d-9384-11eb-80f1-bc1119d08ed9|a85b3e79-938d-11eb-80f1-bc1119d08ed9|a85b000b-9605-11eb-80f1-bc1119d08ed9|948ac134-95f7-11eb-80f1-bc1119d08ed9|ee9ad5fb-95e0-11eb-80f1-bc1119d08ed9|b342bd56-95de-11eb-80f1-bc1119d08ed9|1db09e8d-93c0-11eb-80f1-bc1119d08ed9|d258adf2-93bf-11eb-80f1-bc1119d08ed9|296a22ea-93be-11eb-80f1-bc1119d08ed9|46764788-93bd-11eb-80f1-bc1119d08ed9|0a7773e9-93bd-11eb-80f1-bc1119d08ed9|c1a328b1-93bb-11eb-80f1-bc1119d08ed9|55ccda13-93bb-11eb-80f1-bc1119d08ed9|99f1aa77-93b9-11eb-80f1-bc1119d08ed9|bbed6f24-93b8-11eb-80f1-bc1119d08ed9|b51c21a3-93b7-11eb-80f1-bc1119d08ed9|4554ffa0-93b3-11eb-80f1-bc1119d08ed9|d6bf473c-93b1-11eb-80f1-bc1119d08ed9|518341b4-93b0-11eb-80f1-bc1119d08ed9|89158554-93af-11eb-80f1-bc1119d08ed9|89158554-93af-11eb-80f1-bc1119d08ed9|eac74f5b-93ad-11eb-80f1-bc1119d08ed9|235a3204-93a2-11eb-80f1-bc1119d08ed9|deaf8baa-939f-11eb-80f1-bc1119d08ed9|4b0889db-92f2-11eb-80f1-bc1119d08ed9|cc26acd3-9161-11eb-80f1-bc1119d08ed9|69ffa23c-9397-11eb-80f1-bc1119d08ed9|7ee7f01f-9395-11eb-80f1-bc1119d08ed9|cf804b79-9868-11eb-80f1-bc1119d08ed9|2cbbe87b-9865-11eb-80f1-bc1119d08ed9|179ed590-9863-11eb-80f1-bc1119d08ed9|c2bb89bf-9391-11eb-80f1-bc1119d08ed9|1f8c0112-9866-11eb-80f1-bc1119d08ed9|d4fc94f3-960d-11eb-80f1-bc1119d08ed9|4942cb74-960c-11eb-80f1-bc1119d08ed9|f29edae9-960b-11eb-80f1-bc1119d08ed9|90db4adc-95da-11eb-80f1-bc1119d08ed9|436aea0a-95da-11eb-80f1-bc1119d08ed9|08097166-95da-11eb-80f1-bc1119d08ed9|ab5c673e-95d7-11eb-80f1-bc1119d08ed9|65f32ef9-95d7-11eb-80f1-bc1119d08ed9|d9501ebd-93c0-11eb-80f1-bc1119d08ed9|8d7b4fd2-986d-11eb-80f1-bc1119d08ed9|8eaaaa5f-9619-11eb-80f1-bc1119d08ed9|6dfa3a71-9619-11eb-80f1-bc1119d08ed9|3a8a7547-9619-11eb-80f1-bc1119d08ed9|7db99ed5-9616-11eb-80f1-bc1119d08ed9|c4cb2549-9615-11eb-80f1-bc1119d08ed9|98ce8d57-9613-11eb-80f1-bc1119d08ed9|33fbada1-9615-11eb-80f1-bc1119d08ed9|5249d945-9616-11eb-80f1-bc1119d08ed9|468df3ea-9618-11eb-80f1-bc1119d08ed9|45fc33ee-9614-11eb-80f1-bc1119d08ed9|22c23a4d-9862-11eb-80f1-bc1119d08ed9|ddc36955-9856-11eb-80f1-bc1119d08ed9|16b29e82-977f-11eb-80f1-bc1119d08ed9|639eff41-9774-11eb-80f1-bc1119d08ed9|ecfaf6ce-9772-11eb-80f1-bc1119d08ed9|7a262447-9772-11eb-80f1-bc1119d08ed9|6673762a-9770-11eb-80f1-bc1119d08ed9|4e4ad827-976f-11eb-80f1-bc1119d08ed9|9196c88d-976e-11eb-80f1-bc1119d08ed9|aea08b72-976d-11eb-80f1-bc1119d08ed9|42746763-976d-11eb-80f1-bc1119d08ed9|5343ad45-976b-11eb-80f1-bc1119d08ed9|92a4083a-976c-11eb-80f1-bc1119d08ed9|92695749-961c-11eb-80f1-bc1119d08ed9|1ffd6c31-961c-11eb-80f1-bc1119d08ed9|a6e1aafc-961b-11eb-80f1-bc1119d08ed9|74356542-961b-11eb-80f1-bc1119d08ed9|e10859ed-961a-11eb-80f1-bc1119d08ed9|90578a62-9771-11eb-80f1-bc1119d08ed9|65482bfd-977e-11eb-80f1-bc1119d08ed9|bb5464f2-976b-11eb-80f1-bc1119d08ed9|ef5e3919-a441-11eb-80f2-e99029fa3914|ef594a40-a43f-11eb-80f2-e99029fa3914|24beaf7e-b87e-11e6-b464-00155d030626|faf08804-5e61-11ec-80f5-bc1303edd37b|f2b50f7c-9e7b-11eb-80f1-bc1119d08ed9|43762495-5e45-11ec-80f5-bc1303edd37b|b01f91e8-a08a-11e8-a079-00155d030626|05dd5778-b7a7-11eb-80f3-96f549c268e5|c1b411b9-3a1d-11e7-9493-00155d030626|0d15f0cc-9eca-11e8-a079-00155d030626|704b7223-3a1d-11e7-9493-00155d030626|06f062ca-3a1e-11e7-9493-00155d030626|588cec68-a08a-11e8-a079-00155d030626|3f2a89ef-581c-11ec-80f5-bc1303edd37b|695b12c1-f1c6-11e5-a89b-00155d030626|fe7c7ea9-a3d9-11e9-80d0-964eb94eb286|c961d854-534b-11e2-be13-00155d032b00|3b00f8af-581e-11ec-80f5-bc1303edd37b|98672201-5e56-11ec-80f5-bc1303edd37b|243d7740-534a-11e2-be13-00155d032b00|4c55d3bf-9ec9-11e8-a079-00155d030626|d9a50201-d6d4-11e8-80c8-b3fdf28238a3|243d7744-534a-11e2-be13-00155d032b00|dd3f9a54-5800-11ec-80f5-bc1303edd37b|956cf5b7-5801-11ec-80f5-bc1303edd37b|3c4dcf95-d988-11e7-8abc-00155d030626|72a4c744-72a7-11e7-9493-00155d030626|c961d852-534b-11e2-be13-00155d032b00|f4fca283-249a-11e9-80cc-b6389da4a0fc|5537c86f-c468-11e2-8114-00155d030626|04a42aff-46d0-11e7-9493-00155d030626|72c90c6c-29c7-11e7-9493-00155d030626|e85e61d2-534b-11e2-be13-00155d032b00|720e8718-ad61-11e5-9947-00155d030626|5ef8716e-ad60-11e5-9947-00155d030626|07f74873-3a1d-11e7-9493-00155d030626|40df5e13-ad61-11e5-9947-00155d030626|23385ab8-5807-11ec-80f5-bc1303edd37b|27ecf34b-534c-11e2-be13-00155d032b00|2a6a3f6f-534a-11e2-be13-00155d032b00|2a6a3f6d-534a-11e2-be13-00155d032b00|4837b91e-ad62-11e5-9947-00155d030626|f06ba5fc-ad61-11e5-9947-00155d030626|f014a387-2b15-11e7-9493-00155d030626|c961d866-534b-11e2-be13-00155d032b00|01153639-5e75-11ec-80f5-bc1303edd37b|963c9329-5e62-11ec-80f5-bc1303edd37b|2a6a3f71-534a-11e2-be13-00155d032b00|2a6a3f75-534a-11e2-be13-00155d032b00|5537c86d-c468-11e2-8114-00155d030626|06b9af90-a61f-11e8-a079-00155d030626|81ed96dd-f742-11ea-80f0-92aabd7a84a7|12d9e93e-c06e-11e7-b96a-00155d030626|3d316ad8-5820-11ec-80f5-bc1303edd37b|0de861e8-41c8-11e5-a969-00155d030626|57f82a90-5e46-11ec-80f5-bc1303edd37b|243d773e-534a-11e2-be13-00155d032b00|45fb38e2-5e56-11ec-80f5-bc1303edd37b|243d773a-534a-11e2-be13-00155d032b00|243d773c-534a-11e2-be13-00155d032b00|72bb73b9-57fb-11ec-80f5-bc1303edd37b|5f229c86-3949-11e7-9493-00155d030626|7cfe29ef-a299-11e3-a554-00155d030626|243d7742-534a-11e2-be13-00155d032b00|72dd52db-8d6e-11eb-80f1-bc1119d08ed9|5537c879-c468-11e2-8114-00155d030626|5744bdf8-6c11-11e8-a079-00155d030626|e1b15548-6f1c-11e8-a079-00155d030626|52346002-6f27-11e8-a079-00155d030626|243d7748-534a-11e2-be13-00155d032b00|d0420d99-a7b3-11e8-a079-00155d030626|68415680-581a-11ec-80f5-bc1303edd37b|e191132f-3a1b-11e7-9493-00155d030626|5537c875-c468-11e2-8114-00155d030626|ee6701b5-57fd-11ec-80f5-bc1303edd37b|fbe5f23f-8a9a-11e8-a079-00155d030626|ffb8c415-0aaf-11e6-933f-00155d030626|9ef2c7b5-6972-11e8-a079-00155d030626|7c85d5d0-2498-11e9-80cc-b6389da4a0fc|da1c4db1-249e-11e9-80cc-b6389da4a0fc|e85e61d4-534b-11e2-be13-00155d032b00|8abd98ba-b58f-11e8-a079-00155d030626</uf_dopolneniya>
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>8</id>
+			<uf_name />
+			<uf_xml_id>88360349-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bME=</uf_version>
+			<uf_description />
+			<uf_gruppa>cbd11f31-a51f-11ec-80fa-bc8c5a150f9b</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo>31</uf_moshchnostdo>
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>FTP Iveco|TSS Cummins|TSS Deutz|TSS Doosan|TSS Mitsubishi|TSS Perkins|TSS Premium|TSS Prof|TSS Standart|ТСС Проф|ТСС Стандарт||TSS Baudouin</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>9</id>
+			<uf_name />
+			<uf_xml_id>8836034a-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bMM=</uf_version>
+			<uf_description />
+			<uf_gruppa>06950bbe-a520-11ec-80fa-bc8c5a150f9b</uf_gruppa>
+			<uf_moshchnostot>32</uf_moshchnostot>
+			<uf_moshchnostdo>199</uf_moshchnostdo>
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>FTP Iveco|TSS Cummins|TSS Deutz|TSS Doosan|TSS Mitsubishi|TSS Perkins|TSS Premium|TSS Prof|TSS Standart|ТСС Проф|ТСС Стандарт||TSS Baudouin</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>11</id>
+			<uf_name />
+			<uf_xml_id>8e2442a1-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bMc=</uf_version>
+			<uf_description />
+			<uf_gruppa>64663a06-4de5-11ed-80fa-bc8c5a150f9b</uf_gruppa>
+			<uf_moshchnostot>200</uf_moshchnostot>
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>FTP Iveco|TSS Cummins|TSS Deutz|TSS Doosan|TSS Mitsubishi|TSS Perkins|TSS Premium|TSS Prof|TSS Standart|ТСС Проф|ТСС Стандарт</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>12</id>
+			<uf_name />
+			<uf_xml_id>8e2442a2-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bMk=</uf_version>
+			<uf_description />
+			<uf_gruppa>59c8ec3b-97e8-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>MD Reserve</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>13</id>
+			<uf_name />
+			<uf_xml_id>8e2442a3-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bMs=</uf_version>
+			<uf_description />
+			<uf_gruppa>d6524135-97e8-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo>199</uf_moshchnostdo>
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Товары|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>FTP Iveco|TSS Cummins|TSS Deutz|TSS Doosan|TSS Mitsubishi|TSS Perkins|TSS Premium|TSS Prof|TSS Standart|ТСС Проф|ТСС Стандарт||TSS Baudouin</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>14</id>
+			<uf_name />
+			<uf_xml_id>8e2442a4-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bM0=</uf_version>
+			<uf_description />
+			<uf_gruppa>04af0251-b9af-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo>199</uf_moshchnostdo>
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>FTP Iveco|MD Reserve|Mitsudiesel|TSS Baudouin|TSS Cummins|TSS Doosan|TSS Mitsubishi|TSS MTU|TSS Perkins|TSS Prof|TSS Scania|TSS Standart|TSS Volvo|ТСС Проф|ТСС Стандарт|</uf_seriiproduktsii>
+			<uf_dopolneniya>4675e23a-2101-11ec-80f4-b8892bda2dfb|3204d666-baf9-11ec-80fa-bc8c5a150f9b|6328212a-1c9b-11ed-80fa-bc8c5a150f9b|c7b74fce-5357-11e2-be13-00155d032b00|6ea716e4-109c-11e8-a30a-00155d030626|c66d4bd6-c18f-11e8-a079-00155d030626|129ec6bf-1c4a-11ec-80f3-96f549c268e5|29a2d3ed-6b2a-11e8-a079-00155d030626|e8fd42fa-8fa7-11e6-9b90-00155d030626|bc406f45-6bb2-11e8-a079-00155d030626|58c0289e-d67b-11ec-80fa-bc8c5a150f9b|29f5ca78-299f-11eb-80f0-92aabd7a84a7|44f09551-299d-11eb-80f0-92aabd7a84a7|fdb273bf-5357-11e2-be13-00155d032b00|2ea1d90a-a52c-11ec-80fa-bc8c5a150f9b|88dac7f1-0586-11e8-a30a-00155d030626|a83f3910-c226-11e8-a079-00155d030626|1a724dfb-c7a9-11e8-a079-00155d030626|ce93c863-1c46-11ec-80f3-96f549c268e5|91065ba2-c986-11e9-80d3-edbddba73303|f5cbdf00-6b20-11e8-a079-00155d030626|80dd1a39-fb5f-11eb-80f3-96f549c268e5|a7e39f69-f866-11ec-80fa-bc8c5a150f9b|9ca21057-f7aa-11ec-80fa-bc8c5a150f9b|354b367c-c825-11e2-8114-00155d030626|ddc8e5b2-1092-11e8-a30a-00155d030626|ddc8e5b2-1092-11e8-a30a-00155d030626|44dbd6a2-c228-11e8-a079-00155d030626|ed7cd0f5-c986-11e9-80d3-edbddba73303|4fd0b772-e2ed-11ea-80ee-a5e25158fe33|5ea9abc5-461b-11ec-80f5-bc1303edd37b|18d32bbc-4620-11ec-80f5-bc1303edd37b|297d6631-5358-11e2-be13-00155d032b00|53b13548-c17b-11e8-a079-00155d030626|b18a98d8-1099-11e8-a30a-00155d030626|40c1f7a1-6429-11ed-80fc-cb3fb0223450|fcc64492-6b24-11e8-a079-00155d030626|b950f2ba-da9a-11ec-80fa-bc8c5a150f9b|354b3688-c825-11e2-8114-00155d030626|04c657b5-0c60-11eb-80f0-92aabd7a84a7|952d928d-c18f-11e8-a079-00155d030626</uf_dopolneniya>
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>15</id>
+			<uf_name />
+			<uf_xml_id>8e2442a5-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bM8=</uf_version>
+			<uf_description />
+			<uf_gruppa>cfe12c98-b9af-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot>200</uf_moshchnostot>
+			<uf_moshchnostdo>799</uf_moshchnostdo>
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>FTP Iveco|MD Reserve|Mitsudiesel|TSS Baudouin|TSS Cummins|TSS Doosan|TSS Mitsubishi|TSS MTU|TSS Perkins|TSS Prof|TSS Scania|TSS Standart|TSS Volvo|ТСС Проф|ТСС Стандарт|</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>16</id>
+			<uf_name />
+			<uf_xml_id>8e2442a6-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bNE=</uf_version>
+			<uf_description />
+			<uf_gruppa>1d6d8382-b9b8-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>a5aa3424-f754-11ea-80f0-92aabd7a84a7|2828bf49-a6bb-11ec-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Комплектующее|Расходный материал</uf_vidynomenklatury>
+			<uf_seriiproduktsii>HUGONG</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>17</id>
+			<uf_name />
+			<uf_xml_id>8e2442a7-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bNM=</uf_version>
+			<uf_description />
+			<uf_gruppa>a7d50294-b9bd-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru />
+			<uf_vidynomenklatury />
+			<uf_seriiproduktsii />
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>18</id>
+			<uf_name />
+			<uf_xml_id>8e2442a8-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bNU=</uf_version>
+			<uf_description />
+			<uf_gruppa>ae2f0676-b9bd-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>a8900bce-f82a-11ea-80f0-92aabd7a84a7|9cacc4ca-f769-11ea-80f0-92aabd7a84a7|edcfd66a-a6b9-11ec-80fa-bc8c5a150f9b|2828bf49-a6bb-11ec-80fa-bc8c5a150f9b|fd458f24-a6b9-11ec-80fa-bc8c5a150f9b|a29f048d-5305-11ed-80fa-bc8c5a150f9b|f720019d-a6b9-11ec-80fa-bc8c5a150f9b|b7ea624b-f768-11ea-80f0-92aabd7a84a7</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Топливо (ГСМ)|Расходный материал|Материал|Товар|Запасная часть|Продукция|Комплектующее</uf_vidynomenklatury>
+			<uf_seriiproduktsii>ЗИП для ТО</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>19</id>
+			<uf_name />
+			<uf_xml_id>8e2442a9-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bNc=</uf_version>
+			<uf_description />
+			<uf_gruppa>c1e1939c-b9bd-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru />
+			<uf_vidynomenklatury />
+			<uf_seriiproduktsii />
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>20</id>
+			<uf_name />
+			<uf_xml_id>8e2442aa-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bNk=</uf_version>
+			<uf_description />
+			<uf_gruppa>9b716061-b9ca-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru />
+			<uf_vidynomenklatury />
+			<uf_seriiproduktsii />
+			<uf_dopolneniya>2dc0033f-bd1d-11e6-b464-00155d030626|987295be-319b-11ec-80f5-bc1303edd37b|c88f4689-f6a8-11e7-8abc-00155d030626|613162fe-8a14-11e6-933f-00155d030626|afca62d1-241a-11eb-80f0-92aabd7a84a7|62816b77-1579-11e8-a30a-00155d030626|a7d75e4e-864b-11e6-933f-00155d030626|c753c510-8127-11e8-a079-00155d030626|9805556f-ef75-11e6-9493-00155d030626|b0ef8d34-6f47-11ea-80e0-99fbc4db175e|361f0246-c675-11ea-80eb-e32f868ca281|ed6fd0be-01b1-11e8-8abc-00155d030626|27867dd1-167d-11ea-80d8-bf1b4b10176a|ccce054d-df36-11e7-8abc-00155d030626|a12c9cbf-f438-11e6-9493-00155d030626|ee1f9806-7b51-11e7-9493-00155d030626|848526d6-e721-11e7-8abc-00155d030626|3ef78c01-a4a3-11ea-80e1-db095eca1397|9f1e1a5a-02a9-11e8-a30a-00155d030626|8dfff90b-f43b-11e6-9493-00155d030626|a8123383-93b0-11ec-80fa-bc8c5a150f9b|72d18741-d696-11e7-b96a-00155d030626|15cc9bad-b736-11ec-80fa-bc8c5a150f9b|17b0f02c-9c74-11ec-80fa-bc8c5a150f9b|49984652-0d6b-11e8-a30a-00155d030626|71a7bcdb-9714-11e9-80ce-fabe6fd49918|6a19c30f-3331-11ec-80f5-bc1303edd37b|39ef2e51-ce9a-11e7-b96a-00155d030626|20420e11-a12b-11e8-a079-00155d030626|5addd51e-eded-11e6-9493-00155d030626|5bef1641-6f47-11ea-80e0-99fbc4db175e|42751263-a4a5-11ea-80e1-db095eca1397|4c247655-fe51-11ea-80f0-92aabd7a84a7|6a1c10d6-c818-11ea-80eb-e32f868ca281</uf_dopolneniya>
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>21</id>
+			<uf_name />
+			<uf_xml_id>8e2442ab-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bNs=</uf_version>
+			<uf_description />
+			<uf_gruppa>b21c7c36-b9ca-11ed-8106-b0165bc9d73d</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>48bcc089-52fd-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii />
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>22</id>
+			<uf_name />
+			<uf_xml_id>8e2442ac-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bN0=</uf_version>
+			<uf_description />
+			<uf_gruppa>d362244c-cd3c-11ed-8109-e95c961bb052</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo>199</uf_moshchnostdo>
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>FTP Iveco|Mitsudiesel|TSS Baudouin|TSS Cummins|TSS Doosan|TSS Mitsubishi|TSS MTU|TSS Perkins|TSS Prof|TSS Scania|TSS Standart|TSS Volvo|ТСС Проф|ТСС Стандарт|</uf_seriiproduktsii>
+			<uf_dopolneniya>4675e23a-2101-11ec-80f4-b8892bda2dfb|3204d666-baf9-11ec-80fa-bc8c5a150f9b|6328212a-1c9b-11ed-80fa-bc8c5a150f9b|c7b74fce-5357-11e2-be13-00155d032b00|6ea716e4-109c-11e8-a30a-00155d030626|c66d4bd6-c18f-11e8-a079-00155d030626|129ec6bf-1c4a-11ec-80f3-96f549c268e5|29a2d3ed-6b2a-11e8-a079-00155d030626|e8fd42fa-8fa7-11e6-9b90-00155d030626|bc406f45-6bb2-11e8-a079-00155d030626|58c0289e-d67b-11ec-80fa-bc8c5a150f9b|29f5ca78-299f-11eb-80f0-92aabd7a84a7|44f09551-299d-11eb-80f0-92aabd7a84a7|fdb273bf-5357-11e2-be13-00155d032b00|2ea1d90a-a52c-11ec-80fa-bc8c5a150f9b|88dac7f1-0586-11e8-a30a-00155d030626|a83f3910-c226-11e8-a079-00155d030626|1a724dfb-c7a9-11e8-a079-00155d030626|ce93c863-1c46-11ec-80f3-96f549c268e5|91065ba2-c986-11e9-80d3-edbddba73303|f5cbdf00-6b20-11e8-a079-00155d030626|80dd1a39-fb5f-11eb-80f3-96f549c268e5|a7e39f69-f866-11ec-80fa-bc8c5a150f9b|9ca21057-f7aa-11ec-80fa-bc8c5a150f9b|354b367c-c825-11e2-8114-00155d030626|ddc8e5b2-1092-11e8-a30a-00155d030626|ddc8e5b2-1092-11e8-a30a-00155d030626|44dbd6a2-c228-11e8-a079-00155d030626|ed7cd0f5-c986-11e9-80d3-edbddba73303|4fd0b772-e2ed-11ea-80ee-a5e25158fe33|5ea9abc5-461b-11ec-80f5-bc1303edd37b|18d32bbc-4620-11ec-80f5-bc1303edd37b|297d6631-5358-11e2-be13-00155d032b00|53b13548-c17b-11e8-a079-00155d030626|b18a98d8-1099-11e8-a30a-00155d030626|40c1f7a1-6429-11ed-80fc-cb3fb0223450|fcc64492-6b24-11e8-a079-00155d030626|b950f2ba-da9a-11ec-80fa-bc8c5a150f9b|354b3688-c825-11e2-8114-00155d030626|04c657b5-0c60-11eb-80f0-92aabd7a84a7|952d928d-c18f-11e8-a079-00155d030626</uf_dopolneniya>
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>23</id>
+			<uf_name />
+			<uf_xml_id>8e2442ad-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bN8=</uf_version>
+			<uf_description />
+			<uf_gruppa>e524c8f6-cd3c-11ed-8109-e95c961bb052</uf_gruppa>
+			<uf_moshchnostot>200</uf_moshchnostot>
+			<uf_moshchnostdo>799</uf_moshchnostdo>
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>FTP Iveco|Mitsudiesel|TSS Baudouin|TSS Cummins|TSS Doosan|TSS Mitsubishi|TSS MTU|TSS Perkins|TSS Prof|TSS Scania|TSS Standart|TSS Volvo|ТСС Проф|ТСС Стандарт|</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>24</id>
+			<uf_name />
+			<uf_xml_id>8e2442ae-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>41a7b72028b2fa062fcbb73b9c1dca85#AAAAAAt1bOE=</uf_version>
+			<uf_description />
+			<uf_gruppa>15f911ff-cd3d-11ed-8109-e95c961bb052</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>698699a0-5108-11ed-80fa-bc8c5a150f9b</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар|Продукция</uf_vidynomenklatury>
+			<uf_seriiproduktsii>MD Reserve</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya />
+		</item>
+		<item>
+			<id>25</id>
+			<uf_name />
+			<uf_xml_id>8836034b-2285-11ee-810c-a2cb058fdc34</uf_xml_id>
+			<uf_version>f4161a79b11196365a55697ab59875e2#AAAAAAt1bMU=</uf_version>
+			<uf_description />
+			<uf_gruppa>01109c1a-a5bf-11ec-80fa-bc8c5a150f9b</uf_gruppa>
+			<uf_moshchnostot />
+			<uf_moshchnostdo />
+			<uf_nomenklaturnyegru>a4bf7c9e-5310-11ed-80fa-bc8c5a150f9b|431bd77e-5310-11ed-80fa-bc8c5a150f9b|88bcf723-f754-11ea-80f0-92aabd7a84a7|88bcf721-f754-11ea-80f0-92aabd7a84a7|88bcf720-f754-11ea-80f0-92aabd7a84a7|eb89a4a1-5311-11ed-80fa-bc8c5a150f9b|88bcf725-f754-11ea-80f0-92aabd7a84a7|88bcf722-f754-11ea-80f0-92aabd7a84a7|a5aa3424-f754-11ea-80f0-92aabd7a84a7</uf_nomenklaturnyegru>
+			<uf_vidynomenklatury>Товар</uf_vidynomenklatury>
+			<uf_seriiproduktsii>HUGONG</uf_seriiproduktsii>
+			<uf_dopolneniya />
+			<uf_isklyucheniya>d81ead46-0d9e-11ed-80fa-bc8c5a150f9b|6e78b9c6-0d9f-11ed-80fa-bc8c5a150f9b|82398d3f-0d9f-11ed-80fa-bc8c5a150f9b|a1630cde-0d9f-11ed-80fa-bc8c5a150f9b|bcbaea8d-0d9f-11ed-80fa-bc8c5a150f9b|cef71e23-0d9f-11ed-80fa-bc8c5a150f9b</uf_isklyucheniya>
+		</item>
+	</items>
+</hiblock>

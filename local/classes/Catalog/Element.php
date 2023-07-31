@@ -382,7 +382,7 @@ class Element extends Base
         $rsUser = \CUser::GetByID($USER->GetID());
         $arUser = $rsUser->Fetch();
         Loader::includeModule("highloadblock");
-        $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+        $hlbl = 73; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
@@ -392,7 +392,7 @@ class Element extends Base
             "select" => array("ID", "UF_SKIDKA"),
             "order" => array("ID" => "ASC"),
             //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
-            "filter" => array("UF_PRODUCT_ID"=> $product['PROPERTY_CML2_ARTICLE_VALUE'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+            "filter" => array("UF_PRODUCT_ID"=> $product['ID'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
         ));
         $cont_discount = false;
         while($arData = $rsData->Fetch()){
@@ -1328,7 +1328,7 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
 			}
 			//
 
-            $hlbl = 72; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+            $hlbl = 73; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
             $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
             $entity = HL\HighloadBlockTable::compileEntity($hlblock);
@@ -1338,7 +1338,7 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
                 "select" => array("ID", "UF_SKIDKA"),
                 "order" => array("ID" => "ASC"),
                 //"filter" => array("UF_USER_ID"=>$arUser['XML_ID'], "<UF_DATE_END" => date("d.m.Y H:i:s")),  // Задаем параметры фильтра выборки
-                "filter" => array("UF_PRODUCT_ID"=>$row['PROPERTY_CML2_ARTICLE_VALUE'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
+                "filter" => array("UF_PRODUCT_ID"=>$row['ID'], "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")),
             ));
             $cont_discount1 = false;
             while($arData = $rsData->Fetch()){
