@@ -202,6 +202,49 @@ function OnAfterAdd(\Bitrix\Main\Entity\Event $event) {
                 }
             }
 
+
+
+            if(!empty($result[0]['UF_NOMENKLATURNYEGRU'])){
+                if (strpos($result['0']['UF_NOMENKLATURNYEGRU'], '|')) {
+                    $nomGruppa = explode('|', $result['0']['UF_NOMENKLATURNYEGRU']);
+                    foreach ($nomGruppa as $nomGruppaKey => $nomGruppaItem) {
+                        if (empty($nomGruppaItem)) {
+                            unset($nomGruppa[$nomGruppaKey]);
+                        }
+                    }
+                    $filter['PROPERTY_NOMENKLATURNAYA_GRUPPA_VALUE'] = $nomGruppa;
+                } else {
+                    $filter['PROPERTY_NOMENKLATURNAYA_GRUPPA_VALUE'] = $result['0']['UF_NOMENKLATURNYEGRU'];
+                }
+            }
+
+            if(!empty($result[0]['UF_VIDYNOMENKLATURY'])){
+                if (strpos($result['0']['UF_VIDYNOMENKLATURY'], '|')) {
+                    $vidNom = explode('|', $result['0']['UF_VIDYNOMENKLATURY']);
+                    foreach ($vidNom as $vidNomKey => $vidNomItem) {
+                        if (empty($vidNomItem)) {
+                            unset($vidNom[$vidNomKey]);
+                        }
+                    }
+                    $filter['PROPERTY_VID_NOMENKLATURY_VALUE'] = $vidNom;
+                } else {
+                    $filter['PROPERTY_VID_NOMENKLATURY_VALUE'] = $result['0']['UF_VIDYNOMENKLATURY'];
+                }
+            }
+            if(!empty($result[0]['UF_ISKLYUCHENIYA'])){
+                if (strpos($result['0']['UF_ISKLYUCHENIYA'], '|')) {
+                    $iscluch = explode('|', $result['0']['UF_ISKLYUCHENIYA']);
+                    foreach ($iscluch as $iscluchKey => $iscluchItem) {
+                        if (empty($iscluchItem)) {
+                            unset($iscluch[$iscluchKey]);
+                        }
+                    }
+                    $filter['!XML_ID'] = $iscluch;
+                } else {
+                    $filter['!XML_ID'] = $result['0']['UF_ISKLYUCHENIYA'];
+                }
+            }
+
             if (!empty($result[0]['UF_DOPOLNENIYA'])){
                 $filter = array(0 => [
                     'LOGIC' => 'OR',
@@ -237,8 +280,8 @@ function OnAfterAdd(\Bitrix\Main\Entity\Event $event) {
             }
         }
     }
-
-
+    deleteDiscountHL();
+    deleteSkidkiConnectHL();
 }
 
 function deleteDiscountHL(){
@@ -290,7 +333,7 @@ function deleteDiscountGroupHL($data){
         $entity_data_class::Delete($arData['ID']);
     }
     //Удаление из смежного инфоблока
-    deleteSkidkiConnectHL();
+
 
 }
 
