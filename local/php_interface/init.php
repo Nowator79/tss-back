@@ -280,11 +280,10 @@ function OnAfterAdd(\Bitrix\Main\Entity\Event $event) {
             }
         }
     }
-    deleteDiscountHL();
-    deleteSkidkiConnectHL();
 }
 
-function deleteDiscountHL(){
+
+function deleteDataFromHL(){
     Loader::includeModule("highloadblock");
     $hlbl = 70; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
@@ -296,23 +295,43 @@ function deleteDiscountHL(){
     $rsData = $entity_data_class::getList(array(
         "select" => array("ID", "UF_GRUPPA"),
         "order" => array("ID" => "ASC"),// Задаем параметры фильтра выборки
-        "filter" => array("<UF_OKONCHANIEPERIODA" => date("d.m.Y H:i:s")),
+
     ));
 
-    $resultGroup = [];
-    $resultId = [];
     while($arData = $rsData->Fetch()){
-        $resultGroup[] = $arData['UF_GRUPPA'];
-        $resultId[] = $arData['ID'];
+        $entity_data_class::Delete($arData['ID']);
     }
-    deleteDiscountGroupHL($resultGroup);
-    foreach ($resultId as $id){
-        $entity_data_class::Delete($id);
+
+    deleteDiscountHL();
+    deleteDiscountGroupHL();
+
+    return 'deleteDataFromHL();';
+}
+
+
+
+function deleteDiscountHL(){
+    Loader::includeModule("highloadblock");
+    $hlbl = 73; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
+    $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+    $resultId = false;
+    global $USER;
+    $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+    $entity_data_class = $entity->getDataClass();
+
+    $rsData = $entity_data_class::getList(array(
+        "select" => array("ID"),
+        "order" => array("ID" => "ASC"),// Задаем параметры фильтра выборки
+    ));
+
+
+    while($arData = $rsData->Fetch()){
+        $entity_data_class::Delete($arData['ID']);
     }
 
 }
 
-function deleteDiscountGroupHL($data){
+function deleteDiscountGroupHL(){
     Loader::includeModule("highloadblock");
     $hlbl = 69; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
@@ -324,16 +343,12 @@ function deleteDiscountGroupHL($data){
     $rsData = $entity_data_class::getList(array(
         "select" => array("ID"),
         "order" => array("ID" => "ASC"),// Задаем параметры фильтра выборки
-        "filter" => array("UF_GRUPPA" => $data),
     ));
 
-    $result = [];
 
     while($arData = $rsData->Fetch()){
         $entity_data_class::Delete($arData['ID']);
     }
-    //Удаление из смежного инфоблока
-
 
 }
 
