@@ -54,17 +54,17 @@ class AddProduct extends Base
     public function add_new()
     {
         $params = Misc::getPostDataFromJson();
-//        $params = [array (
-//            'id' => 19139,
-//            'quantity' => 1,
-//            'customName'=>'sdfsdf',
-//            'options' =>
-//                array (
-//                    0 => '19135',
-//                    1 => '19136',
-//                ),
-//            'price' => 111111,
-//        )];
+        //        $params = [array (
+        //            'id' => 19139,
+        //            'quantity' => 1,
+        //            'customName'=>'sdfsdf',
+        //            'options' =>
+        //                array (
+        //                    0 => '19135',
+        //                    1 => '19136',
+        //                ),
+        //            'price' => 111111,
+        //        )];
 
 
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
@@ -73,7 +73,7 @@ class AddProduct extends Base
         $quantity = 1;
         $renewal = 'N';
 
-//        $basket->setUserId($USER->GetID());
+        //        $basket->setUserId($USER->GetID());
 
         foreach ($params as $key=>$item){
             $productId = intval($item['id']);
@@ -93,8 +93,9 @@ class AddProduct extends Base
                 $USER->GetUserGroupArray(),
                 $renewal
             );
-            $origin_price +=$arPrice['PRICE']['PRICE'];
-
+            AddMessage2Log($arPrice);
+            $origin_price += $arPrice['PRICE']['PRICE'];
+           
             // получение скидки
             global $USER;
             $rsUser = \CUser::GetByID($USER->GetID());
@@ -118,7 +119,7 @@ class AddProduct extends Base
             }
 
             if($cont_discount) {
-                $origin_price = $origin_price - ($origin_price * $cont_discount / 100);
+                $price = $price - ($price * $cont_discount / 100);
             }
 
             $arSelect = Array("ID", "NAME", "XML_ID");
@@ -146,9 +147,9 @@ class AddProduct extends Base
                         "ID" => $productId,
                         "VAT_ID" => 1, //выставляем тип ндс (задается в админке)
                         "VAT_INCLUDED" => "Y", //НДС входит в стоимость
-//                        'QUANTITY'=>10,
-//                        'QUANTITY_RESERVED'=>1,
-//                        'QUANTITY_TRACE'=>'N',
+                //                        'QUANTITY'=>10,
+                //                        'QUANTITY_RESERVED'=>1,
+                //                        'QUANTITY_TRACE'=>'N',
                     ];
                     \Bitrix\Catalog\Model\Product::add($arFields);
                     \CPrice::SetBasePrice($productId,$price,$price_mas['CURRENCY']);
@@ -166,8 +167,8 @@ class AddProduct extends Base
 
                 if($item['options']){
 
-//                    $ar_res =\CPrice::GetBasePrice($arFields['ID']);
-//                    $price += $ar_res['PRICE'];
+                    //                    $ar_res =\CPrice::GetBasePrice($arFields['ID']);
+                    //                    $price += $ar_res['PRICE'];
 
                     $arPrice = \CCatalogProduct::GetOptimalPrice(
                         $arFields['ID'],
@@ -203,7 +204,7 @@ class AddProduct extends Base
                     if($cont_discount) {
                         $optionPrice = $optionPrice - ($optionPrice * $cont_discount / 100);
                     }
-
+					
                     $origin_price +=$optionPrice;
                 }else{
                     $prodName = $arFields['NAME'];
@@ -306,7 +307,7 @@ class AddProduct extends Base
                 'CURRENCY' => \Bitrix\Currency\CurrencyManager::getBaseCurrency(),
                 'LID' => \Bitrix\Main\Context::getCurrent()->getSite(),
                 'PRODUCT_PROVIDER_CLASS' => 'CCatalogProductProviderCustom',
-                'PRICE' => $origin_price,
+                'PRICE' => $price,
                 'CUSTOM_PRICE' => 'Y',
                 'XML_ID'=>$xmlId,
             ));

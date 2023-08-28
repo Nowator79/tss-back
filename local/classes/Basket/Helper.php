@@ -142,10 +142,43 @@ class Helper extends Base
                 }
             }
 
-            $discountPrice = $item_el['origin_price'];
+//            if (empty($item_el['origin_price']) || $item_el['origin_price'] == 0) {
+//                $item_el['origin_price'] = $item_el['price'];
+//            }
+			global $USER;
+			$filterUserReq = [ "ID" => $USER->GetID() ];
+			$rsUsers = \CUser::GetList(
+				($by="personal_country"), 
+				($order="desc"), 
+				$filterUserReq
+			);
+			$userxmlid = "";
+			if($arUser = $rsUsers->Fetch()){
+				$userxmlid = $arUser["XML_ID"];
+			};
+			$discount = 0;
+
+			if($userxmlid){
+				$hlblock = HL\HighloadBlockTable::getById(HIGHLOAD_SKIDI_CONNECT)->fetch();
+				$entity = HL\HighloadBlockTable::compileEntity($hlblock);
+				$entity_data_class = $entity->getDataClass();
+				
+				$rsData = $entity_data_class::getList(array(
+					"select" => array("*"),
+					"order" => array("ID" => "ASC"),
+					"filter" => array("UF_PRODUCT_ID"=>$item['PRODUCT_ID'], "UF_USER_ID" => $userxmlid)
+				));
+				while($arData = $rsData->Fetch()){
+					$discount = $arData["UF_SKIDKA"];
+				}
+			}
 
             $item_el['origin_price'] = $item_el['price'];
-            $item_el['price'] = $discountPrice;
+			if($discount > 0){
+				$item_el['price'] = $item_el['price'] - $item_el['price'] / 100 * $discount;
+			}
+            $item_el['discount'] = $discount;
+
 
             $mas_item[] = $item_el;
         }
