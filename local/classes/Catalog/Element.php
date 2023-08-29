@@ -1052,9 +1052,10 @@ if($arFilter['>=CATALOG_PRICE_'.$priceType]==null)$arFilter['!CATALOG_PRICE_'.$p
         $rsUser = \CUser::GetByID($USER->GetID());
         $arUser = $rsUser->Fetch();
         Loader::includeModule("highloadblock");
-
-        $hlbl = HIGHLOAD_SKIDI_CONNECT; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
-        $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+		$hlSkidkiArray = HL\HighloadBlockTable::getList([
+			'filter' => ['=NAME' => "SkidkiConnect"]
+		])->fetch();
+		$hlblock = HL\HighloadBlockTable::getById($hlSkidkiArray["ID"])->fetch();
 
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
         $entity_data_class = $entity->getDataClass();

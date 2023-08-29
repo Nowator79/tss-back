@@ -93,6 +93,7 @@ class AddProduct extends Base
                 $USER->GetUserGroupArray(),
                 $renewal
             );
+            AddMessage2Log($arPrice);
             $origin_price +=$arPrice['PRICE']['PRICE'];
 
             // получение скидки
