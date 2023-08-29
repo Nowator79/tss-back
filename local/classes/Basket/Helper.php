@@ -159,7 +159,10 @@ class Helper extends Base
 			$discount = 0;
 
 			if($userxmlid){
-				$hlblock = HL\HighloadBlockTable::getById(HIGHLOAD_SKIDI_CONNECT)->fetch();
+				$hlSkidkiArray = HL\HighloadBlockTable::getList([
+					'filter' => ['=NAME' => "SkidkiConnect"]
+				])->fetch();
+				$hlblock = HL\HighloadBlockTable::getById($hlSkidkiArray["ID"])->fetch();
 				$entity = HL\HighloadBlockTable::compileEntity($hlblock);
 				$entity_data_class = $entity->getDataClass();
 				
