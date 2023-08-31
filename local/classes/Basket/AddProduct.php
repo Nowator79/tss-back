@@ -54,17 +54,17 @@ class AddProduct extends Base
     public function add_new()
     {
         $params = Misc::getPostDataFromJson();
-//        $params = [array (
-//            'id' => 19139,
-//            'quantity' => 1,
-//            'customName'=>'sdfsdf',
-//            'options' =>
-//                array (
-//                    0 => '19135',
-//                    1 => '19136',
-//                ),
-//            'price' => 111111,
-//        )];
+			//        $params = [array (
+			//            'id' => 19139,
+			//            'quantity' => 1,
+			//            'customName'=>'sdfsdf',
+			//            'options' =>
+			//                array (
+			//                    0 => '19135',
+			//                    1 => '19136',
+			//                ),
+			//            'price' => 111111,
+			//        )];
 
 
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
@@ -73,8 +73,7 @@ class AddProduct extends Base
         $quantity = 1;
         $renewal = 'N';
 
-//        $basket->setUserId($USER->GetID());
-
+			//        $basket->setUserId($USER->GetID());
         foreach ($params as $key=>$item){
             $productId = intval($item['id']);
             $quantity = intval($item['quantity']);
@@ -85,16 +84,15 @@ class AddProduct extends Base
             $origin_price = 0;
 
             $price_mas = \CPrice::GetBasePrice(intval($item['id']));
-            $price += $price_mas['PRICE'];
-
+            $origin_price = $price = $price_mas['PRICE'];
             $arPrice = \CCatalogProduct::GetOptimalPrice(
                 $productId,
                 $quantity,
                 $USER->GetUserGroupArray(),
                 $renewal
             );
-            AddMessage2Log($arPrice);
-            $origin_price +=$arPrice['PRICE']['PRICE'];
+			
+            $origin_price += $arPrice['PRICE']['PRICE'];
 
             // получение скидки
             global $USER;
@@ -149,9 +147,9 @@ class AddProduct extends Base
                         "ID" => $productId,
                         "VAT_ID" => 1, //выставляем тип ндс (задается в админке)
                         "VAT_INCLUDED" => "Y", //НДС входит в стоимость
-//                        'QUANTITY'=>10,
-//                        'QUANTITY_RESERVED'=>1,
-//                        'QUANTITY_TRACE'=>'N',
+						//                        'QUANTITY'=>10,
+						//                        'QUANTITY_RESERVED'=>1,
+						//                        'QUANTITY_TRACE'=>'N',
                     ];
                     \Bitrix\Catalog\Model\Product::add($arFields);
                     \CPrice::SetBasePrice($productId,$price,$price_mas['CURRENCY']);
@@ -162,6 +160,7 @@ class AddProduct extends Base
                 $arFilter['ID']=$item['id'];
             }
             $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array(), Array());
+			
             while($ob = $res->GetNextElement())
             {
                 $arFields = $ob->GetFields();
@@ -169,8 +168,8 @@ class AddProduct extends Base
 
                 if($item['options']){
 
-//                    $ar_res =\CPrice::GetBasePrice($arFields['ID']);
-//                    $price += $ar_res['PRICE'];
+					//                    $ar_res =\CPrice::GetBasePrice($arFields['ID']);
+					//                    $price += $ar_res['PRICE'];
 
                     $arPrice = \CCatalogProduct::GetOptimalPrice(
                         $arFields['ID'],
@@ -295,12 +294,13 @@ class AddProduct extends Base
                     'SORT' => 100
                 );
 
+
             if($item['xmlId']){
                 $xmlId = $item['xmlId'];
             }else{
                 $xmlId = 'bx_'.rand(1000000000000,9999999999999);
             }
-
+			
             $item = $basket->createItem('catalog', $productId);
 
             $item->setFields(array(
@@ -348,13 +348,13 @@ class AddProduct extends Base
         $headers = apache_request_headers();
 
         // определить id пользователя по токену
-//        $decoded = Authorisation::getUserId($headers);
-//        if (!isset($decoded['error'])) {
-//            $tokenUserId = $decoded;
-//        }
-//
-//        // определение id типа цена
-//        $priceType = $tokenUserId ? self::getPriceType($tokenUserId) : false;
+		//        $decoded = Authorisation::getUserId($headers);
+		//        if (!isset($decoded['error'])) {
+		//            $tokenUserId = $decoded;
+		//        }
+		//
+		//        // определение id типа цена
+		//        $priceType = $tokenUserId ? self::getPriceType($tokenUserId) : false;
 
         // определить id пользователя по токену
         $decoded = Authorisation::getUserId($headers);

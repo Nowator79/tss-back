@@ -1,7 +1,8 @@
 <?
 namespace Godra\Api\Basket;
 
-use Godra\Api\Helpers\Utility\Misc;
+use Godra\Api\Helpers\Utility\Misc,
+	Godra\Api\Responce\Responce;
 use Bitrix\Sale,
     Bitrix\Currency;
 use Bitrix\Main\Context;
@@ -14,7 +15,14 @@ class Order
         'EMAIL',
         'DELIVERY_ADRESS'
     ];
-
+	/**
+	 * поле отвечает за выборку разделов из которых мы формируем счет на оплату
+	 */
+	private static $validSectionsForPayment = [
+		"stroitelnoe_oborudovanie",
+		"svarochnoe_oborudovanie",
+		"benzinovye_elektrostantsii"
+	];
     /**
      *  метод для создания заказа
      *  {
@@ -41,6 +49,108 @@ class Order
         $order = \Bitrix\Sale\Order::create($siteId, $USER->isAuthorized() ? $useId : 1);
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
 
+		# свойство заказ - создавать счет на оплату
+		# далле условия формирования счета на оплату
+		$isCreatePayment = true;
+
+		// $isHasCustomProduct = false;
+		// $isAllHasQuantityProduct = true;
+		// $isAllProductValidSection = true;
+
+		$basketItems = $basket->getBasketItems();
+
+		$basketItemsStats 	= [];
+		$basketItemsArray 	= [];
+		$basketItemsIds 	= [];
+
+		# получаем наличие кастомных товаров
+		if($basketItems){
+			foreach ($basketItems as $item) 
+			{
+				$itemId = $item->getProductId();
+				$basketItemsIds[] = $itemId; 
+
+				$basketPropertyCollection = $item->getPropertyCollection(); 
+				$props = $basketPropertyCollection->getPropertyValues();
+				$basketItemsStats[$itemId]["IS_NOT_CUSTOM"] = !($props["CATALOG_SLOT_IDS"]["VALUE"] || $props["MAIN_SLOT_IDS"]["VALUE"]);
+			}
+		}
+
+
+		# проверяем кол-во остатков товаров
+		if($basketItemsIds){
+			$db_res = \CCatalogProduct::GetList(
+				["ID" => "DESC"],
+				[
+					"ID" => $basketItemsIds,
+				],
+				false,
+				[]
+			);
+			while ($productEl = $db_res->Fetch())
+			{
+				$basketItemsArray[$productEl["ID"]] = $productEl;
+				$basketItemsStats[$productEl["ID"]]["IS_HAS_QUANTITY"] = !($productEl["QUANTITY"] == 0);
+			}
+		}
+
+		# проверяем принадлежность товаров к разделам 
+		foreach ($basketItemsStats as $idItemStat => $basketItem) {
+			$basketItemsStats[$idItemStat]["IS_VALID_SECTION"] = false;
+		}
+
+		$arFilter = [
+			"IBLOCK_ID" => IBLOCK_CATALOG,
+			"SECTION_CODE" => self::$validSectionsForPayment,
+			"INCLUDE_SUBSECTIONS" => "Y",
+			"ID" => $basketItemsIds,
+		];
+
+		$arSelect = ["ID", "IBLOCK_ID", "NAME"];
+		$res = \CIBlockElement::GetList([], $arFilter, false, [], $arSelect);
+		while($ob = $res->GetNextElement()){ 
+			$arFields = $ob->GetFields();
+			$basketItemsStats[$arFields["ID"]]["IS_VALID_SECTION"] = true;
+		}
+	
+
+		# подводим итог создавать чек или нет
+		foreach ($basketItemsStats as $idItemStat => $basketItem) {
+			$basketItemsStats[$idItemStat]["IS_VALID"] = $basketItem["IS_HAS_QUANTITY"] && $basketItem["IS_NOT_CUSTOM"] && $basketItem["IS_VALID_SECTION"];
+		}
+
+		foreach ($basketItemsStats as $idItemStat => $basketItem) {
+			if(!$basketItem["IS_VALID"]){
+				$isCreatePayment = false;
+			}else{
+				$validItems[] = $idItemStat;
+			}
+		}
+		if(!$isCreatePayment){
+			# при отсутстиве флажка на создание чека автоматически
+			# при наличие валидных товаров в корзине просить подтверждение
+			if($validItems){
+				$namesValid = [];
+				foreach ($validItems as $validItem) {
+					$namesValid[] = '"'.$basketItemsArray[$validItem]["ELEMENT_NAME"].'"';
+				}
+
+				$onCustomNames = implode(", ", $namesValid);
+
+				$textResponce = "Формирование счета займет времени больше обычного. Для формирования счета в ускоренном режиме сформируйте отдельно для товаров ";
+
+				if(!$params["IS_APPROVE_LONG_TIME"]){
+					$responce = new Responce();
+
+					$responce->setResponce(false, [
+						"type" => "NEED_APPROVE_FOR_LONG",
+						"text" => $textResponce.$onCustomNames,
+					]);
+					return $responce->end();
+				}
+			}
+		}
+
         if (count($basket->getQuantityList())) {
             $order->setBasket($basket);
             $order->setPersonTypeId(1);
@@ -55,6 +165,9 @@ class Order
                 if (in_array($code, self::$orderFields)) {
                     $propertyItem->setValue($params[$code]);
                 }
+				if($code == "CREATE_PAYMENT"){
+                    $propertyItem->setValue($isCreatePayment?"Y":"N");
+				}
             }
 
             //доставка
@@ -488,6 +601,8 @@ class Order
             } else {
                 $listOrders[$orderId]['IS_ALLOW_PAY'] = 'N';
             }
+
+			$listOrders[$orderId]["DOCUMENT"] = (new \Godra\Api\Helpers\Order())->getDocByOrderId($listOrders[$orderId]["ID"]);
 
             $dbResult['ORDERS'][] = array(
                 "ORDER" => $listOrders[$orderId],

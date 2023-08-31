@@ -129,6 +129,9 @@ class Restore extends Base
             $date = date('d.m.Y', $date);
             $arData['UF_FILE'] = $arData["UF_SSYLKANADOKUMENT"];
             $arData['UF_DATE'] = $date;
+			if($arData['UF_ZAKAZ']){
+				$arData["ORDER"] = (new \Godra\Api\Helpers\Order())->getArrByXml($arData['UF_ZAKAZ']);
+			}
             if(!$arData['UF_NAME'])$arData['UF_NAME']=$arData['UF_VIDDOKUMENTA'];
             $mas_doc[] =[
                 'ID'=>$arData['ID'],
@@ -139,6 +142,7 @@ class Restore extends Base
                 'UF_DATE'=>$arData['UF_DATE'],
                 'UF_USER'=>$user_id,
                 'UF_FILE'=>$arData['UF_FILE'],
+                'ORDER'=>$arData['ORDER'],
             ];
         }
         return $mas_doc;

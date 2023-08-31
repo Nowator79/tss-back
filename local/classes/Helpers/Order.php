@@ -407,6 +407,106 @@ class Order
         }
     }
     
+	public function getArrByXml($xmlId) {
+		$parameters = [
+			'filter' => [
+				"XML_ID" => $xmlId,
+			],
+			'order' => ["DATE_INSERT" => "ASC"]
+		];
+		$dbRes = \Bitrix\Sale\Order::getList($parameters);
+		while ($order = $dbRes->fetch())
+		{
+			return $order;
+		}
+		return null;
+	}
+
+	public function getArrById($id) {
+		$parameters = [
+			'filter' => [
+				"ID" => $id,
+			],
+			'order' => ["DATE_INSERT" => "ASC"]
+		];
+		$dbRes = \Bitrix\Sale\Order::getList($parameters);
+		while ($order = $dbRes->fetch())
+		{
+			return $order;
+		}
+		return null;
+	}
+	
+	public function getDocByOrderId($id) {
+		$order_xmlid = (new \Godra\Api\Helpers\Order())->getArrById($id)["XML_ID"];
+
+		$utils = new \Godra\Api\Helpers\Utility\Misc();
+		$doc = reset($utils->getHLData(HIGHLOAD_BLOCK_DOCUMENTS, ['=UF_ZAKAZ' => $order_xmlid])["records"]);
+
+		return $doc;
+	}
+
+	public function clone(int $id) {
+		$order_id = $id;
+		$siteId = "n1";
+		$order = \Bitrix\Sale\Order::loadByAccountNumber($order_id);
+		$currencyCode = \Bitrix\Main\Config\Option::get('sale', 'default_currency', 'RUB');
+		$basket = $order->getBasket();
+		$fields = $order->getFields();
+		$propertyCollection = $order->getPropertyCollection();
+		$paymentCollection = $order->getPaymentCollection();
+		foreach ($paymentCollection as $payment) {
+			$psID = $payment->getPaymentSystemId();
+			$psName = $payment->getPaymentSystemName();
+		}
+		$shipmentCollection = $order->getShipmentCollection();
+		foreach ($shipmentCollection as $shipment) {
+			if($shipment->isSystem()) continue;
+			$shName = $shipment->getField('DELIVERY_NAME');
+			$shId = $shipment->getField('DELIVERY_ID');
+		}
+
+		global $USER;
+		$orderNew = \Bitrix\Sale\Order::create($siteId, $USER->GetID());
+		$orderNew->setPersonTypeId(2);
+		$basketNew = \Bitrix\Sale\Basket::create($siteId);
+
+		foreach ($basket as $key => $basketItem){
+			$item = $basketNew->createItem('catalog', $basketItem->getProductId());
+			$item->setFields([
+				'QUANTITY'=>$basketItem->getQuantity(),
+				'CURRENCY'=>$currencyCode,
+				'LID'=>$siteId,
+				'PRODUCT_PROVIDER_CLASS'=>'\CCatalogProductProvider',
+			]);
+		}
+		$orderNew->setBasket($basketNew);
+		$shipmentCollectionNew = $orderNew->getShipmentCollection();
+		$shipmentNew = $shipmentCollectionNew->createItem();
+		$shipmentNew->setFields([
+			'DELIVERY_ID' => $shId,
+			'DELIVERY_NAME' => $shName,
+			'CURRENCY' => $order->getCurrency()
+		]);
+		$shipmentCollectionNew->calculateDelivery();
+		$paymentCollectionNew = $orderNew->getPaymentCollection();
+		$PaymentNew = $paymentCollectionNew->createItem();
+		$PaymentNew->setFields([
+			'PAY_SYSTEM_ID' => $psID,
+			'PAY_SYSTEM_NAME' => $psName
+		]);
+		$orderNew->setField('CURRENCY', $currencyCode);
+
+		$orderNew->doFinalAction(true);
+		$r = $orderNew->save();
+		if (!$r->isSuccess())
+		{
+			return print_r($r->getErrorMessages(), 1);
+		} else {
+			return true;
+		}
+	}
+
     protected function isAllowRemove($userId, $orderId)
     {
         $result = false;

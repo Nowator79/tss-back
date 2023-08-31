@@ -435,4 +435,21 @@ function getDiscountProductId($grupId){
     }
     return $data;
 }
+
+
+// $eventManager = \Bitrix\Main\EventManager::getInstance();
+// $eventManager->addEventHandler('', 'LKDDokumentyKontragentovOnAfterAdd', 'LKDDokumentyOnAfterAdd');
+// function LKDDokumentyOnAfterAdd(\Bitrix\Main\Entity\Event $event){
+// 	$entity = $event->getEntity();
+// 	$arFields = $event->getParameter("fields");
+
+// 	$to = 'vadim.n@webest.ru';
+// 	$subject = 'subject';
+// 	$message = print_r($arFields, 1);
+// 	$headers = 'From: dfgbolshenet@gmail.com' . "\r\n" .
+// 		'Reply-To: dfgbolshenet@gmail.com' . "\r\n" .
+// 		'X-Mailer: PHP/' . phpversion();
+
+// 	mail($to, $subject, $message, $headers);
+// }
 ?>
