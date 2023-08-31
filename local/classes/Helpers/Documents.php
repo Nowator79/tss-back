@@ -196,6 +196,7 @@ class Documents
 			'TYPE'       => $entityFields['UF_VIDDOKUMENTA'],
 			'CONTRAGENT' => $entityFields['UF_KONTRAGENT'],
 			'FILE'       => $entityFields['UF_SSYLKANADOKUMENT'],
+			'ORDER_ID'   => $entityFields['UF_ZAKAZ'],
 			'DATE'       => $date,
 		];
 		

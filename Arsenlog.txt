@@ -751,3 +751,1519 @@ array (
 #5: require_once(string)
 	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
 ----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 13:51:09
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 13:51:23
+array (
+  'PRICE' => 
+  array (
+    'ID' => '78558',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '78558',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 20355,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:19:46
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:21:13
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:22:18
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:22:23
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:22:33
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:22:58
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:23:11
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:24:26
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:25:14
+array (
+  'PRICE' => 
+  array (
+    'ID' => '75232',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '75232',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19491,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:43:23
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 14:43:27
+array (
+  'PRICE' => 
+  array (
+    'ID' => '79452',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '79452',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 20597,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 17:40:51
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 17:40:56
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 17:41:27
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76197',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76197',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19758,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-29 17:41:28
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76197',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76197',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19758,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 09:53:41
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 09:53:52
+array (
+  'PRICE' => 
+  array (
+    'ID' => '75232',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '75232',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19491,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 09:53:57
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:31:41
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:31:44
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:31:48
+array (
+  'PRICE' => 
+  array (
+    'ID' => '74604',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '74604',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 26574,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:33:49
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:33:55
+array (
+  'PRICE' => 
+  array (
+    'ID' => '78558',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '78558',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 20355,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:35:32
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:35:36
+array (
+  'PRICE' => 
+  array (
+    'ID' => '77694',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '77694',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 20120,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:38:08
+array (
+  'PRICE' => 
+  array (
+    'ID' => '77694',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '77694',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 20120,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:38:22
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:39:32
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:39:38
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:40:15
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:40:36
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:41:02
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:41:42
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:42:03
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:42:47
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:43:10
+array (
+  'PRICE' => 
+  array (
+    'ID' => '76157',
+    'CATALOG_GROUP_ID' => '528',
+    'PRICE' => '0.00',
+    'CURRENCY' => 'RUB',
+    'ELEMENT_IBLOCK_ID' => 5,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+  ),
+  'RESULT_PRICE' => 
+  array (
+    'ID' => '76157',
+    'PRICE_TYPE_ID' => '528',
+    'BASE_PRICE' => 0.0,
+    'DISCOUNT_PRICE' => 0.0,
+    'CURRENCY' => 'RUB',
+    'DISCOUNT' => 0.0,
+    'PERCENT' => 0,
+    'VAT_RATE' => 0.20000000000000001,
+    'VAT_INCLUDED' => 'Y',
+    'NO_VAT' => 'N',
+    'UNROUND_BASE_PRICE' => 0.0,
+    'UNROUND_DISCOUNT_PRICE' => 0.0,
+  ),
+  'DISCOUNT_PRICE' => 0.0,
+  'DISCOUNT' => 
+  array (
+  ),
+  'DISCOUNT_LIST' => 
+  array (
+  ),
+  'PRODUCT_ID' => 19742,
+)
+#0: Godra\Api\Basket\AddProduct->add_new
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:49:29
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:49:37
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:49:42
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:52:07
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:52:21
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:58:17
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 10:58:44
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-30 11:32:30
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-31 10:55:08
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-31 10:55:28
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-31 10:56:13
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-31 11:22:40
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------
+Host: dev.wcshop.fvds.ru
+Date: 2023-08-31 12:39:45
+false
+#0: Godra\Api\Catalog\Element::getSectionElements
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/local/classes/Core/Init.php:44
+#1: Godra\Api\Core\Init::run
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/module.php:465
+#2: ExecuteModuleEventEx
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/classes/general/main.php:3447
+#3: CAllMain::PrologActions
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog_before.php:16
+#4: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/modules/main/include/prolog.php:10
+#5: require_once(string)
+	/var/www/www-root/data/www/dev.wcshop.fvds.ru/bitrix/header.php:1
+----------

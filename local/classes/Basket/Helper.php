@@ -62,16 +62,16 @@ class Helper extends Base
                 $item_el['price'] += $ar_res["PRICE"];
             }
 
-//            global $USER;
-//            $quantity = 1;
-//            $renewal = 'N';
-//            $arPrice = \CCatalogProduct::GetOptimalPrice(
-//                $item['PRODUCT_ID'],
-//                $quantity,
-//                $USER->GetUserGroupArray(),
-//                $renewal
-//            );
-//            $item_el['origin_price'] +=$arPrice['PRICE']['PRICE'];
+			//            global $USER;
+			//            $quantity = 1;
+			//            $renewal = 'N';
+			//            $arPrice = \CCatalogProduct::GetOptimalPrice(
+			//                $item['PRODUCT_ID'],
+			//                $quantity,
+			//                $USER->GetUserGroupArray(),
+			//                $renewal
+			//            );
+			//            $item_el['origin_price'] +=$arPrice['PRICE']['PRICE'];
 
             while ($property = $basketPropRes->fetch()) {
                 if ($property['NAME'] == 'ID_ORIGINAL' && $property['VALUE']) {
@@ -105,18 +105,14 @@ class Helper extends Base
                         if ($ar_res = $db_res->Fetch()) {
                             $item_el['price'] += $ar_res["PRICE"];
                         }
-//                        $arPrice = \CCatalogProduct::GetOptimalPrice(
-//                            $arFields['ID'],
-//                            $quantity,
-//                            $USER->GetUserGroupArray(),
-//                            $renewal
-//                        );
-//                        $item_el['origin_price'] +=$arPrice['PRICE']['PRICE'];
+						//                        $arPrice = \CCatalogProduct::GetOptimalPrice(
+						//                            $arFields['ID'],
+						//                            $quantity,
+						//                            $USER->GetUserGroupArray(),
+						//                            $renewal
+						//                        );
+						//                        $item_el['origin_price'] +=$arPrice['PRICE']['PRICE'];
                     }
-
-//
-
-
                 }
 
                 if ($property['NAME'] == 'PROPS') {
@@ -142,9 +138,9 @@ class Helper extends Base
                 }
             }
 
-//            if (empty($item_el['origin_price']) || $item_el['origin_price'] == 0) {
-//                $item_el['origin_price'] = $item_el['price'];
-//            }
+			//            if (empty($item_el['origin_price']) || $item_el['origin_price'] == 0) {
+			//                $item_el['origin_price'] = $item_el['price'];
+			//            }
 			global $USER;
 			$filterUserReq = [ "ID" => $USER->GetID() ];
 			$rsUsers = \CUser::GetList(

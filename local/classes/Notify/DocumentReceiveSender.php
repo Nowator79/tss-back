@@ -66,6 +66,8 @@ class DocumentReceiveSender implements ISender
 						'EMAIL'         => $user['EMAIL'],
 						'DOCUMENT_TYPE' => $params['fields']['TYPE'],
 						'DOCUMENT_NAME' => $params['fields']['NAME'],
+						'DOCUMENT_LINK' => $params['fields']['FILE'],
+						'ORDER_ID' 		=> (new Order())->getArrByXml($params['fields']['ORDER_ID'])["ID"],
 					];
 					
 					if ($user['EMAIL'] && $fields['DOCUMENT_NAME'])
