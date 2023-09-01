@@ -47,6 +47,9 @@ $eventManager->addEventHandler('catalog', 'OnGetOptimalPriceResult', function(&$
     }
 });
 
+\Bitrix\Main\Loader::includeModule('acrit.unisender');
+
+
 //пример использования события OnSaleOrderSaved
 
     ////в обработчике получаем сумму, с которой планируются некоторые действия в дальнейшем:

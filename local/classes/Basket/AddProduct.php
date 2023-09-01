@@ -54,18 +54,6 @@ class AddProduct extends Base
     public function add_new()
     {
         $params = Misc::getPostDataFromJson();
-			//        $params = [array (
-			//            'id' => 19139,
-			//            'quantity' => 1,
-			//            'customName'=>'sdfsdf',
-			//            'options' =>
-			//                array (
-			//                    0 => '19135',
-			//                    1 => '19136',
-			//                ),
-			//            'price' => 111111,
-			//        )];
-
 
         $basket = \Bitrix\Sale\Basket::loadItemsForFUser(\Bitrix\Sale\Fuser::getId(), \Bitrix\Main\Context::getCurrent()->getSite());
 
@@ -95,7 +83,6 @@ class AddProduct extends Base
             $origin_price += $arPrice['PRICE']['PRICE'];
 
             // получение скидки
-            global $USER;
             $rsUser = \CUser::GetByID($USER->GetID());
             $arUser = $rsUser->Fetch();
             Loader::includeModule("highloadblock");
@@ -167,9 +154,6 @@ class AddProduct extends Base
                 $arProps = $ob->GetProperties();
 
                 if($item['options']){
-
-					//                    $ar_res =\CPrice::GetBasePrice($arFields['ID']);
-					//                    $price += $ar_res['PRICE'];
 
                     $arPrice = \CCatalogProduct::GetOptimalPrice(
                         $arFields['ID'],

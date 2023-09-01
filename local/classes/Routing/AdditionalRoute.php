@@ -29,7 +29,7 @@ class AdditionalRoute
             
             // POST, личный кабинет, страница заказа, повторить заказ
             '/api/order/repeat' => [\Godra\Api\Order::class, 'repeat'],
-            
+
             // POST, личный кабинет, страница заказа, удалить заказ
             '/api/order/delete' => [\Godra\Api\Order::class, 'delete'],
             

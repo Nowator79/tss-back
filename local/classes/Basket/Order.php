@@ -18,7 +18,7 @@ class Order
 	/**
 	 * поле отвечает за выборку разделов из которых мы формируем счет на оплату
 	 */
-	private static $validSectionsForPayment = [
+	public static $validSectionsForPayment = [
 		"stroitelnoe_oborudovanie",
 		"svarochnoe_oborudovanie",
 		"benzinovye_elektrostantsii"
@@ -75,7 +75,6 @@ class Order
 				$basketItemsStats[$itemId]["IS_NOT_CUSTOM"] = !($props["CATALOG_SLOT_IDS"]["VALUE"] || $props["MAIN_SLOT_IDS"]["VALUE"]);
 			}
 		}
-
 
 		# проверяем кол-во остатков товаров
 		if($basketItemsIds){
@@ -211,7 +210,17 @@ class Order
 
         return $orderId;
     }
+	/**
+	 * Метод клонирования заказа
+	 */
+	public static function clone() {
+        $params = Misc::getPostDataFromJson();
+		$orderId = $params["ORDER_ID"];
 
+		if($orderId){
+			return (new \Godra\Api\Helpers\Order())->clone($orderId);
+		}
+	}
     /**
      * Получить все заказы пользователя
      * возможна фильтрация по дате и статусу (F,DR,DF)

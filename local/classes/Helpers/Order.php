@@ -9,6 +9,8 @@ use CFile,
     CIBlockElement,
     CCatalogProduct,
     Godra\Api\Notify as Notify;
+use \Bitrix\Main\Loader,
+	\Bitrix\Highloadblock as HL;
 
 class Order
 {
@@ -454,11 +456,7 @@ class Order
 		$basket = $order->getBasket();
 		$fields = $order->getFields();
 		$propertyCollection = $order->getPropertyCollection();
-		$paymentCollection = $order->getPaymentCollection();
-		foreach ($paymentCollection as $payment) {
-			$psID = $payment->getPaymentSystemId();
-			$psName = $payment->getPaymentSystemName();
-		}
+	
 		$shipmentCollection = $order->getShipmentCollection();
 		foreach ($shipmentCollection as $shipment) {
 			if($shipment->isSystem()) continue;
@@ -467,8 +465,8 @@ class Order
 		}
 
 		global $USER;
-		$orderNew = \Bitrix\Sale\Order::create($siteId, $USER->GetID());
-		$orderNew->setPersonTypeId(2);
+		$orderNew = \Bitrix\Sale\Order::create($siteId, $order->getUserId());
+		$orderNew->setPersonTypeId(1);
 		$basketNew = \Bitrix\Sale\Basket::create($siteId);
 
 		foreach ($basket as $key => $basketItem){
@@ -479,6 +477,9 @@ class Order
 				'LID'=>$siteId,
 				'PRODUCT_PROVIDER_CLASS'=>'\CCatalogProductProvider',
 			]);
+			$basketPropertyCollection = $basketItem->getPropertyCollection();
+			$basketPropertyCollectionNew = $item->getPropertyCollection();
+			$basketPropertyCollectionNew->setProperty($basketPropertyCollection->getPropertyValues());
 		}
 		$orderNew->setBasket($basketNew);
 		$shipmentCollectionNew = $orderNew->getShipmentCollection();
@@ -489,22 +490,169 @@ class Order
 			'CURRENCY' => $order->getCurrency()
 		]);
 		$shipmentCollectionNew->calculateDelivery();
-		$paymentCollectionNew = $orderNew->getPaymentCollection();
-		$PaymentNew = $paymentCollectionNew->createItem();
-		$PaymentNew->setFields([
-			'PAY_SYSTEM_ID' => $psID,
-			'PAY_SYSTEM_NAME' => $psName
-		]);
+	
 		$orderNew->setField('CURRENCY', $currencyCode);
 
+		# обновление цен
+        $renewal = 'N';
+
+		$basket = $orderNew->getBasket();
+
+		$orderPrice = 0;
+		foreach ($basket as $key => $basketItem){
+		
+			$productId  = $basketItem->getProductId();
+			$quantity  = $basketItem->getQuantity();
+
+			$price_mas = \CPrice::GetBasePrice($productId);
+
+			$origin_price = $price = $price_mas['PRICE'];
+
+			// получение скидки
+			$rsUser = \CUser::GetByID($USER->GetID());
+			$arUser = $rsUser->Fetch();
+
+			Loader::includeModule("highloadblock");
+
+			$hlSkidkiArray = HL\HighloadBlockTable::getList([
+				'filter' => ['=NAME' => "SkidkiConnect"]
+			])->fetch();
+
+			$hlblock = HL\HighloadBlockTable::getById($hlSkidkiArray["ID"])->fetch();
+
+			$entity = HL\HighloadBlockTable::compileEntity($hlblock);
+			$entity_data_class = $entity->getDataClass();
+
+			$rsData = $entity_data_class::getList(array(
+				"select" => ["ID", "UF_SKIDKA"],
+				"order" => ["ID" => "ASC"],
+				"filter" => ["UF_PRODUCT_ID"=> $productId, "UF_USER_ID"=>$arUser['XML_ID'],">UF_DATE_END" => date("d.m.Y H:i:s")],
+			));
+			$cont_discount = false;
+			
+			while($arData = $rsData->Fetch()){
+				$cont_discount = $arData['UF_SKIDKA'];
+			}
+
+			if($cont_discount) {
+				$origin_price = $origin_price - ($origin_price * $cont_discount / 100);
+			}
+			$filds = [
+                'CURRENCY' => \Bitrix\Currency\CurrencyManager::getBaseCurrency(),
+                'PRODUCT_PROVIDER_CLASS' => 'CCatalogProductProviderCustom',
+                'PRICE' => $origin_price,
+                'CUSTOM_PRICE' => 'Y',
+            ];
+			$basketItem->setFields($filds);
+			$orderPrice += $origin_price;
+
+		}
+        $basket->save();
+		
+		// оплата
+		$paymentCollectionNew = $orderNew->getPaymentCollection();
+		$paymentCollection = $order->getPaymentCollection();
+
+		foreach ($paymentCollection as $payment) {
+			$paymentNew = $paymentCollectionNew->createItem(\Bitrix\Sale\PaySystem\Manager::getObjectById($payment->getPaymentSystemId())); // $params['PAYMENT_ID'] - ИД платежной системы
+			$paymentNew->setField('SUM', $orderNew->getPrice());
+		}
+		
+		$orderNew->setField('PRICE', $orderPrice);
+
+		$basketItems = $basket->getBasketItems();
+
+		# заново расчитываем создание счета на оплату 
+		# получаем наличие кастомных товаров
+
+		# свойство заказ - создавать счет на оплату
+		# далле условия формирования счета на оплату
+		$isCreatePayment = true;
+		
+		$basketItemsStats 	= [];
+		$basketItemsArray 	= [];
+		$basketItemsIds 	= [];
+
+		# получаем наличие кастомных товаров
+		if($basketItems){
+			foreach ($basketItems as $item) 
+			{
+				$itemId = $item->getProductId();
+				$basketItemsIds[] = $itemId; 
+
+				$basketPropertyCollection = $item->getPropertyCollection(); 
+				$props = $basketPropertyCollection->getPropertyValues();
+				$basketItemsStats[$itemId]["IS_NOT_CUSTOM"] = !($props["CATALOG_SLOT_IDS"]["VALUE"] || $props["MAIN_SLOT_IDS"]["VALUE"]);
+			}
+		}
+
+		# проверяем кол-во остатков товаров
+		if($basketItemsIds){
+			$db_res = \CCatalogProduct::GetList(
+				["ID" => "DESC"],
+				[
+					"ID" => $basketItemsIds,
+				],
+				false,
+				[]
+			);
+			while ($productEl = $db_res->Fetch())
+			{
+				$basketItemsArray[$productEl["ID"]] = $productEl;
+				$basketItemsStats[$productEl["ID"]]["IS_HAS_QUANTITY"] = !($productEl["QUANTITY"] == 0);
+			}
+		}
+
+		# проверяем принадлежность товаров к разделам 
+		foreach ($basketItemsStats as $idItemStat => $basketItem) {
+			$basketItemsStats[$idItemStat]["IS_VALID_SECTION"] = false;
+		}
+
+		$arFilter = [
+			"IBLOCK_ID" => IBLOCK_CATALOG,
+			"SECTION_CODE" => \Godra\Api\Basket\Order::$validSectionsForPayment,
+			"INCLUDE_SUBSECTIONS" => "Y",
+			"ID" => $basketItemsIds,
+		];
+
+		$arSelect = ["ID", "IBLOCK_ID", "NAME"];
+		$res = \CIBlockElement::GetList([], $arFilter, false, [], $arSelect);
+		while($ob = $res->GetNextElement()){ 
+			$arFields = $ob->GetFields();
+			$basketItemsStats[$arFields["ID"]]["IS_VALID_SECTION"] = true;
+		}
+
+		# подводим итог создавать чек или нет
+		foreach ($basketItemsStats as $idItemStat => $basketItem) {
+			$basketItemsStats[$idItemStat]["IS_VALID"] = $basketItem["IS_HAS_QUANTITY"] && $basketItem["IS_NOT_CUSTOM"] && $basketItem["IS_VALID_SECTION"];
+		}
+
+		foreach ($basketItemsStats as $idItemStat => $basketItem) {
+			if(!$basketItem["IS_VALID"]){
+				$isCreatePayment = false;
+			}else{
+				$validItems[] = $idItemStat;
+			}
+		}
+
+		$propertyCollectionNew = $orderNew->getPropertyCollection();
+
+		foreach ($propertyCollectionNew as $propertyItem) {
+			$code = $propertyItem->getField('CODE');
+			if($code == "CREATE_PAYMENT"){
+				$propertyItem->setValue($isCreatePayment?"Y":"N");
+			}
+		}
+		
 		$orderNew->doFinalAction(true);
 		$r = $orderNew->save();
-		if (!$r->isSuccess())
+		if(!$r->isSuccess())
 		{
 			return print_r($r->getErrorMessages(), 1);
-		} else {
-			return true;
+		}else{
+			return $orderNew->getId();
 		}
+
 	}
 
     protected function isAllowRemove($userId, $orderId)
@@ -600,6 +748,8 @@ class Order
 
                         $propertyItem->setFields($oldPropertyFields);
                     }
+
+					$newPropertyCollection->createItem($oldPropertyFields);
                 }
             }
 
