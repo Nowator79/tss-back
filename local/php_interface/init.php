@@ -131,8 +131,11 @@ function getStoreInfo($orderId){
 }
 
  function getStoreIdFromHL($id){
-     $hlbl = 68; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
-     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
+	$hlStore = HL\HighloadBlockTable::getList([
+		'filter' => ['=NAME' => "StoreIdConnection"]
+	])->fetch();
+	$hlblock = HL\HighloadBlockTable::getById($hlStore["ID"])->fetch();
+
      $resultId = false;
      global $USER;
      $entity = HL\HighloadBlockTable::compileEntity($hlblock);
